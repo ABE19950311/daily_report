@@ -24,5 +24,20 @@ export class Notification {
     constructor() {
         this.notification = document.getElementById("notification_address");
         this.notificationRecordBtn = document.getElementById("notification_record_btn");
+        this.notificationTransitionBtn = document.getElementById("notification_register_btn")
+        this.mailAddressParent = document.getElementById("mailAddressBody");
+        this.mailAddressOrigin = document.getElementById("mailAddressList");
+    }
+}
+
+export class initialData {
+    constructor() {
+        this._userMailAddressList = [];
+    }
+    set userMailAddressList(value) {
+        this._userMailAddressList = value;
+    }
+    get userMailAddressList() {
+        return this._userMailAddressList;
     }
 }

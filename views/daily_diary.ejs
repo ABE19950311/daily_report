@@ -32,89 +32,73 @@
               </div>
 
               <div class="col-12">
-                <label for="username" class="form-label">ユーザーネーム</label>
-                <div class="input-group has-validation">
-                  <span class="input-group-text">@</span>
-                  <input type="text" class="form-control" id="username" placeholder="ユーザーネーム" required>
-                <div class="invalid-feedback">
-                    ユーザー名が必要です
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-12">
-                <label for="email" class="form-label">Eメール <span class="text-body-secondary">(任意)</span></label>
-                <input type="email" class="form-control" id="email" placeholder="you@example.com">
-                <div class="invalid-feedback">
-                  配送の更新に有効なメールアドレスを入力してください
-                </div>
-              </div>
-
-              <div class="col-12">
-                <label for="address" class="form-label">住所</label>
-                <input type="text" class="form-control" id="address" placeholder="地番" required>
-                <div class="invalid-feedback">
-                  配送先住所を入力してください
-                </div>
-              </div>
-
-              <div class="col-12">
-                <label for="address2" class="form-label">住所 2 <span class="text-body-secondary">(任意)</span></label>
-                <input type="text" class="form-control" id="address2" placeholder="アパート・マンション名">
-              </div>
-
-              <div class="col-md-5">
-                <label for="pref" class="form-label">都道府県</label>
-                <select class="form-select d-block w-100" id="pref" required>
-                  <option>選択...</option>
-                  <option>北海道</option>
-                </select>
-                <div class="invalid-feedback">
-                  都道府県を選択してください
-                </div>
-              </div>
-              <div class="col-md-4">
-                <label for="city" class="form-label">市町村</label>
-                <select class="form-select d-block w-100" id="city" required>
-                  <option>選択...</option>
-                  <option>札幌市</option>
-                </select>
-                <div class="invalid-feedback">
-                  市町村を選択してください
-                </div>
-              </div>
-              <div class="col-md-3">
-                <label for="zip" class="form-label">郵便番号</label>
-                <input type="text" class="form-control" id="zip" placeholder="" required>
-                <div class="invalid-feedback">
-                  郵便番号を入力してください
-                </div>
-              </div>
-
-              <div class="col-12">
+                <label class="form-label">カテゴリ</label>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
                     <label class="form-check-label" for="flexRadioDefault1">
-                    目標達成できた
+                    開発
                     </label>
                 </div>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"checked>
                     <label class="form-check-label" for="flexRadioDefault2">
-                    少し達成できた
+                    サーバ
                     </label>
                 </div>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
                     <label class="form-check-label" for="flexRadioDefault2">
-                    もう少し
+                    ネットワーク
                     </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                  <label class="form-check-label" for="flexRadioDefault2">
+                    AWS
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                  <label class="form-check-label" for="flexRadioDefault2">
+                    コマンドライン
+                </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                  <label class="form-check-label" for="flexRadioDefault2">
+                    OS
+                </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                  <label class="form-check-label" for="flexRadioDefault2">
+                    ミドルウェア
+                </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                  <label class="form-check-label" for="flexRadioDefault1">
+                    エラー対応
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                  <label class="form-check-label" for="flexRadioDefault2">
+                    その他
+                </label>
                 </div>
               </div>
 
-              <div class="col-12">
+              <div class="col-16">
                 <div class="input-group">
-                    <span class="input-group-text">乾燥した感想</span>
+                    <span class="input-group-text">内容</span>
+                    <textarea class="form-control" aria-label="With textarea"></textarea>
+                </div>
+              </div>
+
+              <div class="col-16">
+                <div class="input-group">
+                    <span class="input-group-text">参照</span>
                     <textarea class="form-control" aria-label="With textarea"></textarea>
                 </div>
               </div>

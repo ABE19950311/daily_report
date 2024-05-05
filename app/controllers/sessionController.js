@@ -29,7 +29,7 @@ const apiIsSessionCheck = (async (req,res)=>{
         response.responseProblemSessiionToken(res,"SessionUserId does not exist")
         return
     }
-    console.log(sessionUserId[0].id)
+    console.log(sessionUserId[0])
     const responseBody = {
         applicationStatusCode: "Success",
         applicationMessage: "Success"

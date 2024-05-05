@@ -15,7 +15,7 @@ const setSessionToken = (async(token,user)=>{
         await redisClient.set(`${token}`,`${user}`)
     } catch (error) {
         console.error(error)
-        throw error
+        throw new Error
     } finally {
         await redisClient.quit()
     }
@@ -28,7 +28,7 @@ const getSessionToken = (async(token)=>{
         return result
     } catch (error) {
         console.error(error)
-        throw error
+        throw new Error
     } finally {
         await redisClient.quit()
     }
@@ -40,7 +40,7 @@ const deleteSessionToken = (async(token)=>{
         await redisClient.del(`${token}`)
     } catch (error) {
         console.error(error)
-        throw error
+        throw new Error
     } finally {
         await redisClient.quit()
     }

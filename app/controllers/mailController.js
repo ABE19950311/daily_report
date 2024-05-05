@@ -16,6 +16,7 @@ const RESPONSE_HEADER = {
 
 async function getSessionUserIdFromCookie(req) {
     const sessionToken = req.cookies.sessionToken
+    if(!sessionToken) return ""
     const user = await redis.getSessionToken(sessionToken)
     const id = await mysql.dbSelect("account","id",`where user="${user}"`)
     return id
@@ -28,7 +29,7 @@ const isRegisterMailAddress = (async(req,res)=>{
         response.responseProblemSessiionToken(res,"SessionUserId does not exist")
         return
     }
-    await mysql.dbInsert("notification","(address,account_id)",`"${mailAddress}",${userId[0].id}`)
+    await mysql.dbInsert("notification","(address,account_id)",`"${mailAddress}",${userId[0]}`)
     const responseBody = {
         applicationStatusCode: "Success",
         applicationMessage: "Success"
@@ -42,7 +43,7 @@ const getUserMailAddressList = (async(req,res)=>{
         response.responseProblemSessiionToken(res,"SessionUserId does not exist")
         return
     }
-    const mailAddressList = await mysql.dbSelect("notification","address",`WHERE account_id=${userId}`)
+    const mailAddressList = await mysql.dbSelect("notification","address",`WHERE account_id="${userId[0]}"`)
     console.log(mailAddressList)
     const responseBody = {
         applicationStatusCode: "Success",

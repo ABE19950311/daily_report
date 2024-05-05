@@ -14,13 +14,14 @@ async function mysqlConnection() {
 const dbSelect = (async(table,colmun,query)=>{
     await mysqlConnection();
     try {
-        const [result,schema] = await mysqlClient.execute(
+        let [result,schema] = await mysqlClient.execute(
             `SELECT ${colmun} FROM ${table} ${query}`
         )
+        result = JSON.parse(JSON.stringify(result)).map(data => Object.values(data).join(""))
         return result
     } catch(error) {
         console.error(error)
-        throw error
+        throw new Error
     } finally {
         await mysqlClient.end()
     }
@@ -29,13 +30,14 @@ const dbSelect = (async(table,colmun,query)=>{
 const dbInsert = (async(table,colmun,query)=>{
     await mysqlConnection();
     try {
-        const [result,schema] = await mysqlClient.query(
+        let [result,schema] = await mysqlClient.query(
             `INSERT INTO ${table} ${colmun} VALUES(${query})`
         )
+        result = JSON.parse(JSON.stringify(result)).map(data => Object.values(data).join(""))
         return result
     } catch (error) {
         console.error(error)
-        throw error
+        throw new Error
     } finally {
         await mysqlClient.end()
     }

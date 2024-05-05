@@ -4,21 +4,25 @@ let login = null;
 let register = null;
 let header = null;
 let notification = null;
+let initialData = null;
 
 window.addEventListener("DOMContentLoaded",()=>{
     login = new page.Login();
     register = new page.Register();   
     header = new page.Header();
     notification = new page.Notification();
+    initialData = new page.initialData();
     main();
 });
 
-function main() {
+async function main() {
     hiddenAllPages();
     hiddenHeader("header")
     initialEvents();
-    if(sessionCheck()) {
-        setContents();
+    if(await sessionCheck()) {
+        loadPageHome();
+    } else {
+        appearPage("login_page");
     }
 }
 
@@ -60,6 +64,7 @@ function initialEvents() {
     register.submitBtn.addEventListener("click",registerUser);
     header.logoutBtn.addEventListener("click",isLogout);
     notification.notificationRecordBtn.addEventListener("click",isRegisterMailAddress);
+    notification.notificationTransitionBtn.addEventListener("click",setMailAddress);
 }
 
 async function isRegisterMailAddress() {
@@ -71,8 +76,10 @@ async function isRegisterMailAddress() {
     console.log(res)
 }
 
-async function setContents() {
-    await getUserMailAddressList();
+async function loadPageHome() {
+    //await Promise.all([getUserMailAddressList()]);
+    appearPage("home_page");
+    appearPage("header");
 }
 
 async function isExsistUserCheck() {
@@ -84,8 +91,7 @@ async function isExsistUserCheck() {
     const res = await requestToServer(url,"POST",body)
     if(res.applicationStatusCode=="Success") {
         hiddenAllPages();
-        appearPage("home_page");
-        appearPage("header");
+        loadPageHome();
     }
 }
 
@@ -95,11 +101,8 @@ async function sessionCheck() {
     const res = await requestToServer(url,"POST",{})
     console.log(res)
     if(res.applicationStatusCode=="Success") {
-        appearPage("home_page");
-        appearPage("header");
         return true
     } else {
-        appearPage("login_page");
         return false
     }
 }
@@ -122,7 +125,24 @@ async function getUserMailAddressList() {
 
     const res = await requestToServer(url,"POST",{})
 
-    console.log(res)
+    if(res.applicationStatusCode=="Success") {
+        initialData.userMailAddressList = res.mailAddressList
+    }
+}
+
+async function setMailAddress() {
+    await getUserMailAddressList()
+    const parent = notification.mailAddressParent
+    const addressList = initialData.userMailAddressList
+    //cloneNodeで増やしたelm消さないと同じnodeが増え続ける
+    document.querySelectorAll("#mailAddressList:not(.d-none)").forEach(elm => elm.remove())
+    addressList.forEach((address,index)=>{
+        const node = notification.mailAddressOrigin.cloneNode(true)
+        node.querySelector("#addressList1").innerText = index+1
+        node.querySelector("#addressList2").innerText = address
+        node.classList.remove("d-none")
+        parent.appendChild(node)
+    })
 }
 
 function displayPage(page) {
