@@ -3,33 +3,34 @@ require("../models/mysql.php");
 require("../models/redis.php");
 require("./responseController.php");
 
-$RESPONSE_HEADER = [
-    "Content-Type" => "application/json",
-    "Access-Control-Allow-Origin" => "*"
+const RESPONSE_HEADER = [
+    "Content-Type: application/json",
+    "Access-Control-Allow-Origin: *"
 ];
 
 class sessionController {
     private $redis;
     private $mysql;
+    private $response;
 
     public function __construct() {
         $this->redis = new redisModel();
         $this->mysql = new mysqlModel();
+        $this->response = new responseController();
     }
 
     private function getSessionUserIdFromCookie() {
         $sessionToken = $_COOKIE["sessionToken"];
-        if(!$sessionToken) return ""
+        if(!$sessionToken) return "";
         $user = $this->redis->getSessionToken($sessionToken);
-        //TODO:変える
-        $id = $this->mysql->dbSelect("account","id","where user=?",[$user]);
-        return $id
+        $id = $this->mysql->dbSelect("account","id","user=:user",[":user"=>$user]);
+        return $id;
     }
     
     public function apiIsSessionCheck() {
-        $sessionUserId = getSessionUserIdFromCookie();
+        $sessionUserId = $this->getSessionUserIdFromCookie();
         if(!$sessionUserId) {
-            response.responseProblemSessiionToken(res,"SessionUserId does not exist");
+            $this->response->responseProblemSessiionToken("SessionUserId does not exist");
             return;
         }
         echo $sessionUserId;
@@ -37,27 +38,30 @@ class sessionController {
             "applicationStatusCode" => "Success",
             "applicationMessage" => "Success"
         ];
-        response.doResponse(res,200,RESPONSE_HEADER,responseBody);
+        $this->response->doResponse(200,RESPONSE_HEADER,$responseBody);
     }
     
     public function apiIsExsistCheck() {
         $loginUser = $_POST["loginUser"];
         $loginPassword = $_POST["loginPassword"];
-        $result = $this->mysql.dbSelect("account","user,password",`WHERE user="${req["body"]["loginUser"]}" AND password="${req["body"]["loginPassword"]}"`);
+        $result = $this->mysql->dbSelect("account","user,password","user=:loginUser AND password=:loginPassword",[":loginUser"=>$loginUser,":loginPassword"=>$loginPassword]);
         if(!$result.length) {
-            response.responseProblemSessiionToken(res,"User does not exist");
+            $this->response->responseProblemSessiionToken("User does not exist");
             return;
         }
-        $randomId = getRandomId();
+        $randomId = $this->getRandomId();
         $sessionToken = "sessionToken-" . $randomId;
-        $this->redis.setSessionToken($sessionToken,req["body"]["loginUser"]);
-        $responseHeader = RESPONSE_HEADER;
-        responseHeader["Set-Cookie"] = `sessionToken=${sessionToken}`
-        const responseBody = [
+        $this->redis->setSessionToken($sessionToken,$loginUser);
+        $responseHeader = [
+            "Content-Type: application/json",
+            "Access-Control-Allow-Origin: *",
+            "Set-Cookie: sessionToken=$sessionToken"
+        ];
+        $responseBody = [
             "applicationStatusCode" => "Success",
             "applicationMessage" => "Success"
         ];
-        response.doResponse(res,200,responseHeader,responseBody);
+        $this->response->doResponse(200,$responseHeader,$responseBody);
     }
     
     private function getRandomId() {
@@ -67,21 +71,21 @@ class sessionController {
     public function apiIsLogout() {
         $sessionToken = $_COOKIE["sessionToken"];
         if(!$sessionToken) {
-            response.responseProblemSessiionToken(res,"Session does not exist");
+            $this->response->responseProblemSessiionToken("Session does not exist");
             return;
         }
-        $this->redis.deleteSessionToken($sessionToken);
-        $delCheck = $this->redis.getSessionToken($sessionToken);
+        $this->redis->deleteSessionToken($sessionToken);
+        $delCheck = $this->redis->getSessionToken($sessionToken);
         echo $delCheck;
-        if(!$delCheck!=null) {
-            response.responseProblemSessiionToken(res,"Session does exist");
+        if($delCheck!=null) {
+            $this->response->responseProblemSessiionToken("Session does exist");
             return;
         }
         $responseBody = [
             "applicationStatusCode" => "Success",
             "applicationMessage" => "Success"
         ];
-        response.doResponse(res,200,RESPONSE_HEADER,responseBody);
+        $this->response->doResponse(200,RESPONSE_HEADER,$responseBody);
     }
 }
 
