@@ -1,22 +1,22 @@
 <?php
-require("../models/mysql.php");
-require("../models/redis.php");
-require("./responseController.php");
+require(dirname(__FILE__)."/../models/mysql.php");
+require(dirname(__FILE__)."/../models/redis.php");
+require(dirname(__FILE__)."/responseController.php");
 
 const RESPONSE_HEADER = [
     "Content-Type: application/json",
     "Access-Control-Allow-Origin: *"
 ];
 
-class sessionController {
+class SessionController {
     private $redis;
     private $mysql;
     private $response;
 
     public function __construct() {
-        $this->redis = new redisModel();
-        $this->mysql = new mysqlModel();
-        $this->response = new responseController();
+        $this->redis = new RedisModel();
+        $this->mysql = new MysqlModel();
+        $this->response = new ResponseController();
     }
 
     private function getSessionUserIdFromCookie() {

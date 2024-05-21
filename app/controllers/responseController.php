@@ -1,7 +1,7 @@
 <?php
 
 
-class responseController {
+class ResponseController {
     const RESPONSE_HEADER = [
         "Content-Type: application/json",
         "Access-Control-Allow-Origin: *"

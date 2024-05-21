@@ -1,11 +1,11 @@
 <?php
 
-class redisModel {
+class RedisModel {
     private $redis;
 
     public function __construct() {
         $this->redis = new Redis();
-        $this->redis.connect("192.168.64.5",6379);
+        $this->redis->connect("192.168.64.5",6379);
     }
 
     public function setSessionToken($token,$user) {

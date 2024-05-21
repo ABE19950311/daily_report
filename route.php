@@ -1,7 +1,13 @@
 <?php
+require(dirname(__FILE__)."/app/controllers/sessionController.php");
+
+$sessionController = new SessionController();
 
 function router($url) {
     switch($url) {
+        case "/isSessionCheck":
+            $sessionController->apiIsSessionCheck();
+            break;
         default:
             getPage($url);
             break;

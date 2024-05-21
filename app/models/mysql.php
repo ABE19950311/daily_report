@@ -1,6 +1,6 @@
 <?php
 
-class mysqlModel {
+class MysqlModel {
     private $pdo;
 
     public function __construct() {
