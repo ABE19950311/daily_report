@@ -2,14 +2,14 @@
 
 
 class ResponseController {
-    const RESPONSE_HEADER = [
+    private $RESPONSE_HEADER = [
         "Content-Type: application/json",
         "Access-Control-Allow-Origin: *"
     ];
 
     public function doResponse($httpStatusCode,$responseHeader,$responseBody) {
         http_response_code($httpStatusCode);
-        for($i=0;$i<$responseHeader.length;$i++) {
+        for($i=0;$i<count($responseHeader);$i++) {
             header($responseHeader[$i]);
         }
         echo json_encode($responseBody)."\n";

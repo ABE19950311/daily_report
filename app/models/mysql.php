@@ -31,8 +31,8 @@ class MysqlModel {
     
     public function dbInsert($table,$colmun,$query,$params=[]) {
         try {
-            $sqlQuery = "INSERT INTO $table $colmun VALUES ($query)";
-            $this->pdo->prepare($sqlQuery);
+            $sqlQuery = "INSERT INTO $table $colmun VALUES $query";
+            $stmt = $this->pdo->prepare($sqlQuery);
             $stmt->execute($params);
             return $this->pdo->lastInsertId();
         } catch (PODException $error) {

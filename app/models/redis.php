@@ -11,8 +11,9 @@ class RedisModel {
     public function setSessionToken($token,$user) {
         try {
             $this->redis->set($token,$user);
+            return true;
         } catch (Exception $error) {
-            echo $error;
+            return $error;
         }
     }
     
@@ -21,15 +22,16 @@ class RedisModel {
             $result = $this->redis->get($token);
             return $result;
         } catch (Exception $error) {
-            echo $error;
+            return $error;
         }
     }
     
     public function deleteSessionToken($token) {
         try {
             $this->redis->del($token);
+            return true;
         } catch (Exception $error) {
-            echo $error;
+            return $error;
         }
     }
 

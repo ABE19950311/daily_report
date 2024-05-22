@@ -173,9 +173,9 @@ async function requestToServer(url,method,body) {
     const option = {
         method: method,
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/x-www-form-urlencoded"
         },
-        body: JSON.stringify(body)
+        body: new URLSearchParams(body).toString()
     }
     try {
         const res = await fetch(url,option)

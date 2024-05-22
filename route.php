@@ -1,12 +1,26 @@
 <?php
-require(dirname(__FILE__)."/app/controllers/sessionController.php");
+require_once(dirname(__FILE__)."/app/controllers/sessionController.php");
+require_once(dirname(__FILE__)."/app/controllers/mailController.php");
+//require_once(dirname(__FILE__)."/app/controllers/authController.php");
 
-$sessionController = new SessionController();
 
-function router($url) {
+
+function router($url,$sessionController,$mailController) {
     switch($url) {
         case "/isSessionCheck":
             $sessionController->apiIsSessionCheck();
+            break;
+        case "/isExsistCheck":
+            $sessionController->apiIsExsistCheck();
+            break;
+        case "/isLogout":
+            $sessionController->apiIsLogout();
+            break;
+        case "/isRegisterMailAddress":
+            $mailController->isRegisterMailAddress();
+            break;
+        case "/getUserMailAddress":
+            $mailController->getUserMailAddressList();
             break;
         default:
             getPage($url);
@@ -22,9 +36,10 @@ function getPage($url) {
     $pathInfo = pathinfo($url,PATHINFO_EXTENSION);
 
     $header = [
-        "html"=>"text/html",
-        "css"=>"text/css",
-        "js"=>"text/javascript"
+        "html" => "text/html",
+        "css" => "text/css",
+        "js" => "text/javascript",
+        "map" => "application/json"
     ];
 
     $filePath = $currentDir . $url;
@@ -35,8 +50,11 @@ function getPage($url) {
 }
 
 function main() {
+    $sessionController = new SessionController();
+    $mailController = new MailController();
+    //$authController = new AuthController();
     $url = $_SERVER["REQUEST_URI"];
-    router($url);
+    router($url,$sessionController,$mailController);
 };
 
 main();

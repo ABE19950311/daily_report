@@ -1,17 +1,18 @@
 <?php
-require(dirname(__FILE__)."/../models/mysql.php");
-require(dirname(__FILE__)."/../models/redis.php");
-require(dirname(__FILE__)."/responseController.php");
+require_once(dirname(__FILE__)."/../models/mysql.php");
+require_once(dirname(__FILE__)."/../models/redis.php");
+require_once(dirname(__FILE__)."/responseController.php");
 
-const RESPONSE_HEADER = [
-    "Content-Type: application/json",
-    "Access-Control-Allow-Origin: *"
-];
 
 class SessionController {
     private $redis;
     private $mysql;
     private $response;
+
+    private $RESPONSE_HEADER = [
+        "Content-Type: application/json",
+        "Access-Control-Allow-Origin: *"
+    ];
 
     public function __construct() {
         $this->redis = new RedisModel();
@@ -33,25 +34,30 @@ class SessionController {
             $this->response->responseProblemSessiionToken("SessionUserId does not exist");
             return;
         }
-        echo $sessionUserId;
         $responseBody = [
             "applicationStatusCode" => "Success",
             "applicationMessage" => "Success"
         ];
-        $this->response->doResponse(200,RESPONSE_HEADER,$responseBody);
+        $this->response->doResponse(200,$this->RESPONSE_HEADER,$responseBody);
     }
     
     public function apiIsExsistCheck() {
         $loginUser = $_POST["loginUser"];
         $loginPassword = $_POST["loginPassword"];
+
         $result = $this->mysql->dbSelect("account","user,password","user=:loginUser AND password=:loginPassword",[":loginUser"=>$loginUser,":loginPassword"=>$loginPassword]);
-        if(!$result.length) {
+
+        if(!count($result)) {
             $this->response->responseProblemSessiionToken("User does not exist");
             return;
         }
         $randomId = $this->getRandomId();
         $sessionToken = "sessionToken-" . $randomId;
-        $this->redis->setSessionToken($sessionToken,$loginUser);
+        $setSession = $this->redis->setSessionToken($sessionToken,$loginUser);
+        if(!$setSession) {
+            $this->response->responseProblemSessiionToken("Failed to set Token");
+            return;
+        }
         $responseHeader = [
             "Content-Type: application/json",
             "Access-Control-Allow-Origin: *",
@@ -65,7 +71,7 @@ class SessionController {
     }
     
     private function getRandomId() {
-        return bin2hex(random_bytes(2));
+        return bin2hex(openssl_random_pseudo_bytes(16));
     }
     
     public function apiIsLogout() {
@@ -74,18 +80,16 @@ class SessionController {
             $this->response->responseProblemSessiionToken("Session does not exist");
             return;
         }
-        $this->redis->deleteSessionToken($sessionToken);
-        $delCheck = $this->redis->getSessionToken($sessionToken);
-        echo $delCheck;
-        if($delCheck!=null) {
-            $this->response->responseProblemSessiionToken("Session does exist");
+        $deleteSession = $this->redis->deleteSessionToken($sessionToken);
+        if(!$deleteSession) {
+            $this->response->responseProblemSessiionToken("Failed to delete Session");
             return;
         }
         $responseBody = [
             "applicationStatusCode" => "Success",
             "applicationMessage" => "Success"
         ];
-        $this->response->doResponse(200,RESPONSE_HEADER,$responseBody);
+        $this->response->doResponse(200,$this->RESPONSE_HEADER,$responseBody);
     }
 }
 
