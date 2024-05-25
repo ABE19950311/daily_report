@@ -14,7 +14,7 @@ class MysqlModel {
         try {
             $this->pdo = new PDO($dsn,$user,$password,$option);
         } catch(PDOException $error) {
-            echo $error;
+            echo json_encode($error);
         }
     }
     
@@ -25,7 +25,7 @@ class MysqlModel {
             $stmt->execute($params);
             return $stmt->fetchAll();
         } catch(PDOException $error) {
-            echo $error;
+            echo json_encode($error);
         }
     }
     
@@ -36,7 +36,7 @@ class MysqlModel {
             $stmt->execute($params);
             return $this->pdo->lastInsertId();
         } catch (PODException $error) {
-            echo $error;
+            echo json_encode($error);
         }
     }
 
