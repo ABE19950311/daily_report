@@ -17,10 +17,29 @@ async function main() {
 
 function initialEvents() {
     login.loginBtn.addEventListener("click",isExsistUserCheck);
+    login.loginRegisterBtn.addEventListener("click",loadUserRegisterPage)
 }
 
 async function loadPageHome() {
+    const url = "https://192.168.64.6/isGetHomePage"
 
+    const resError = await request.requestPageToServer(url,"POST",{})
+    if(resError!=true) {
+        console.error(resError)
+    } else {
+        window.location.href = `${url}`
+    }
+}
+
+async function loadUserRegisterPage() {
+    const url = "https://192.168.64.6/isGetUserRegisterPage"
+
+    const resError = await request.requestPageToServer(url,"POST",{})
+    if(resError!=true) {
+        console.error(resError)
+    } else {
+        window.location.href = `${url}`
+    }
 }
 
 async function isExsistUserCheck() {
@@ -31,7 +50,6 @@ async function isExsistUserCheck() {
     }
     const res = await request.requestToServer(url,"POST",body)
     if(res.applicationStatusCode=="Success") {
-        hiddenAllPages();
         loadPageHome();
     }
 }

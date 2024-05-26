@@ -1,21 +1,25 @@
 <?php
 require_once(dirname(__FILE__)."/app/controllers/sessionController.php");
 require_once(dirname(__FILE__)."/app/controllers/mailController.php");
-require_once(dirname(__FILE__)."/app/controllers/authController.php");
+require_once(dirname(__FILE__)."/app/controllers/userRegisterController.php");
 require_once(dirname(__FILE__)."/app/controllers/loginController.php");
+require_once(dirname(__FILE__)."/app/controllers/homeController.php");
 
 
 
-function router($url,$sessionController,$mailController,$authController,$loginController) {
+function router($url,$sessionController,$mailController,$userRegisterController,$loginController,$homeController) {
     switch($url) {
         case "/isSessionCheck":
             $sessionController->apiIsSessionCheck();
             break;
         case "/isExsistCheck":
-            $sessionController->apiIsExsistCheck();
+            $loginController->apiIsExsistCheck();
             break;
         case "/isLogout":
-            $sessionController->apiIsLogout();
+            $loginController->apiIsLogout();
+            break;
+        case "/isGetHomePage":
+            $homeController->getHomePage();
             break;
         case "/isRegisterMailAddress":
             $mailController->isRegisterMailAddress();
@@ -24,7 +28,11 @@ function router($url,$sessionController,$mailController,$authController,$loginCo
             $mailController->getUserMailAddressList();
             break;
         case "/isRegisterUser":
-            $authController->apiIsRegisterUser();
+            $userRegisterController->apiIsRegisterUser();
+            break;
+        case "/isGetUserRegisterPage":
+            $userRegisterController->getUserRegisterPage();
+            break;
         case "/":
             $loginController->getLoginPage();
             break;
@@ -54,10 +62,11 @@ function getPage($url) {
 function main() {
     $sessionController = new SessionController();
     $mailController = new MailController();
-    $authController = new AuthController();
+    $userRegisterController = new UserRegisterController();
     $loginController = new LoginController();
+    $homeController = new HomeController();
     $url = $_SERVER["REQUEST_URI"];
-    router($url,$sessionController,$mailController,$authController,$loginController);
+    router($url,$sessionController,$mailController,$userRegisterController,$loginController,$homeController);
 };
 
 main();

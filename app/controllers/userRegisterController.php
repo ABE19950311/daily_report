@@ -2,8 +2,9 @@
 
 require_once(dirname(__FILE__)."/../models/mysql.php");
 require_once(dirname(__FILE__)."/responseController.php");
+require_once(dirname(__FILE__)."/../views/userRegister.php");
 
-class AuthController {
+class UserRegisterController {
     private $mysql;
     private $response;
 
@@ -15,6 +16,10 @@ class AuthController {
     public function __construct() {
         $this->mysql = new MysqlModel();
         $this->response = new ResponseController();
+    }
+
+    public function getUserRegisterPage() {
+        viewUserRegisterPage();
     }
 
     public function apiIsRegisterUser() {
