@@ -18,8 +18,11 @@ function router($url,$sessionController,$mailController,$userRegisterController,
         case "/isLogout":
             $loginController->apiIsLogout();
             break;
-        case "/isGetHomePage":
+        case "/home":
             $homeController->getHomePage();
+            break;
+        case "/notification":
+            $homeController->getNotificationPage();
             break;
         case "/isRegisterMailAddress":
             $mailController->isRegisterMailAddress();
@@ -30,7 +33,7 @@ function router($url,$sessionController,$mailController,$userRegisterController,
         case "/isRegisterUser":
             $userRegisterController->apiIsRegisterUser();
             break;
-        case "/isGetUserRegisterPage":
+        case "/register":
             $userRegisterController->getUserRegisterPage();
             break;
         case "/":

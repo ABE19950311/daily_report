@@ -7,6 +7,11 @@ class HomeController {
     public function getHomePage() {
         viewHomePage();
     }
+
+    public function getNotificationPage() {
+        viewNotificationPage();
+    }
+
 }
 
 ?>

@@ -15,4 +15,17 @@ function viewHomePage() {
     $smarty->display('home.tpl');
 }
 
+function viewNotificationPage() {
+    $smarty = new Smarty();
+
+    $smarty->template_dir = dirname(__FILE__)."/../templates/";
+    $smarty->compile_dir = dirname(__FILE__)."/../../templates_c/";
+
+    //$name = $_GET['name'];
+
+    //$smarty->assign("name", $name);
+
+    $smarty->display('notification.tpl');
+}
+
 ?>

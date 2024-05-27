@@ -12,8 +12,7 @@ export async function requestToServer(url,method,body) {
         console.log(data)
         return data
     } catch(e) {
-        console.error(e)
-        throw e
+        throw new Error(e)
     }
 }
 
@@ -26,8 +25,7 @@ export async function requestPageToServer(url,method,body) {
         body: new URLSearchParams(body).toString()
     }
     try {
-        const res = await fetch(url,option)
-        return true
+        await fetch(url,option)
     } catch(e) {
         throw new Error(e)
     }

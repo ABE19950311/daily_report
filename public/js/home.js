@@ -22,26 +22,54 @@ async function main() {
 
 function initialEvents() {
     header.logoutBtn.addEventListener("click",isLogout);
+    header.diaryListHomeBtn.addEventListener("click",loadHomePage);
+    header.notificationTransitionBtn.addEventListener("click",loadNotificationPage)
 }
 
 async function isLogout() {
     const url = "https://192.168.64.6/isLogout"
 
-    const res = await request.requestToServer(url,"POST",{})
-
-    if(res.applicationStatusCode=="Success") {
+    try {
+        const res = await request.requestToServer(url,"POST",{})
+        if(res.applicationStatusCode=="problem_process") {
+            throw new Error(res.applicationMessage)
+        }
         document.cookie = "sessionToken=; max-age=0"
         loadLoginPage()
+    } catch(e) {
+        console.error(e)
     }
 }
 
 async function loadLoginPage() {
     const url = "https://192.168.64.6/"
 
-    const resError = await request.requestPageToServer(url,"POST",{})
-    if(resError!=true) {
-        console.error(resError)
-    } else {
+    try {
+        await request.requestPageToServer(url,"POST",{})
         window.location.href = `${url}`
-    }
+    } catch(e) {
+        console.error(e)
+    } 
+}
+
+async function loadNotificationPage() {
+    const url = "https://192.168.64.6/notification"
+
+    try {
+        await request.requestPageToServer(url,"POST",{})
+        window.location.href = `${url}`
+    } catch(e) {
+        console.error(e)
+    } 
+}
+
+async function loadHomePage() {
+    const url = "https://192.168.64.6/home"
+
+    try {
+        await request.requestPageToServer(url,"POST",{})
+        window.location.href = `${url}`
+    } catch(e) {
+        console.error(e)
+    } 
 }

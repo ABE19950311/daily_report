@@ -21,25 +21,25 @@ function initialEvents() {
 }
 
 async function loadPageHome() {
-    const url = "https://192.168.64.6/isGetHomePage"
+    const url = "https://192.168.64.6/home"
 
-    const resError = await request.requestPageToServer(url,"POST",{})
-    if(resError!=true) {
-        console.error(resError)
-    } else {
+    try {
+        await request.requestPageToServer(url,"POST",{})
         window.location.href = `${url}`
-    }
+    } catch(e) {
+        console.error(e)
+    }  
 }
 
 async function loadUserRegisterPage() {
-    const url = "https://192.168.64.6/isGetUserRegisterPage"
+    const url = "https://192.168.64.6/register"
 
-    const resError = await request.requestPageToServer(url,"POST",{})
-    if(resError!=true) {
-        console.error(resError)
-    } else {
+    try {
+        await request.requestPageToServer(url,"POST",{})
         window.location.href = `${url}`
-    }
+    } catch(e) {
+        console.error(e)
+    }  
 }
 
 async function isExsistUserCheck() {
@@ -48,20 +48,29 @@ async function isExsistUserCheck() {
         loginUser: login.loginUser.value,
         loginPassword: login.loginPassword.value
     }
-    const res = await request.requestToServer(url,"POST",body)
-    if(res.applicationStatusCode=="Success") {
-        loadPageHome();
+
+    try {
+        const res = await request.requestToServer(url,"POST",body)
+        if(res.applicationStatusCode=="problem_process") {
+            throw new Error(res.applicationMessage)
+        }
+        window.location.href = `https://192.168.64.6/`
+    } catch(e) {
+        console.error(e)
     }
 }
 
 async function sessionCheck() {
     const url = "https://192.168.64.6/isSessionCheck"
 
-    const res = await request.requestToServer(url,"POST",{})
-    console.log(res)
-    if(res.applicationStatusCode=="Success") {
+    try {
+        const res = await request.requestToServer(url,"POST",{})
+        if(res.applicationStatusCode=="problem_process") {
+            throw new Error(res.applicationMessage)
+        }
         return true
-    } else {
+    } catch(e) {
+        console.error(e)
         return false
     }
 }

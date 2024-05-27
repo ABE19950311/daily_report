@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2024-05-26 21:20:37
+/* Smarty version 3.1.34-dev-7, created on 2024-05-27 17:31:08
   from '/var/www/html/daily_reports/app/templates/userRegister.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_66532915c5b8b7_14024714',
+  'unifunc' => 'content_665444ccd41a06_04571537',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'ae848ee979be5e97788080a501478e32aff5ebd1' => 
     array (
       0 => '/var/www/html/daily_reports/app/templates/userRegister.tpl',
-      1 => 1716726035,
+      1 => 1716726119,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_66532915c5b8b7_14024714 (Smarty_Internal_Template $_smarty_tpl) {
+function content_665444ccd41a06_04571537 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -36,7 +36,7 @@ function content_66532915c5b8b7_14024714 (Smarty_Internal_Template $_smarty_tpl)
  src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"><?php echo '</script'; ?>
 >
     <?php echo '<script'; ?>
- type="module" src="../../public/js/home.js"><?php echo '</script'; ?>
+ type="module" src="../../public/js/userRegister.js"><?php echo '</script'; ?>
 >
     <?php echo '<script'; ?>
  type="module" src="../../public/js/class.js"><?php echo '</script'; ?>
