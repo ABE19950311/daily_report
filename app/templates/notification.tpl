@@ -69,12 +69,12 @@
             <th scope="col">Address</th>
           </tr>
         </thead>
-        <tbody id="mailAddressBody">
-          <tr id="mailAddressList" class="d-none">
-            <th scope="row" id="addressList1"></th>
-            <td id="addressList2"></td>
-          </tr>
-        </tbody>
+          {foreach from=$mailAddressList item=value name=mail}
+            <tbody id="mailAddressBody">
+              <th scope="row">{$smarty.foreach.mail.iteration}</th>
+              <td>{$value}</td>
+            </tbody>
+          {/foreach}
       </table>
 </div>
 

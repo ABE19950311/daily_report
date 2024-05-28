@@ -24,6 +24,7 @@ function initialEvents() {
     header.logoutBtn.addEventListener("click",isLogout);
     header.diaryListHomeBtn.addEventListener("click",loadHomePage);
     header.notificationTransitionBtn.addEventListener("click",loadNotificationPage)
+    notification.notificationRecordBtn.addEventListener("click",registerMailAddress);
 }
 
 async function isLogout() {
@@ -72,4 +73,23 @@ async function loadHomePage() {
     } catch(e) {
         console.error(e)
     } 
+}
+
+async function registerMailAddress() {
+    const url = "https://192.168.64.6/isRegisterMailAddress"
+
+    const body = {
+        mailAddress: notification.notification.value
+    }
+
+    try {
+        const res = await request.requestToServer(url,"POST",body)
+        if(res.applicationStatusCode=="problem_process") {
+            throw new Error(res.applicationMessage)
+        }
+
+    } catch(e) {
+        console.error(e)
+    }
+
 }

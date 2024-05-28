@@ -15,15 +15,19 @@ function viewHomePage() {
     $smarty->display('home.tpl');
 }
 
-function viewNotificationPage() {
+function viewNotificationPage($mailAddressList) {
     $smarty = new Smarty();
 
     $smarty->template_dir = dirname(__FILE__)."/../templates/";
     $smarty->compile_dir = dirname(__FILE__)."/../../templates_c/";
+    
+    $array = [];
 
-    //$name = $_GET['name'];
+    for($i=0;$i<count($mailAddressList);$i++) {
+        array_push($array,$mailAddressList[$i]["address"]);
+    }
 
-    //$smarty->assign("name", $name);
+    $smarty->assign("mailAddressList", $array);
 
     $smarty->display('notification.tpl');
 }

@@ -25,7 +25,7 @@ class MailController {
         if(!$sessionToken) return "";
         $user = $this->redis->getSessionToken($sessionToken);
         $id = $this->mysql->dbSelect("account","id","user=:user",[":user"=>$user]);
-        return $id;
+        return $id[0]["id"];
     }
 
     public function isRegisterMailAddress() {
@@ -35,7 +35,7 @@ class MailController {
             $this->response->responseProblemSessiionToken("SessionUserId does not exist");
             return;
         }
-        $this->mysql->dbInsert("notification","(address,account_id)",":mailAddress,:userId",[":mailAddress"=>$mailAddress,"userId"=>$userId]);
+        $this->mysql->dbInsert("notification","(address,account_id)","(:address,:account_id)",[":address"=>$mailAddress,":account_id"=>$userId]);
         $responseBody = [
             "applicationStatusCode" => "Success",
             "applicationMessage" => "Success"
@@ -45,18 +45,12 @@ class MailController {
 
     public function getUserMailAddressList() {
         $userId = $this->getSessionUserIdFromCookie();
-        if($userId) {
+        if(!$userId) {
             $this->response->responseProblemSessiionToken("SessionUserId does not exist");
             return;
         }
         $mailAddressList = $this->mysql->dbSelect("notification","address","account_id=:account_id",[":account_id"=>$userId]);
-        echo $mailAddressList;
-        $responseBody = [
-            "applicationStatusCode" => "Success",
-            "applicationMessage" => "Success",
-            "mailAddressList" => $mailAddressList
-        ];
-        $this->response->doResponse(200,$RESPONSE_HEADER,$responseBody);
+        return $mailAddressList;
     }
 }
 
