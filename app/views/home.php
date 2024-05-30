@@ -32,4 +32,13 @@ function viewNotificationPage($mailAddressList) {
     $smarty->display('notification.tpl');
 }
 
+function viewDailyDiaryPage() {
+    $smarty = new Smarty();
+
+    $smarty->template_dir = dirname(__FILE__)."/../templates/";
+    $smarty->compile_dir = dirname(__FILE__)."/../../templates_c/";
+
+    $smarty->display('dailyDiary.tpl');
+}
+
 ?>

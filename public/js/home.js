@@ -24,7 +24,9 @@ function initialEvents() {
     header.logoutBtn.addEventListener("click",isLogout);
     header.diaryListHomeBtn.addEventListener("click",loadHomePage);
     header.notificationTransitionBtn.addEventListener("click",loadNotificationPage)
+    header.dailyDiaryBtn.addEventListener("click",loadDaiyDiaryPage);
     notification.notificationRecordBtn.addEventListener("click",registerMailAddress);
+    nitification.notificationSubmitBtn.addEventListener("click",sendMailAddressList);
 }
 
 async function isLogout() {
@@ -64,6 +66,17 @@ async function loadNotificationPage() {
     } 
 }
 
+async function loadDaiyDiaryPage() {
+    const url = "https://192.168.64.6/daily"
+
+    try {
+        await request.requestPageToServer(url,"POST",{})
+        window.location.href = `${url}`
+    } catch(e) {
+        console.error(e)
+    } 
+}
+
 async function loadHomePage() {
     const url = "https://192.168.64.6/home"
 
@@ -91,5 +104,18 @@ async function registerMailAddress() {
     } catch(e) {
         console.error(e)
     }
+}
 
+async function sendMailAddressList() {
+    const url = "https://192.168.64.6/isSendMailAddressList"
+
+    try {
+        const res = await request.requestToServer(url,"POST",{})
+        if(res.applicationStatusCode=="problem_process") {
+            throw new Error(res.applicationMessage)
+        }
+
+    } catch(e) {
+        console.error(e)
+    }
 }

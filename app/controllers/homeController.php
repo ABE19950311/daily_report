@@ -19,6 +19,10 @@ class HomeController {
         viewNotificationPage($mailAddressList);
     }
 
+    public function getDailyDiaryPage() {
+        viewDailyDiaryPage();
+    }
+
 }
 
 ?>

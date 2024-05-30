@@ -76,6 +76,10 @@
             </tbody>
           {/foreach}
       </table>
+
+      <div class="col-auto">
+          <button type="submit" class="btn btn-primary mb-3" id="notification_submit_btn">メールを送信する</button>
+      </div>
 </div>
 
 </body>

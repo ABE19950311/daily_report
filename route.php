@@ -24,11 +24,17 @@ function router($url,$sessionController,$mailController,$userRegisterController,
         case "/notification":
             $homeController->getNotificationPage();
             break;
+        case "/daily":
+            $homeController->getDailyDiaryPage();
+            break;
         case "/isRegisterMailAddress":
             $mailController->isRegisterMailAddress();
             break;
         case "/getUserMailAddress":
             $mailController->getUserMailAddressList();
+            break;
+        case "/isSendMailAddressList":
+            $mailController->isSendMailAddressList();
             break;
         case "/isRegisterUser":
             $userRegisterController->apiIsRegisterUser();

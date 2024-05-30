@@ -1,8 +1,15 @@
 <?php
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\SMTP;
 
 require_once(dirname(__FILE__)."/../models/mysql.php");
 require_once(dirname(__FILE__)."/../models/redis.php");
 require_once(dirname(__FILE__)."/responseController.php");
+require_once("/usr/local/lib/PHPMailer/src/PHPMailer.php");
+require_once("/usr/local/lib/PHPMailer/src/Exception.php");
+require_once("/usr/local/lib/PHPMailer/src/SMTP.php");
+
 
 class MailController {
     private $mysql;
@@ -51,6 +58,37 @@ class MailController {
         }
         $mailAddressList = $this->mysql->dbSelect("notification","address","account_id=:account_id",[":account_id"=>$userId]);
         return $mailAddressList;
+    }
+
+    public function isSendMailAddressList() {
+        $mailAddressList = $this->getUserMailAddressList();
+
+        if(!count($mailAddressList)) return;
+
+        mb_language("uni");
+        mb_internal_encoding("UTF-8");
+
+        $mail = new PHPMailer(true);
+        $mail->CharSet = "utf-8";
+
+        try {
+            $mailTo = [];
+            $mailFrom
+            $smtpHost
+            $smtpUser
+            $smtpPass = 
+            $port = 587
+            $subject = "hoge";
+            $text = "test";
+
+            for($i=0;$i<count($mailAddressList);$i++) {
+                array_push($to,$mailAddressList[$i]["address"]);
+            }
+
+        } catch {
+
+        }
+
     }
 }
 

@@ -21,6 +21,7 @@ export class Header {
         this.logoutBtn = document.getElementById("logout_btn");
         this.diaryListHomeBtn = document.getElementById("diary_list_home_btn");
         this.notificationTransitionBtn = document.getElementById("notification_register_btn")
+        this.dailyDiaryBtn = document.getElementById("daily_diary_btn");
     }
 }
 
@@ -30,6 +31,7 @@ export class Notification {
         this.notificationRecordBtn = document.getElementById("notification_record_btn");
         this.mailAddressParent = document.getElementById("mailAddressBody");
         this.mailAddressOrigin = document.getElementById("mailAddressList");
+        this.notificationSubmitBtn = document.getElementById("notification_submit_btn");
     }
 }
 
