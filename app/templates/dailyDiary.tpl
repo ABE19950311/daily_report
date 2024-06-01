@@ -59,25 +59,24 @@
 
       <div class="row g-5">
         <div class="col-md-7 col-lg-8">
-          <form class="needs-validation" novalidate>
             <div class="col-sm-6">
-                <label for="familyName" class="form-label">タイトル</label>
-                <input type="text" class="form-control" id="familyName" placeholder="" value="" required>
+                <label for="report_title" class="form-label">タイトル</label>
+                <input type="text" class="form-control" id="report_title">
                 <div class="invalid-feedback">
-                  名字を入力してください
+                  タイトルを入力してください
                 </div>
               </div>
             <div class="row g-3">
               <div class="col-sm-6">
-                <label for="familyName" class="form-label">姓</label>
-                <input type="text" class="form-control" id="familyName" placeholder="" value="" required>
+                <label for="sei" class="form-label">姓</label>
+                <input type="text" class="form-control" id="report_sei">
                 <div class="invalid-feedback">
                   名字を入力してください
                 </div>
               </div>
               <div class="col-sm-6">
-                <label for="givenName" class="form-label">名</label>
-                <input type="text" class="form-control" id="givenName" placeholder="" value="" required>
+                <label for="mei" class="form-label">名</label>
+                <input type="text" class="form-control" id="report_mei">
                 <div class="invalid-feedback">
                   名前を入力してください
                 </div>
@@ -86,84 +85,56 @@
               <div class="col-12">
                 <label class="form-label">カテゴリ</label>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                    <label class="form-check-label" for="flexRadioDefault1">
-                    開発
-                    </label>
+                    <input class="form-check-input" type="radio" name="category" value="開発" checked>開発
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"checked>
-                    <label class="form-check-label" for="flexRadioDefault2">
-                    サーバ
-                    </label>
+                    <input class="form-check-input" type="radio" name="category" value="サーバ">サーバ
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
-                    <label class="form-check-label" for="flexRadioDefault2">
-                    ネットワーク
-                    </label>
+                    <input class="form-check-input" type="radio" name="category" value="ネットワーク">ネットワーク
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
-                  <label class="form-check-label" for="flexRadioDefault2">
-                    AWS
-                  </label>
+                  <input class="form-check-input" type="radio" name="category" value="AWS">AWS
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
-                  <label class="form-check-label" for="flexRadioDefault2">
-                    コマンドライン
-                </label>
+                  <input class="form-check-input" type="radio" name="category" value="コマンドライン">コマンドライン
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
-                  <label class="form-check-label" for="flexRadioDefault2">
-                    OS
-                </label>
+                  <input class="form-check-input" type="radio" name="category" value="OS">OS
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
-                  <label class="form-check-label" for="flexRadioDefault2">
-                    ミドルウェア
-                </label>
+                  <input class="form-check-input" type="radio" name="category" value="ミドルウェア">ミドルウェア
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                  <label class="form-check-label" for="flexRadioDefault1">
-                    エラー対応
-                  </label>
+                  <input class="form-check-input" type="radio" name="category" value="エラー対応">エラー対応
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
-                  <label class="form-check-label" for="flexRadioDefault2">
-                    その他
-                </label>
+                  <input class="form-check-input" type="radio" name="category" value="その他">その他
                 </div>
               </div>
 
               <div class="col-16">
                 <div class="input-group">
                     <span class="input-group-text">内容</span>
-                    <textarea class="form-control" aria-label="With textarea"></textarea>
+                    <textarea class="form-control" aria-label="With textarea" id="report_content"></textarea>
                 </div>
               </div>
 
               <div class="col-16">
                 <div class="input-group">
                     <span class="input-group-text">参照</span>
-                    <textarea class="form-control" aria-label="With textarea"></textarea>
+                    <textarea class="form-control" aria-label="With textarea" id="report_url"></textarea>
                 </div>
               </div>
 
               <div class="col-12">
                 <div class="input-group mb-3">
-                    <input type="file" class="form-control" id="inputGroupFile01">
+                    <input type="file" class="form-control" id="report_image">
                 </div>
               </div>
             </div>
 
-            <button class="w-100 btn btn-primary btn-lg" type="submit">日記を出す</button>
-          </form>
+            <button class="w-100 btn btn-primary btn-lg" id="report_submit_btn">日記を出す</button>
         </div>
       </div>
     </main>

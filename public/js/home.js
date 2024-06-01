@@ -6,14 +6,20 @@ let register = null;
 let header = null;
 let notification = null;
 let initialData = null;
+let report = null;
 
 window.addEventListener("DOMContentLoaded",()=>{
-    login = new page.Login();
-    register = new page.Register();   
-    header = new page.Header();
-    notification = new page.Notification();
-    initialData = new page.initialData();
-    main();
+    try {
+        login = new page.Login();
+        register = new page.Register();   
+        header = new page.Header();
+        notification = new page.Notification();
+        initialData = new page.initialData();
+        report = new page.Report();
+        main();
+    } catch(e) {
+        console.error(e)
+    }
 });
 
 async function main() {
@@ -21,12 +27,13 @@ async function main() {
 }
 
 function initialEvents() {
-    header.logoutBtn.addEventListener("click",isLogout);
-    header.diaryListHomeBtn.addEventListener("click",loadHomePage);
-    header.notificationTransitionBtn.addEventListener("click",loadNotificationPage)
-    header.dailyDiaryBtn.addEventListener("click",loadDaiyDiaryPage);
-    notification.notificationRecordBtn.addEventListener("click",registerMailAddress);
-    nitification.notificationSubmitBtn.addEventListener("click",sendMailAddressList);
+    if(header.logoutBtn) header.logoutBtn.addEventListener("click",isLogout);
+    if(header.diaryListHomeBtn) header.diaryListHomeBtn.addEventListener("click",loadHomePage);
+    if(header.notificationTransitionBtn) header.notificationTransitionBtn.addEventListener("click",loadNotificationPage)
+    if(header.dailyDiaryBtn) header.dailyDiaryBtn.addEventListener("click",loadDaiyDiaryPage);
+    if(notification.notificationRecordBtn) notification.notificationRecordBtn.addEventListener("click",registerMailAddress);
+    if(notification.notificationSubmitBtn) notification.notificationSubmitBtn.addEventListener("click",sendMailAddressList);
+    if(report.reportSubmitBtn) report.reportSubmitBtn.addEventListener("click",submissionReport);
 }
 
 async function isLogout() {
@@ -118,4 +125,8 @@ async function sendMailAddressList() {
     } catch(e) {
         console.error(e)
     }
+}
+
+async function submissionReport() {
+    alert("hoge")
 }

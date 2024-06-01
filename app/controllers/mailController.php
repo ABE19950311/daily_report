@@ -60,36 +60,36 @@ class MailController {
         return $mailAddressList;
     }
 
-    public function isSendMailAddressList() {
-        $mailAddressList = $this->getUserMailAddressList();
+    // public function isSendMailAddressList() {
+    //     $mailAddressList = $this->getUserMailAddressList();
 
-        if(!count($mailAddressList)) return;
+    //     if(!count($mailAddressList)) return;
 
-        mb_language("uni");
-        mb_internal_encoding("UTF-8");
+    //     mb_language("uni");
+    //     mb_internal_encoding("UTF-8");
 
-        $mail = new PHPMailer(true);
-        $mail->CharSet = "utf-8";
+    //     $mail = new PHPMailer(true);
+    //     $mail->CharSet = "utf-8";
 
-        try {
-            $mailTo = [];
-            $mailFrom
-            $smtpHost
-            $smtpUser
-            $smtpPass = 
-            $port = 587
-            $subject = "hoge";
-            $text = "test";
+    //     try {
+    //         $mailTo = [];
+    //         $mailFrom
+    //         $smtpHost
+    //         $smtpUser
+    //         $smtpPass = 
+    //         $port = 587
+    //         $subject = "hoge";
+    //         $text = "test";
 
-            for($i=0;$i<count($mailAddressList);$i++) {
-                array_push($to,$mailAddressList[$i]["address"]);
-            }
+    //         for($i=0;$i<count($mailAddressList);$i++) {
+    //             array_push($to,$mailAddressList[$i]["address"]);
+    //         }
 
-        } catch {
+    //     } catch {
 
-        }
+    //     }
 
-    }
+    // }
 }
 
 
