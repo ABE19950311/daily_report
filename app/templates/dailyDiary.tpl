@@ -85,7 +85,7 @@
               <div class="col-12">
                 <label class="form-label">カテゴリ</label>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="category" value="開発" checked>開発
+                    <input class="form-check-input" type="radio" name="category" value="開発">開発
                 </div>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="category" value="サーバ">サーバ

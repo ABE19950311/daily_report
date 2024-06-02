@@ -34,6 +34,13 @@ function initialEvents() {
     if(notification.notificationRecordBtn) notification.notificationRecordBtn.addEventListener("click",registerMailAddress);
     if(notification.notificationSubmitBtn) notification.notificationSubmitBtn.addEventListener("click",sendMailAddressList);
     if(report.reportSubmitBtn) report.reportSubmitBtn.addEventListener("click",submissionReport);
+    if(report.radioCategory) {
+        report.radioCategory.forEach((radio)=>{
+            radio.addEventListener("change",(event)=>{
+                report.checkCategory = event.target.value
+            });
+        })
+    }
 }
 
 async function isLogout() {
@@ -128,5 +135,26 @@ async function sendMailAddressList() {
 }
 
 async function submissionReport() {
-    alert("hoge")
+    const apiUrl = "https://192.168.64.6/isRegisterReport"
+
+    const body = {
+        title: report.title.value,
+        sei: report.sei.value,
+        mei: report.mei.value,
+        category: report.checkCategory,
+        content: report.content.value,
+        url: report.url.value,
+        image_path: report.image.value
+    }
+
+    try {
+        const res = await request.requestToServer(apiUrl,"POST",body)
+        if(res.applicationStatusCode=="problem_process") {
+            throw new Error(res.applicationMessage)
+        }
+
+    } catch(e) {
+        console.error(e)
+    }
+    
 }

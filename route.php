@@ -4,10 +4,31 @@ require_once(dirname(__FILE__)."/app/controllers/mailController.php");
 require_once(dirname(__FILE__)."/app/controllers/userRegisterController.php");
 require_once(dirname(__FILE__)."/app/controllers/loginController.php");
 require_once(dirname(__FILE__)."/app/controllers/homeController.php");
+require_once(dirname(__FILE__)."/app/controllers/reportController.php");
+
+$sessionController = null;
+$mailController = null;
+$userRegisterController = null;
+$loginController = null;
+$homeController = null;
+$reportController = null;
+
+try {
+    $sessionController = new SessionController();
+    $mailController = new MailController();
+    $userRegisterController = new UserRegisterController();
+    $loginController = new LoginController();
+    $homeController = new HomeController();
+    $reportController = new ReportController();
+    main();
+} catch(Exception $e) {
+    echo json_encode($e);
+}
 
 
+function router($url) {
+    global $sessionController,$mailController,$userRegisterController,$loginController,$homeController,$reportController;
 
-function router($url,$sessionController,$mailController,$userRegisterController,$loginController,$homeController) {
     switch($url) {
         case "/isSessionCheck":
             $sessionController->apiIsSessionCheck();
@@ -45,6 +66,9 @@ function router($url,$sessionController,$mailController,$userRegisterController,
         case "/":
             $loginController->getLoginPage();
             break;
+        case "/isRegisterReport":
+            $reportController->apiIsRegisterReport();
+            break;
         default:
             getPage($url);
             break;
@@ -69,16 +93,8 @@ function getPage($url) {
 }
 
 function main() {
-    $sessionController = new SessionController();
-    $mailController = new MailController();
-    $userRegisterController = new UserRegisterController();
-    $loginController = new LoginController();
-    $homeController = new HomeController();
     $url = $_SERVER["REQUEST_URI"];
-    router($url,$sessionController,$mailController,$userRegisterController,$loginController,$homeController);
-};
-
-main();
-
+    router($url);
+}
 
 ?>

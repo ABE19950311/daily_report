@@ -40,11 +40,19 @@ export class Report {
         this.title = document.getElementById("report_title") ? document.getElementById("report_title") : null;
         this.sei = document.getElementById("report_sei") ? document.getElementById("report_sei") : null;
         this.mei = document.getElementById("report_mei") ? document.getElementById("report_mei") : null;
-        this.category = document.querySelector('input[name="category"]:checked') ? document.querySelector('input[name="category"]:checked') : null;
+        this.radioCategory = document.querySelectorAll('input[name="category"]').length ? document.querySelectorAll('input[name="category"]') : null;
         this.content = document.getElementById("report_content") ? document.getElementById("report_content") : null;
         this.url = document.getElementById("report_url") ? document.getElementById("report_url") : null; 
         this.image = document.getElementById("report_image") ? document.getElementById("report_image") : null;
         this.reportSubmitBtn = document.getElementById("report_submit_btn") ? document.getElementById("report_submit_btn") : null;
+        this.checkCategory = null;
+    }
+
+    set checkCategory(value) {
+        this._checkCategory = value;
+    }
+    get checkCategory() {
+        return this._checkCategory;
     }
 }
 
