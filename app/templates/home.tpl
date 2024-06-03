@@ -50,9 +50,27 @@
     </nav>
 </div>
 
-<div id="home_page" class="page_class">
-    <h1>工事中</h1>
-</div>
+<table class="table">
+  <thead class="table-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">First</th>
+      <th scope="col">Last</th>
+      <th scope="col">Handle</th>
+    </tr>
+  </thead>
+  <tbody>
+    {foreach from=$reportList item=value name=report}
+      <tr>
+        <th scope="row">1</th>
+        <td>{$value["title"]}</td>
+        <td>{$value["mei"]}</td>
+        <td>{$value["sei"]}</td>
+        <td><button>ositene</button></td>
+      </tr>
+    {/foreach}
+  </tbody>
+</table>
 
 </body>
 </html>

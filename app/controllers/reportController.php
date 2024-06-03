@@ -55,6 +55,22 @@ class ReportController {
         $this->response->doResponse(200,$this->RESPONSE_HEADER,$responseBody);
     }
 
+    public function getReportList() {
+        $userId = $this->getSessionUserIdFromCookie();
+
+        if(!$userId) {
+            $this->response->responseProblemSessiionToken("SessionUserId does not exist");
+            return;
+        };
+
+        $column = "title,sei,mei,category,content,url,image_path";
+        $query = "account_id=:account_id";
+        $params = [":account_id"=>$userId];
+
+        $reportList = $this->mysql->dbSelect("report",$column,$query,$params);
+        return $reportList;
+    }
+
 }
 
 ?>

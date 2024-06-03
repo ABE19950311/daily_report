@@ -2,15 +2,20 @@
 require_once(dirname(__FILE__)."/../../config.php");
 require_once(SMARTY_DIR . 'Smarty.class.php');
 
-function viewHomePage() {
+function viewHomePage($reportList) {
     $smarty = new Smarty();
 
     $smarty->template_dir = dirname(__FILE__)."/../templates/";
     $smarty->compile_dir = dirname(__FILE__)."/../../templates_c/";
 
-    //$name = $_GET['name'];
+    $array = [];
 
-    //$smarty->assign("name", $name);
+    for($i=0;$i<count($reportList);$i++) {
+        array_push($reportList[$i]);
+    }
+
+    $smarty->assign("reportList", $reportList);
+    var_dump($reportList);
 
     $smarty->display('home.tpl');
 }

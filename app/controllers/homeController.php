@@ -2,16 +2,20 @@
 
 require_once(dirname(__FILE__)."/../views/home.php");
 require_once(dirname(__FILE__)."/mailController.php");
+require_once(dirname(__FILE__)."/reportController.php");
 
 class HomeController {
     private $mail;
+    private $report;
 
     public function __construct() {
         $this->mail = new MailController();
+        $this->report = new ReportController();
     }
 
     public function getHomePage() {
-        viewHomePage();
+        $reportList = $this->report->getReportList();
+        viewHomePage($reportList);
     }
 
     public function getNotificationPage() {
