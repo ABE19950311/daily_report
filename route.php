@@ -69,6 +69,9 @@ function router($url) {
         case "/isRegisterReport":
             $reportController->apiIsRegisterReport();
             break;
+        case "/isShowReport":
+            $reportController->apiIsShowReport();
+            break;
         default:
             getPage($url);
             break;
@@ -93,7 +96,8 @@ function getPage($url) {
 }
 
 function main() {
-    $url = $_SERVER["REQUEST_URI"];
+    //getのquery外してパスだけ欲しい場合の対応をparse_urlでする
+    $url = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
     router($url);
 }
 

@@ -15,7 +15,6 @@ function viewHomePage($reportList) {
     }
 
     $smarty->assign("reportList", $reportList);
-    var_dump($reportList);
 
     $smarty->display('home.tpl');
 }

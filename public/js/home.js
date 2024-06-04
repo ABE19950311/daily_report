@@ -34,6 +34,13 @@ function initialEvents() {
     if(notification.notificationRecordBtn) notification.notificationRecordBtn.addEventListener("click",registerMailAddress);
     if(notification.notificationSubmitBtn) notification.notificationSubmitBtn.addEventListener("click",sendMailAddressList);
     if(report.reportSubmitBtn) report.reportSubmitBtn.addEventListener("click",submissionReport);
+    //smartyで作成したreportListをquerySelectorAll使って配列でdom要素受け取る
+    //forEachで取得要素にevent付与してく
+    if(report.showReportBtn.length) {
+        report.showReportBtn.forEach((elm)=>{
+            elm.addEventListener("click",{id:elm.value,handleEvent:isShowReport})
+        })
+    }
     if(report.radioCategory) {
         report.radioCategory.forEach((radio)=>{
             radio.addEventListener("change",(event)=>{
@@ -155,6 +162,25 @@ async function submissionReport() {
 
     } catch(e) {
         console.error(e)
+    }   
+}
+
+async function isShowReport(id) {
+    if(this.id) {
+        id = this.id
     }
-    
+
+    const params = {reportid:id}
+    const query = new URLSearchParams(params).toString()
+    const url = `https://192.168.64.6/isShowReport?${query}`
+
+    try {
+        const res = await request.requestToServer(url,"GET")
+        if(res.applicationStatusCode=="problem_process") {
+            throw new Error(res.applicationMessage)
+        }
+
+    } catch(e) {
+        console.error(e)
+    }
 }

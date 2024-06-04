@@ -53,20 +53,19 @@
 <table class="table">
   <thead class="table-dark">
     <tr>
-      <th scope="col">#</th>
-      <th scope="col">First</th>
-      <th scope="col">Last</th>
-      <th scope="col">Handle</th>
+      <th scope="col">タイトル</th>
+      <th scope="col">名字</th>
+      <th scope="col">名前</th>
+      <th scope="col">内容</th>
     </tr>
   </thead>
   <tbody>
     {foreach from=$reportList item=value name=report}
       <tr>
-        <th scope="row">1</th>
-        <td>{$value["title"]}</td>
-        <td>{$value["mei"]}</td>
+        <th scope="row">{$value["title"]}</th>
         <td>{$value["sei"]}</td>
-        <td><button>ositene</button></td>
+        <td>{$value["mei"]}</td>
+        <td><button class="show_report_btn" value={$value["id"]}>ositene</button></td>
       </tr>
     {/foreach}
   </tbody>

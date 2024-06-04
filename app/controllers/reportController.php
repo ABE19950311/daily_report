@@ -63,12 +63,22 @@ class ReportController {
             return;
         };
 
-        $column = "title,sei,mei,category,content,url,image_path";
+        $column = "id,title,sei,mei,category,content,url,image_path";
         $query = "account_id=:account_id";
         $params = [":account_id"=>$userId];
 
         $reportList = $this->mysql->dbSelect("report",$column,$query,$params);
         return $reportList;
+    }
+
+    public function apiIsShowReport() {
+        $reportId = $_GET["reportid"];
+        
+        $responseBody = [
+            "applicationStatusCode" => "Success",
+            "applicationMessage" => "Success"
+        ];
+        $this->response->doResponse(200,$this->RESPONSE_HEADER,$responseBody);
     }
 
 }
