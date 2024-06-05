@@ -45,4 +45,15 @@ function viewDailyDiaryPage() {
     $smarty->display('dailyDiary.tpl');
 }
 
+function viewReportPage($report) {
+    $smarty = new Smarty();
+
+    $smarty->template_dir = dirname(__FILE__)."/../templates/";
+    $smarty->compile_dir = dirname(__FILE__)."/../../templates_c/";
+
+    $smarty->assign("report", $report);
+
+    $smarty->display('report.tpl');
+}
+
 ?>

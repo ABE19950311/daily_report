@@ -27,6 +27,11 @@ class HomeController {
         viewDailyDiaryPage();
     }
 
+    public function getReportPage() {
+        $report = $this->report->getReport();
+        viewReportPage($report);
+    }
+
 }
 
 ?>

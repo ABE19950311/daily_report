@@ -175,11 +175,8 @@ async function isShowReport(id) {
     const url = `https://192.168.64.6/isShowReport?${query}`
 
     try {
-        const res = await request.requestToServer(url,"GET")
-        if(res.applicationStatusCode=="problem_process") {
-            throw new Error(res.applicationMessage)
-        }
-
+        const res = await request.requestPageToServer(url,"GET")
+        window.location.href = `${url}`
     } catch(e) {
         console.error(e)
     }

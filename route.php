@@ -48,6 +48,9 @@ function router($url) {
         case "/daily":
             $homeController->getDailyDiaryPage();
             break;
+        case "/isShowReport":
+            $homeController->getReportPage();
+            break;
         case "/isRegisterMailAddress":
             $mailController->isRegisterMailAddress();
             break;
@@ -68,9 +71,6 @@ function router($url) {
             break;
         case "/isRegisterReport":
             $reportController->apiIsRegisterReport();
-            break;
-        case "/isShowReport":
-            $reportController->apiIsShowReport();
             break;
         default:
             getPage($url);

@@ -71,14 +71,15 @@ class ReportController {
         return $reportList;
     }
 
-    public function apiIsShowReport() {
+    public function getReport() {
         $reportId = $_GET["reportid"];
         
-        $responseBody = [
-            "applicationStatusCode" => "Success",
-            "applicationMessage" => "Success"
-        ];
-        $this->response->doResponse(200,$this->RESPONSE_HEADER,$responseBody);
+        $column = "title,sei,mei,category,content,url,image_path";
+        $query = "id=:reportId";
+        $params = ["reportId"=>$reportId];
+
+        $report = $this->mysql->dbSelect("report",$column,$query,$params);
+        return $report;
     }
 
 }
