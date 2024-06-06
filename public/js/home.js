@@ -98,11 +98,15 @@ async function loadDaiyDiaryPage() {
     } 
 }
 
-async function loadHomePage() {
-    const url = "https://192.168.64.6/home"
+async function loadHomePage(page) {
+    page = this.page ? this.page : 1
+
+    const params = {page:page}
+    const query = new URLSearchParams(params).toString()
+    const url = `https://192.168.64.6/home?${query}`
 
     try {
-        await request.requestPageToServer(url,"POST",{})
+        await request.requestPageToServer(url,"GET")
         window.location.href = `${url}`
     } catch(e) {
         console.error(e)

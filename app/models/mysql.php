@@ -40,6 +40,18 @@ class MysqlModel {
         }
     }
 
+    public function selectOffsetReport($table,$colmun,$query,$limit,$offset,$params=[]) {
+        try {
+            //$sqlQuery = "SELECT $colmun FROM $table WHERE $query LIMIT 10 OFFSET 10";
+            $sqlQuery = "SELECT $colmun FROM $table WHERE $query LIMIT $limit OFFSET $offset";
+            $stmt = $this->pdo->prepare($sqlQuery);
+            $stmt->execute($params);
+            return $stmt->fetchAll();
+        } catch (PDOException $error) {
+            echo json_encode($error); 
+        }
+    }
+
 }
 
 

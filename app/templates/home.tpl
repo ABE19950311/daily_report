@@ -56,6 +56,7 @@
       <th scope="col">タイトル</th>
       <th scope="col">名字</th>
       <th scope="col">名前</th>
+      <th scope="col">カテゴリ</th>
       <th scope="col">内容</th>
     </tr>
   </thead>
@@ -65,6 +66,7 @@
         <th scope="row">{$value["title"]}</th>
         <td>{$value["sei"]}</td>
         <td>{$value["mei"]}</td>
+        <td>{$value["category"]}</td>
         <td><button class="show_report_btn" value={$value["id"]}>ositene</button></td>
       </tr>
     {/foreach}

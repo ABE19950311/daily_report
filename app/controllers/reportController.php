@@ -63,11 +63,17 @@ class ReportController {
             return;
         };
 
+        $page = $_GET["page"];
+        $reportsDisplayLimit = 10;
+        $offset = ($page-1) * $reportsDisplayLimit;
+
         $column = "id,title,sei,mei,category,content,url,image_path";
         $query = "account_id=:account_id";
-        $params = [":account_id"=>$userId];
+        $params = [
+            ":account_id"=>$userId,
+        ];
 
-        $reportList = $this->mysql->dbSelect("report",$column,$query,$params);
+        $reportList = $this->mysql->selectOffsetReport("report",$column,$query,$reportsDisplayLimit,$offset,$params);
         return $reportList;
     }
 
