@@ -73,5 +73,15 @@
   </tbody>
 </table>
 
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    <li class="page-item" id="pagenation_previous"><a class="page-link" href="#">Previous</a></li>
+    {for $val=1 to $reportCount}
+      <li class="pagenation-item" value={$val}><a class="page-link" href="#">{$val}</a></li>
+    {/for}
+    <li class="page-item" id="pagenation_next"><a class="page-link" href="#">Next</a></li>
+  </ul>
+</nav>
+
 </body>
 </html>

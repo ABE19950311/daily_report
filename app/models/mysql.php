@@ -52,6 +52,17 @@ class MysqlModel {
         }
     }
 
+    public function fetchAllRecordWithCondition($table,$query,$params) {
+        try {
+            $sqlQuery = "SELECT count(*) FROM $table WHERE $query";
+            $stmt = $this->pdo->prepare($sqlQuery);
+            $stmt->execute($params);
+            return $stmt->fetchColumn();
+        } catch (PDOException $error) {
+            echo json_encode($error);
+        }
+    }
+
 }
 
 

@@ -15,7 +15,8 @@ class HomeController {
 
     public function getHomePage() {
         $reportList = $this->report->getReportList();
-        viewHomePage($reportList);
+        $reportCount = $this->report->getReportSize();
+        viewHomePage($reportList,$reportCount);
     }
 
     public function getNotificationPage() {

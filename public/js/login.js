@@ -21,10 +21,12 @@ function initialEvents() {
 }
 
 async function loadPageHome() {
-    const url = "https://192.168.64.6/home"
+    const params = {page:1}
+    const query = new URLSearchParams(params).toString()
+    const url = `https://192.168.64.6/home?${query}`
 
     try {
-        await request.requestPageToServer(url,"POST",{})
+        await request.requestPageToServer(url,"GET")
         window.location.href = `${url}`
     } catch(e) {
         console.error(e)

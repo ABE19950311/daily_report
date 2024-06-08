@@ -2,7 +2,7 @@
 require_once(dirname(__FILE__)."/../../config.php");
 require_once(SMARTY_DIR . 'Smarty.class.php');
 
-function viewHomePage($reportList) {
+function viewHomePage($reportList,$reportCount) {
     $smarty = new Smarty();
 
     $smarty->template_dir = dirname(__FILE__)."/../templates/";
@@ -15,6 +15,7 @@ function viewHomePage($reportList) {
     }
 
     $smarty->assign("reportList", $reportList);
+    $smarty->assign("reportCount", $reportCount);
 
     $smarty->display('home.tpl');
 }

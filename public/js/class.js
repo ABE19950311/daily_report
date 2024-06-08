@@ -46,7 +46,11 @@ export class Report {
         this.image = document.getElementById("report_image")
         this.reportSubmitBtn = document.getElementById("report_submit_btn")
         this.showReportBtn = document.querySelectorAll(".show_report_btn")
+        this.previousBtn = document.getElementById("pagenation_previous")
+        this.nextBtn = document.getElementById("pagenation_next")
+        this.pagenationBtn = document.querySelectorAll(".pagenation-item")
         this.checkCategory = null;
+        this.currentPage = null;
     }
 
     set checkCategory(value) {
@@ -54,6 +58,13 @@ export class Report {
     }
     get checkCategory() {
         return this._checkCategory;
+    }
+
+    set currentPage(value) {
+        this._currentPage = value;
+    }
+    get currentPage() {
+        return this._currentPage;
     }
 }
 

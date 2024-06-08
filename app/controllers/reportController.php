@@ -88,6 +88,25 @@ class ReportController {
         return $report;
     }
 
+    public function getReportSize() {
+        $userId = $this->getSessionUserIdFromCookie();
+
+        if(!$userId) {
+            $this->response->responseProblemSessiionToken("SessionUserId does not exist");
+            return;
+        };
+
+        $reportDisplayLimit = 10;
+
+        $query = "account_id=:account_id";
+        $params = [
+            ":account_id"=>$userId,
+        ];
+
+        $reportCount = $this->mysql->fetchAllRecordWithCondition("report",$query,$params);
+        return floor($reportCount/$reportDisplayLimit)+1;
+    }
+
 }
 
 ?>
