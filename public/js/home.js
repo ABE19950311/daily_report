@@ -24,7 +24,7 @@ window.addEventListener("DOMContentLoaded",()=>{
 
 async function main() {
     initialEvents();
-    initialStatus();
+    initialReportCurrentPage();
 }
 
 function initialEvents() {
@@ -35,8 +35,8 @@ function initialEvents() {
     if(notification.notificationRecordBtn) notification.notificationRecordBtn.addEventListener("click",registerMailAddress);
     if(notification.notificationSubmitBtn) notification.notificationSubmitBtn.addEventListener("click",sendMailAddressList);
     if(report.reportSubmitBtn) report.reportSubmitBtn.addEventListener("click",submissionReport);
-    if(report.previousBtn) report.previousBtn.addEventListener("click", {flag:"previous",handleEvent:updateCurrentPage})
-    if(report.nextBtn) report.nextBtn.addEventListener("click", {flag:"next",handleEvent:updateCurrentPage})
+    if(report.previousBtn) report.previousBtn.addEventListener("click", {flag:"previous",page:null,handleEvent:updateCurrentPage})
+    if(report.nextBtn) report.nextBtn.addEventListener("click", {flag:"next",page:null,handleEvent:updateCurrentPage})
     //smartyで作成したreportListをquerySelectorAll使って配列でdom要素受け取る
     //forEachで取得要素にevent付与してく
     if(report.showReportBtn.length) {
@@ -53,14 +53,15 @@ function initialEvents() {
     }
     if(report.pagenationBtn.length) {
         report.pagenationBtn.forEach((elm)=>{
-            elm.addEventListener("click",{page:elm.value,handleEvent:isPagenation})
+            elm.addEventListener("click",{flag:null,page:elm.value,handleEvent:updateCurrentPage})
         })
     }
 }
 
-function initialStatus() {
-    report.currentPage = 1
-    console.log(report.currentPage)
+function initialReportCurrentPage() {
+    if(window.location.search.match(/^\?page=/g)) {
+        report.currentPage = window.location.search.split("").pop()
+    }
 }
 
 async function isLogout() {
@@ -112,7 +113,7 @@ async function loadDaiyDiaryPage() {
 }
 
 async function loadHomePage() {
-    page = report.currentPage
+    const page = report.currentPage ? report.currentPage : 1
 
     const params = {page:page}
     const query = new URLSearchParams(params).toString()
@@ -199,25 +200,30 @@ async function isShowReport(id) {
     }
 }
 
-function updateCurrentPage(flag) {
+function updateCurrentPage(flag,page) {
     if(this.flag) {
         flag = this.flag
+    }
+    if(this.page) {
+        page = this.page
     }
 
     let currentPage = report.currentPage
     let pagenationAllList = report.pagenationBtn.length
 
-    if(flag=="previous") {
-        if(currentPage<=1) return
-        report.currentPage = --currentPage
-    } else if(flag=="next") {
-        if(currentPage>=pagenationAllList) return
-        report.currentPage = ++currentPage
+    switch(flag) {
+        case "previous":
+            if(currentPage<=1) return
+            report.currentPage = --currentPage
+        break;
+        case "next":
+            if(currentPage>=pagenationAllList) return
+            report.currentPage = ++currentPage
+        break;
+        default:
+            report.currentPage = page
+        break;
     }
-    //TODO currentPage更新した後にpagenation関数呼ぶ
-    // isPagenation()
-}
 
-async function isPagenation() {
-    //TODO currentPageゲッターから受け取ってGETで送る
+    loadHomePage()
 }

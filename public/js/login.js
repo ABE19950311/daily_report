@@ -56,7 +56,7 @@ async function isExsistUserCheck() {
         if(res.applicationStatusCode=="problem_process") {
             throw new Error(res.applicationMessage)
         }
-        window.location.href = `https://192.168.64.6/`
+        loadPageHome()
     } catch(e) {
         console.error(e)
     }
