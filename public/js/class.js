@@ -46,6 +46,8 @@ export class Report {
         this.image = document.getElementById("report_image")
         this.reportSubmitBtn = document.getElementById("report_submit_btn")
         this.showReportBtn = document.querySelectorAll(".show_report_btn")
+        this.updateReportBtn = document.querySelectorAll(".update_report_btn")
+        this.deleteReportBtn = document.querySelectorAll(".delete_report_btn")
         this.previousBtn = document.getElementById("pagenation_previous")
         this.nextBtn = document.getElementById("pagenation_next")
         this.pagenationBtn = document.querySelectorAll(".pagenation-item")

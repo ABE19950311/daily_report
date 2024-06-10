@@ -27,6 +27,29 @@ class ReportController {
         return $id[0]["id"];
     }
 
+    public function main() {
+        $method = $_SERVER["REQUEST_METHOD"];
+
+        switch($method) {
+            case "GET":
+                $this->getReportPage();
+                break;
+            case "POST":
+                $this->apiIsRegisterReport();
+                break;
+            case "PUT":
+                break;
+            case "DELETE":
+                $this->deleteReport();
+                break;
+        }
+    }
+
+    public function getReportPage() {
+        $report = $this->getReport();
+        viewReportPage($report);
+    }
+
     public function apiIsRegisterReport() {
         $title = $_POST["title"];
         $sei = $_POST["sei"];
@@ -53,6 +76,12 @@ class ReportController {
             "applicationMessage" => "Success"
         ];
         $this->response->doResponse(200,$this->RESPONSE_HEADER,$responseBody);
+    }
+
+    public function deleteReport() {
+        $reportId = $_GET["reportid"];
+
+        
     }
 
     public function getReportList() {

@@ -40,6 +40,17 @@ class MysqlModel {
         }
     }
 
+    public function dbDelete($table,$query,$params=[]) {
+        try {
+            $sqlQuery = "DELETE FROM $table WHERE $query";
+            $stmt = $this->pdo->prepare($sqlQuery);
+            $stmt->execute($params);
+            return TRUE;
+        } catch (PDOException $error) {
+            echo json_encode($error);
+        }
+    }
+
     public function selectOffsetReport($table,$colmun,$query,$limit,$offset,$params=[]) {
         try {
             //$sqlQuery = "SELECT $colmun FROM $table WHERE $query LIMIT 10 OFFSET 10";

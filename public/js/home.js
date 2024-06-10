@@ -44,6 +44,16 @@ function initialEvents() {
             elm.addEventListener("click",{id:elm.value,handleEvent:isShowReport})
         })
     }
+    if(report.updateReportBtn.length) {
+        report.updateReportBtn.forEach((elm)=>{
+            elm.addEventListener("click",{id:elm.value,handleEvent:isUpdateReport})
+        })
+    }
+    if(report.deleteReportBtn.length) {
+        report.deleteReportBtn.forEach((elm)=>{
+            elm.addEventListener("click",{id:elm.value,handleEvent:isDeleteReport})
+        })
+    }
     if(report.radioCategory) {
         report.radioCategory.forEach((radio)=>{
             radio.addEventListener("change",(event)=>{
@@ -65,10 +75,10 @@ function initialReportCurrentPage() {
 }
 
 async function isLogout() {
-    const url = "https://192.168.64.6/isLogout"
+    const url = "https://192.168.64.6/logout"
 
     try {
-        const res = await request.requestToServer(url,"POST",{})
+        const res = await request.requestToServer(url,"GET")
         if(res.applicationStatusCode=="problem_process") {
             throw new Error(res.applicationMessage)
         }
@@ -83,7 +93,7 @@ async function loadLoginPage() {
     const url = "https://192.168.64.6/"
 
     try {
-        await request.requestPageToServer(url,"POST",{})
+        await request.requestPageToServer(url,"GET")
         window.location.href = `${url}`
     } catch(e) {
         console.error(e)
@@ -94,7 +104,7 @@ async function loadNotificationPage() {
     const url = "https://192.168.64.6/notification"
 
     try {
-        await request.requestPageToServer(url,"POST",{})
+        await request.requestPageToServer(url,"GET")
         window.location.href = `${url}`
     } catch(e) {
         console.error(e)
@@ -105,7 +115,7 @@ async function loadDaiyDiaryPage() {
     const url = "https://192.168.64.6/daily"
 
     try {
-        await request.requestPageToServer(url,"POST",{})
+        await request.requestPageToServer(url,"GET")
         window.location.href = `${url}`
     } catch(e) {
         console.error(e)
@@ -128,7 +138,7 @@ async function loadHomePage() {
 }
 
 async function registerMailAddress() {
-    const url = "https://192.168.64.6/isRegisterMailAddress"
+    const url = "https://192.168.64.6/mailaddress"
 
     const body = {
         mailAddress: notification.notification.value
@@ -160,7 +170,7 @@ async function sendMailAddressList() {
 }
 
 async function submissionReport() {
-    const apiUrl = "https://192.168.64.6/isRegisterReport"
+    const apiUrl = "https://192.168.64.6/report"
 
     const body = {
         title: report.title.value,
@@ -177,7 +187,7 @@ async function submissionReport() {
         if(res.applicationStatusCode=="problem_process") {
             throw new Error(res.applicationMessage)
         }
-
+        loadHomePage()
     } catch(e) {
         console.error(e)
     }   
@@ -190,11 +200,43 @@ async function isShowReport(id) {
 
     const params = {reportid:id}
     const query = new URLSearchParams(params).toString()
-    const url = `https://192.168.64.6/isShowReport?${query}`
+    const url = `https://192.168.64.6/report?${query}`
 
     try {
         const res = await request.requestPageToServer(url,"GET")
         window.location.href = `${url}`
+    } catch(e) {
+        console.error(e)
+    }
+}
+
+async function isUpdateReport(id) {
+    if(this.id) {
+        id = this.id
+    }
+    const params = {reportId:id}
+    const query = new URLSearchParams(params).toString()
+    const url = `https://192.168.64.6/report?${query}`
+
+    try {
+        const res = await request.requestPageToServer(url,"PUT")
+        window.location.href = `${url}`
+    } catch(e) {
+        console.error(e)
+    }
+}
+
+async function isDeleteReport(id) {
+    if(this.id) {
+        id = this.id
+    }
+    const params = {reportId:id}
+    const query = new URLSearchParams(params).toString()
+    const url = `https://192.168.64.6/report?${query}`
+
+    try {
+        const res = await request.requestPageToServer(url,"DELETE")
+        loadHomePage()
     } catch(e) {
         console.error(e)
     }

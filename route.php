@@ -36,7 +36,7 @@ function router($url) {
         case "/isExsistCheck":
             $loginController->apiIsExsistCheck();
             break;
-        case "/isLogout":
+        case "/logout":
             $loginController->apiIsLogout();
             break;
         case "/home":
@@ -48,10 +48,10 @@ function router($url) {
         case "/daily":
             $homeController->getDailyDiaryPage();
             break;
-        case "/isShowReport":
-            $homeController->getReportPage();
+        case "/report":
+            $reportController->main();
             break;
-        case "/isRegisterMailAddress":
+        case "/mailaddress":
             $mailController->isRegisterMailAddress();
             break;
         case "/getUserMailAddress":
@@ -68,9 +68,6 @@ function router($url) {
             break;
         case "/":
             $loginController->getLoginPage();
-            break;
-        case "/isRegisterReport":
-            $reportController->apiIsRegisterReport();
             break;
         default:
             getPage($url);
