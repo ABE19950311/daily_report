@@ -78,10 +78,37 @@ class ReportController {
         $this->response->doResponse(200,$this->RESPONSE_HEADER,$responseBody);
     }
 
+    public function updateReport() {
+        $reportId = $_GET["reportid"];
+
+        $column = "title=:title,sei=:sei,mei=:mei,category=:category,content=:content,url=:url,image_path=:image_path";
+        $query = "id=:reportId";
+        $params = [
+            ":reportId"=>$reportId
+        ];
+
+        $this->mysql->dbUpdate("report",$column,$query,$params);
+
+        $responseBody = [
+            "applicationStatusCode" => "Success",
+            "applicationMessage" => "Success"
+        ];
+        $this->response->doResponse(200,$this->RESPONSE_HEADER,$responseBody);
+    }
+
     public function deleteReport() {
         $reportId = $_GET["reportid"];
 
-        
+        $query = "id=:reportId";
+        $params= [":reportId"=>$reportId];
+
+        $this->mysql->dbDelete("report",$query,$params);
+
+        $responseBody = [
+            "applicationStatusCode" => "Success",
+            "applicationMessage" => "Success"
+        ];
+        $this->response->doResponse(200,$this->RESPONSE_HEADER,$responseBody);
     }
 
     public function getReportList() {
@@ -134,6 +161,11 @@ class ReportController {
 
         $reportCount = $this->mysql->fetchAllRecordWithCondition("report",$query,$params);
         return floor($reportCount/$reportDisplayLimit)+1;
+    }
+
+    public function getUpdateReportPage() {
+        $report = $this->getReport();
+        viewUpdateReportPage($report);
     }
 
 }

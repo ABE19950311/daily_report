@@ -40,6 +40,17 @@ class MysqlModel {
         }
     }
 
+    public function dbUpdate($table,$column,$query,$params=[]) {
+        try {
+            $sqlQuery = "UPDATE $table SET $column WHERE $query";
+            $stmt = $this->pdo->prepare($sqlQuery);
+            $stmt->execute($params);
+            return TRUE;
+        } catch (PDOException $error) {
+            echo json_encode($error);
+        }
+    }
+
     public function dbDelete($table,$query,$params=[]) {
         try {
             $sqlQuery = "DELETE FROM $table WHERE $query";

@@ -44,9 +44,9 @@ function initialEvents() {
             elm.addEventListener("click",{id:elm.value,handleEvent:isShowReport})
         })
     }
-    if(report.updateReportBtn.length) {
-        report.updateReportBtn.forEach((elm)=>{
-            elm.addEventListener("click",{id:elm.value,handleEvent:isUpdateReport})
+    if(report.navigateToUpdateReportBtn.length) {
+        report.navigateToUpdateReportBtn.forEach((elm)=>{
+            elm.addEventListener("click",{id:elm.value,handleEvent:navigateToReportPage})
         })
     }
     if(report.deleteReportBtn.length) {
@@ -219,8 +219,11 @@ async function isUpdateReport(id) {
     const url = `https://192.168.64.6/report?${query}`
 
     try {
-        const res = await request.requestPageToServer(url,"PUT")
-        window.location.href = `${url}`
+        const res = await request.requestToServer(url,"PUT")
+        if(res.applicationStatusCode=="problem_process") {
+            throw new Error(res.applicationMessage)
+        }
+        loadHomePage()
     } catch(e) {
         console.error(e)
     }
@@ -230,13 +233,33 @@ async function isDeleteReport(id) {
     if(this.id) {
         id = this.id
     }
-    const params = {reportId:id}
+    const params = {reportid:id}
     const query = new URLSearchParams(params).toString()
     const url = `https://192.168.64.6/report?${query}`
 
     try {
-        const res = await request.requestPageToServer(url,"DELETE")
+        const res = await request.requestToServer(url,"DELETE")
+        if(res.applicationStatusCode=="problem_process") {
+            throw new Error(res.applicationMessage)
+        }
         loadHomePage()
+    } catch(e) {
+        console.error(e)
+    }
+}
+
+async function navigateToReportPage(id) {
+    if(this.id) {
+        id = this.id
+    }
+
+    const params = {reportid:id}
+    const query = new URLSearchParams(params).toString()
+    const url = `https://192.168.64.6/report/update?${query}`
+
+    try {
+        const res = await request.requestPageToServer(url,"GET")
+        window.location.href = `${url}`
     } catch(e) {
         console.error(e)
     }

@@ -51,6 +51,9 @@ function router($url) {
         case "/report":
             $reportController->main();
             break;
+        case "/report/update":
+            $reportController->getUpdateReportPage();
+            break;
         case "/mailaddress":
             $mailController->isRegisterMailAddress();
             break;

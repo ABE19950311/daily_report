@@ -70,7 +70,7 @@
         <td>{$value["mei"]}</td>
         <td>{$value["category"]}</td>
         <td><button class="show_report_btn btn btn-primary" value={$value["id"]}>閲覧</button></td>
-        <td><button class="update_report_btn btn btn-success" value={$value["id"]}>編集</button></td>
+        <td><button class="navigate_to_update_report_btn btn btn-success" value={$value["id"]}>編集</button></td>
         <td><button class="delete_report_btn btn btn-dark" value={$value["id"]}>削除</button></td>
       </tr>
     {/foreach}
