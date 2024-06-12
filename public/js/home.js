@@ -35,6 +35,7 @@ function initialEvents() {
     if(notification.notificationRecordBtn) notification.notificationRecordBtn.addEventListener("click",registerMailAddress);
     if(notification.notificationSubmitBtn) notification.notificationSubmitBtn.addEventListener("click",sendMailAddressList);
     if(report.reportSubmitBtn) report.reportSubmitBtn.addEventListener("click",submissionReport);
+    if(report.updateReportSubmitBtn) report.updateReportSubmitBtn.addEventListener("click",isUpdateReport)
     if(report.previousBtn) report.previousBtn.addEventListener("click", {flag:"previous",page:null,handleEvent:updateCurrentPage})
     if(report.nextBtn) report.nextBtn.addEventListener("click", {flag:"next",page:null,handleEvent:updateCurrentPage})
     //smartyで作成したreportListをquerySelectorAll使って配列でdom要素受け取る
@@ -59,6 +60,13 @@ function initialEvents() {
             radio.addEventListener("change",(event)=>{
                 report.checkCategory = event.target.value
             });
+        })
+    }
+    if(report.updateRadioCategory) {
+        report.updateRadioCategory.forEach((radio)=>{
+            radio.addEventListener("change",(event)=>{
+                report.updateCheckCategory = event.target.value
+            })
         })
     }
     if(report.pagenationBtn.length) {
@@ -210,20 +218,26 @@ async function isShowReport(id) {
     }
 }
 
-async function isUpdateReport(id) {
-    if(this.id) {
-        id = this.id
+async function isUpdateReport() {
+    const url = `https://192.168.64.6/report`
+
+    const body = {
+        reportid: report.updateReport.value,
+        title: report.updateTitle.value,
+        sei: report.updateSei.value,
+        mei: report.updateMei.value,
+        category: report.updateCheckCategory,
+        content: report.updateContent.value,
+        url: report.updateUrl.value,
+        image_path: report.updateImage.value
     }
-    const params = {reportId:id}
-    const query = new URLSearchParams(params).toString()
-    const url = `https://192.168.64.6/report?${query}`
 
     try {
-        const res = await request.requestToServer(url,"PUT")
+        const res = await request.requestToServer(url,"PUT",body)
         if(res.applicationStatusCode=="problem_process") {
             throw new Error(res.applicationMessage)
         }
-        loadHomePage()
+        //loadHomePage()
     } catch(e) {
         console.error(e)
     }

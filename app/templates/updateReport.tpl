@@ -56,7 +56,7 @@
       <div class="py-5 text-center">
         <h2>日間日記</h2>
       </div>
-
+      <input type="hidden" id="update_report" value={$report[0]["id"]}>
       <div class="row g-5">
         <div class="col-md-7 col-lg-8">
             <div class="col-sm-6">

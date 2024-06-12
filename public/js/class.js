@@ -37,6 +37,7 @@ export class Notification {
 
 export class Report {
     constructor() {
+        //create
         this.title = document.getElementById("report_title")
         this.sei = document.getElementById("report_sei")
         this.mei = document.getElementById("report_mei")
@@ -45,13 +46,26 @@ export class Report {
         this.url = document.getElementById("report_url")
         this.image = document.getElementById("report_image")
         this.reportSubmitBtn = document.getElementById("report_submit_btn")
+        this.checkCategory = null;
+
+        //update
+        this.updateReport = document.getElementById("update_report")
+        this.updateTitle = document.getElementById("update_report_title")
+        this.updateSei = document.getElementById("update_report_sei")
+        this.updateMei = document.getElementById("update_report_mei")
+        this.updateRadioCategory = document.querySelectorAll('input[name="update_category"]')
+        this.updateContent = document.getElementById("update_report_content")
+        this.updateUrl = document.getElementById("update_report_url")
+        this.updateImage = document.getElementById("update_report_image")
+        this.updateReportSubmitBtn = document.getElementById("update_report_submit_btn")
+        this.updateCheckCategory = null;
+
         this.showReportBtn = document.querySelectorAll(".show_report_btn")
         this.navigateToUpdateReportBtn = document.querySelectorAll(".navigate_to_update_report_btn")
         this.deleteReportBtn = document.querySelectorAll(".delete_report_btn")
         this.previousBtn = document.getElementById("pagenation_previous")
         this.nextBtn = document.getElementById("pagenation_next")
         this.pagenationBtn = document.querySelectorAll(".pagenation-item")
-        this.checkCategory = null;
         this.currentPage = null;
     }
 
@@ -60,6 +74,13 @@ export class Report {
     }
     get checkCategory() {
         return this._checkCategory;
+    }
+
+    set updateCheckCategory(value) {
+        this._updateCheckCategory = value;
+    }
+    get updateCheckCategory() {
+        return this._updateCheckCategory;
     }
 
     set currentPage(value) {

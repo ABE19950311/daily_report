@@ -38,6 +38,7 @@ class ReportController {
                 $this->apiIsRegisterReport();
                 break;
             case "PUT":
+                $this->updateReport();
                 break;
             case "DELETE":
                 $this->deleteReport();
@@ -79,12 +80,28 @@ class ReportController {
     }
 
     public function updateReport() {
-        $reportId = $_GET["reportid"];
+        parse_str(file_get_contents('php://input'),$putData);
+
+        $reportId = $putData["reportid"];
+        $title = $putData["title"];
+        $sei = $putData["sei"];
+        $mei = $putData["mei"];
+        $category = $putData["category"];
+        $content = $putData["content"];
+        $url = $putData["url"];
+        $image_path = $putData["image_path"];
 
         $column = "title=:title,sei=:sei,mei=:mei,category=:category,content=:content,url=:url,image_path=:image_path";
         $query = "id=:reportId";
         $params = [
-            ":reportId"=>$reportId
+            ":reportId"=>$reportId,
+            ":title"=>$title,
+            ":sei"=>$sei,
+            ":mei"=>$mei,
+            ":category"=>$category,
+            ":content"=>$content,
+            ":url"=>$url,
+            ":image_path"=>$image_path
         ];
 
         $this->mysql->dbUpdate("report",$column,$query,$params);
@@ -136,7 +153,7 @@ class ReportController {
     public function getReport() {
         $reportId = $_GET["reportid"];
         
-        $column = "title,sei,mei,category,content,url,image_path";
+        $column = "id,title,sei,mei,category,content,url,image_path";
         $query = "id=:reportId";
         $params = ["reportId"=>$reportId];
 
