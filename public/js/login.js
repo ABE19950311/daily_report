@@ -12,12 +12,33 @@ async function main() {
     initialEvents();
     if(await sessionCheck()) {
         loadPageHome();
+    } else {
+        displayLoginPage()
     }
 }
 
 function initialEvents() {
     login.loginBtn.addEventListener("click",isExsistUserCheck);
     login.loginRegisterBtn.addEventListener("click",loadUserRegisterPage)
+}
+
+function displayLoginPage() {
+    login.loginPage.classList.remove("d-none")
+}
+
+async function sessionCheck() {
+    const url = "https://192.168.64.6/session"
+
+    try {
+        const res = await request.requestToServer(url,"GET")
+        if(res.applicationStatusCode=="problem_process") {
+            throw new Error(res.applicationMessage)
+        }
+        return true
+    } catch(e) {
+        console.error(e)
+        return false
+    }
 }
 
 async function loadPageHome() {
@@ -37,7 +58,7 @@ async function loadUserRegisterPage() {
     const url = "https://192.168.64.6/register"
 
     try {
-        await request.requestPageToServer(url,"POST",{})
+        await request.requestPageToServer(url,"GET")
         window.location.href = `${url}`
     } catch(e) {
         console.error(e)
@@ -45,7 +66,7 @@ async function loadUserRegisterPage() {
 }
 
 async function isExsistUserCheck() {
-    const url = "https://192.168.64.6/isExsistCheck"
+    const url = "https://192.168.64.6/login"
     const body = {
         loginUser: login.loginUser.value,
         loginPassword: login.loginPassword.value
@@ -59,20 +80,5 @@ async function isExsistUserCheck() {
         loadPageHome()
     } catch(e) {
         console.error(e)
-    }
-}
-
-async function sessionCheck() {
-    const url = "https://192.168.64.6/isSessionCheck"
-
-    try {
-        const res = await request.requestToServer(url,"POST",{})
-        if(res.applicationStatusCode=="problem_process") {
-            throw new Error(res.applicationMessage)
-        }
-        return true
-    } catch(e) {
-        console.error(e)
-        return false
     }
 }

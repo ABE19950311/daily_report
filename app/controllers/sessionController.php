@@ -1,12 +1,9 @@
 <?php
-require_once(dirname(__FILE__)."/../models/mysql.php");
-require_once(dirname(__FILE__)."/../models/redis.php");
 require_once(dirname(__FILE__)."/responseController.php");
+require_once(dirname(__FILE__)."/baseController.php");
 
 
-class SessionController {
-    private $redis;
-    private $mysql;
+class SessionController extends BaseController {
     private $response;
 
     private $RESPONSE_HEADER = [
@@ -15,19 +12,10 @@ class SessionController {
     ];
 
     public function __construct() {
-        $this->redis = new RedisModel();
-        $this->mysql = new MysqlModel();
+        parent::__construct();
         $this->response = new ResponseController();
     }
 
-    private function getSessionUserIdFromCookie() {
-        $sessionToken = $_COOKIE["sessionToken"];
-        if(!$sessionToken) return "";
-        $user = $this->redis->getSessionToken($sessionToken);
-        $id = $this->mysql->dbSelect("account","id","user=:user",[":user"=>$user]);
-        return $id;
-    }
-    
     public function apiIsSessionCheck() {
         $sessionUserId = $this->getSessionUserIdFromCookie();
         if(!$sessionUserId) {

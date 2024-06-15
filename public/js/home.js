@@ -98,29 +98,7 @@ async function isLogout() {
 }
 
 async function loadLoginPage() {
-    const url = "https://192.168.64.6/"
-
-    try {
-        await request.requestPageToServer(url,"GET")
-        window.location.href = `${url}`
-    } catch(e) {
-        console.error(e)
-    } 
-}
-
-async function loadNotificationPage() {
-    const url = "https://192.168.64.6/notification"
-
-    try {
-        await request.requestPageToServer(url,"GET")
-        window.location.href = `${url}`
-    } catch(e) {
-        console.error(e)
-    } 
-}
-
-async function loadDaiyDiaryPage() {
-    const url = "https://192.168.64.6/daily"
+    const url = "https://192.168.64.6/login"
 
     try {
         await request.requestPageToServer(url,"GET")
@@ -136,6 +114,17 @@ async function loadHomePage() {
     const params = {page:page}
     const query = new URLSearchParams(params).toString()
     const url = `https://192.168.64.6/home?${query}`
+
+    try {
+        await request.requestPageToServer(url,"GET")
+        window.location.href = `${url}`
+    } catch(e) {
+        console.error(e)
+    } 
+}
+
+async function loadNotificationPage() {
+    const url = "https://192.168.64.6/mailaddress"
 
     try {
         await request.requestPageToServer(url,"GET")
@@ -164,10 +153,10 @@ async function registerMailAddress() {
 }
 
 async function sendMailAddressList() {
-    const url = "https://192.168.64.6/isSendMailAddressList"
+    const url = "https://192.168.64.6/mailaddress/send"
 
     try {
-        const res = await request.requestToServer(url,"POST",{})
+        const res = await request.requestToServer(url,"GET")
         if(res.applicationStatusCode=="problem_process") {
             throw new Error(res.applicationMessage)
         }
@@ -175,6 +164,17 @@ async function sendMailAddressList() {
     } catch(e) {
         console.error(e)
     }
+}
+
+async function loadDaiyDiaryPage() {
+    const url = "https://192.168.64.6/daily"
+
+    try {
+        await request.requestPageToServer(url,"GET")
+        window.location.href = `${url}`
+    } catch(e) {
+        console.error(e)
+    } 
 }
 
 async function submissionReport() {

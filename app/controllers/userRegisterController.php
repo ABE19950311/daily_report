@@ -18,6 +18,19 @@ class UserRegisterController {
         $this->response = new ResponseController();
     }
 
+    public function main() {
+        $method = $_SERVER["REQUEST_METHOD"];
+
+        switch($method) {
+            case "GET":
+                $this->getUserRegisterPage();
+                break;
+            case "POST":
+                $this->apiIsRegisterUser();
+                break;
+        }
+    }
+
     public function getUserRegisterPage() {
         viewUserRegisterPage();
     }

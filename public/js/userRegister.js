@@ -18,10 +18,10 @@ function initialEvents() {
 }
 
 async function loadLoginPage() {
-    const url = "https://192.168.64.6/"
+    const url = "https://192.168.64.6/login"
 
     try {
-        await request.requestPageToServer(url,"POST",{})
+        await request.requestPageToServer(url,"GET")
         window.location.href = `${url}`
     } catch(e) {
         console.error(e)
@@ -29,7 +29,7 @@ async function loadLoginPage() {
 }
 
 async function isUserRegister() {
-    const url = "https://192.168.64.6/isRegisterUser"
+    const url = "https://192.168.64.6/register"
 
     const body = {
         user: register.user.value,
@@ -41,7 +41,7 @@ async function isUserRegister() {
         if(res.applicationStatusCode=="problem_process") {
             throw new Error(res.applicationMessage)
         }
-        window.location.href = `https://192.168.64.6/`
+        loadLoginPage()
     } catch(e) {
         console.error(e)
     }

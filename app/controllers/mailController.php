@@ -5,13 +5,14 @@ use PHPMailer\PHPMailer\SMTP;
 
 require_once(dirname(__FILE__)."/../models/mysql.php");
 require_once(dirname(__FILE__)."/../models/redis.php");
+require_once(dirname(__FILE__)."/baseController.php");
 require_once(dirname(__FILE__)."/responseController.php");
 require_once("/usr/local/lib/PHPMailer/src/PHPMailer.php");
 require_once("/usr/local/lib/PHPMailer/src/Exception.php");
 require_once("/usr/local/lib/PHPMailer/src/SMTP.php");
 
 
-class MailController {
+class MailController extends BaseController {
     private $mysql;
     private $redis;
     private $response;
@@ -22,17 +23,28 @@ class MailController {
     ];
 
     public function __construct() {
+        parent::__construct();
         $this->mysql = new MysqlModel();
         $this->redis = new RedisModel();
         $this->response = new ResponseController();
     }
 
-    private function getSessionUserIdFromCookie() {
-        $sessionToken = $_COOKIE["sessionToken"];
-        if(!$sessionToken) return "";
-        $user = $this->redis->getSessionToken($sessionToken);
-        $id = $this->mysql->dbSelect("account","id","user=:user",[":user"=>$user]);
-        return $id[0]["id"];
+    public function main() {
+        $method = $_SERVER["REQUEST_METHOD"];
+
+        switch($method) {
+            case "GET":
+                $this->getNotificationPage();
+                break;
+            case "POST":
+                $this->isRegisterMailAddress();
+                break;
+        }
+    }
+
+    public function getNotificationPage() {
+        $mailAddressList = $this->getUserMailAddressList();
+        viewNotificationPage($mailAddressList);
     }
 
     public function isRegisterMailAddress() {

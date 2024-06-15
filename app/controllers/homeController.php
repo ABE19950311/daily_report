@@ -19,11 +19,6 @@ class HomeController {
         viewHomePage($reportList,$reportCount);
     }
 
-    public function getNotificationPage() {
-        $mailAddressList = $this->mail->getUserMailAddressList();
-        viewNotificationPage($mailAddressList);
-    }
-
     public function getDailyDiaryPage() {
         viewDailyDiaryPage();
     }

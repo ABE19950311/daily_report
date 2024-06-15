@@ -4,6 +4,7 @@ export class Login {
         this.loginUser = document.getElementById("login_user")
         this.loginPassword = document.getElementById("login_password")
         this.loginRegisterBtn = document.getElementById("login_register_btn")
+        this.loginPage = document.getElementById("login_page");
     }
 }
 

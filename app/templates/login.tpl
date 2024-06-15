@@ -15,7 +15,7 @@
     <script type="module" src="../../public/js/request.js"></script>
 </head>
 <body>
-<div id="login_page" class="page_class">
+<div id="login_page" class="page_class d-none">
 <div class="row mgTp">
     <h3 class="title">Please sign in</h3>
     <hr class="divisor">

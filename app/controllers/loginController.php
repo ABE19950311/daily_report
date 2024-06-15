@@ -21,6 +21,19 @@ class LoginController {
         $this->response = new ResponseController();
     }
 
+    public function main() {
+        $method = $_SERVER["REQUEST_METHOD"];
+
+        switch($method) {
+            case "GET":
+                $this->getLoginPage();
+                break;
+            case "POST":
+                $this->apiIsExsistCheck();
+                break;
+        }
+    }
+
     public function getLoginPage() {
         viewLoginPage();
     }

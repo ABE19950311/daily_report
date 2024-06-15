@@ -30,20 +30,17 @@ function router($url) {
     global $sessionController,$mailController,$userRegisterController,$loginController,$homeController,$reportController;
 
     switch($url) {
-        case "/isSessionCheck":
-            $sessionController->apiIsSessionCheck();
-            break;
-        case "/isExsistCheck":
-            $loginController->apiIsExsistCheck();
+        case "/login":
+            $loginController->main();
             break;
         case "/logout":
             $loginController->apiIsLogout();
             break;
+        case "/session":
+            $sessionController->apiIsSessionCheck();
+            break;
         case "/home":
             $homeController->getHomePage();
-            break;
-        case "/notification":
-            $homeController->getNotificationPage();
             break;
         case "/daily":
             $homeController->getDailyDiaryPage();
@@ -55,22 +52,13 @@ function router($url) {
             $reportController->getUpdateReportPage();
             break;
         case "/mailaddress":
-            $mailController->isRegisterMailAddress();
+            $mailController->main();
             break;
-        case "/getUserMailAddress":
-            $mailController->getUserMailAddressList();
-            break;
-        case "/isSendMailAddressList":
+        case "/mailaddress/send":
             $mailController->isSendMailAddressList();
             break;
-        case "/isRegisterUser":
-            $userRegisterController->apiIsRegisterUser();
-            break;
         case "/register":
-            $userRegisterController->getUserRegisterPage();
-            break;
-        case "/":
-            $loginController->getLoginPage();
+            $userRegisterController->main();
             break;
         default:
             getPage($url);
