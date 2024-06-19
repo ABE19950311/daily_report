@@ -1,10 +1,12 @@
 export async function requestToServer(url,method,body={}) {
+    const csrf = document.querySelector('meta[name="csrf-token"]').content
     let option = {}
 
     if(method=="GET") {
         option = {
             method: "GET",
             headers: {
+                'X-CSRF-TOKEN': csrf,
                 "Content-Type": "application/x-www-form-urlencoded"
             }
         }
@@ -12,6 +14,7 @@ export async function requestToServer(url,method,body={}) {
         option = {
             method: method,
             headers: {
+                'X-CSRF-TOKEN': csrf,
                 "Content-Type": "application/x-www-form-urlencoded"
             },
             body: new URLSearchParams(body).toString()
@@ -29,12 +32,14 @@ export async function requestToServer(url,method,body={}) {
 }
 
 export async function requestPageToServer(url,method,body={}) {
+    const csrf = document.querySelector('meta[name="csrf-token"]').content
     let option = {}
 
     if(method=="GET") {
         option = {
             method: "GET",
             headers: {
+                'X-CSRF-TOKEN': csrf,
                 "Content-Type": "application/x-www-form-urlencoded"
             }
         }
@@ -42,6 +47,7 @@ export async function requestPageToServer(url,method,body={}) {
         option = {
             method: method,
             headers: {
+                'X-CSRF-TOKEN': csrf,
                 "Content-Type": "application/x-www-form-urlencoded"
             },
             body: new URLSearchParams(body).toString()
@@ -49,7 +55,9 @@ export async function requestPageToServer(url,method,body={}) {
     }
 
     try {
-        await fetch(url,option)
+        const res = await fetch(url,option)
+        console.log(res)
+        return res
     } catch(e) {
         throw new Error(e)
     }

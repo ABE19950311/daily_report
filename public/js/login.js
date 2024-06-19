@@ -31,10 +31,11 @@ async function sessionCheck() {
 
     try {
         const res = await request.requestToServer(url,"GET")
-        if(res.applicationStatusCode=="problem_process") {
-            throw new Error(res.applicationMessage)
+        if(res.statusCode==200) {
+            return true  
+        } else {
+            throw new Error("page not found")
         }
-        return true
     } catch(e) {
         console.error(e)
         return false
@@ -48,7 +49,7 @@ async function loadPageHome() {
 
     try {
         await request.requestPageToServer(url,"GET")
-        window.location.href = `${url}`
+        window.location.href = url
     } catch(e) {
         console.error(e)
     }  
@@ -58,8 +59,12 @@ async function loadUserRegisterPage() {
     const url = "https://192.168.64.6/register"
 
     try {
-        await request.requestPageToServer(url,"GET")
-        window.location.href = `${url}`
+        const res = await request.requestPageToServer(url,"GET")
+        if(res.status==200) {
+            window.location.href = url   
+        } else {
+            throw new Error("page not found")
+        }
     } catch(e) {
         console.error(e)
     }  
@@ -68,16 +73,18 @@ async function loadUserRegisterPage() {
 async function isExsistUserCheck() {
     const url = "https://192.168.64.6/login"
     const body = {
-        loginUser: login.loginUser.value,
-        loginPassword: login.loginPassword.value
+        user: login.loginUser.value,
+        password: login.loginPassword.value
     }
 
     try {
         const res = await request.requestToServer(url,"POST",body)
-        if(res.applicationStatusCode=="problem_process") {
-            throw new Error(res.applicationMessage)
+        console.log(res)
+        if(res.statusCode==200) {
+            loadPageHome()
+        } else {
+            throw new Error("user dose not exsist")
         }
-        loadPageHome()
     } catch(e) {
         console.error(e)
     }

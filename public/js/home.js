@@ -87,11 +87,12 @@ async function isLogout() {
 
     try {
         const res = await request.requestToServer(url,"GET")
-        if(res.applicationStatusCode=="problem_process") {
-            throw new Error(res.applicationMessage)
+        if(res.statusCode==200) {
+            document.cookie = "sessionToken=; max-age=0"
+            loadLoginPage()
+        } else {
+            throw new Error("error")
         }
-        document.cookie = "sessionToken=; max-age=0"
-        loadLoginPage()
     } catch(e) {
         console.error(e)
     }
@@ -102,7 +103,7 @@ async function loadLoginPage() {
 
     try {
         await request.requestPageToServer(url,"GET")
-        window.location.href = `${url}`
+        window.location.href = url
     } catch(e) {
         console.error(e)
     } 
