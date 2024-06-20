@@ -115,4 +115,24 @@ class User extends Authenticatable
             return false;
         }
     }
+
+    public function getLoginUserId($token) {
+        $user = $this->getToken($token);
+
+        $params = [
+            ":name"=>$user
+        ];
+
+        try {
+            $user_id = DB::select("select id from users where name=:name",$params);
+            if(!empty($user_id)) {
+                return $user_id[0]->id;
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
 }

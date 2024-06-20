@@ -70,12 +70,12 @@
             <th scope="col">Address</th>
           </tr>
         </thead>
-          {foreach from=$mailAddressList item=value name=mail}
+          @foreach ($addressList as $address)
             <tbody id="mailAddressBody">
-              <th scope="row">{$smarty.foreach.mail.iteration}</th>
-              <td>{$value}</td>
+              <th scope="row">{{$loop->iteration}}</th>
+              <td>{{$address->address}}</td>
             </tbody>
-          {/foreach}
+          @endforeach
       </table>
 
       <div class="col-auto">

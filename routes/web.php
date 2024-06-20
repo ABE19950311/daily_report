@@ -5,6 +5,8 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserRegisterController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MailController;
+use App\Http\Controllers\ReportController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -13,5 +15,7 @@ use App\Http\Controllers\HomeController;
 Route::resource('login', 'LoginController');
 Route::resource('register', 'UserRegisterController');
 Route::resource('home', 'HomeController');
+Route::resource('mail', 'MailController');
+Route::resource('report', 'ReportController');
 Route::get('/session', 'SessionController@sessionCheck');
 Route::get('/logout', 'SessionController@isLogout');

@@ -31,7 +31,7 @@ function initialEvents() {
     if(header.logoutBtn) header.logoutBtn.addEventListener("click",isLogout);
     if(header.diaryListHomeBtn) header.diaryListHomeBtn.addEventListener("click",loadHomePage);
     if(header.notificationTransitionBtn) header.notificationTransitionBtn.addEventListener("click",loadNotificationPage)
-    if(header.dailyDiaryBtn) header.dailyDiaryBtn.addEventListener("click",loadDaiyDiaryPage);
+    if(header.dailyDiaryBtn) header.dailyDiaryBtn.addEventListener("click",loadReportPage);
     if(notification.notificationRecordBtn) notification.notificationRecordBtn.addEventListener("click",registerMailAddress);
     if(notification.notificationSubmitBtn) notification.notificationSubmitBtn.addEventListener("click",sendMailAddressList);
     if(report.reportSubmitBtn) report.reportSubmitBtn.addEventListener("click",submissionReport);
@@ -125,18 +125,18 @@ async function loadHomePage() {
 }
 
 async function loadNotificationPage() {
-    const url = "https://192.168.64.6/mailaddress"
+    const url = "https://192.168.64.6/mail"
 
     try {
         await request.requestPageToServer(url,"GET")
-        window.location.href = `${url}`
+        window.location.href = url
     } catch(e) {
         console.error(e)
     } 
 }
 
 async function registerMailAddress() {
-    const url = "https://192.168.64.6/mailaddress"
+    const url = "https://192.168.64.6/mail"
 
     const body = {
         mailAddress: notification.notification.value
@@ -144,35 +144,35 @@ async function registerMailAddress() {
 
     try {
         const res = await request.requestToServer(url,"POST",body)
-        if(res.applicationStatusCode=="problem_process") {
-            throw new Error(res.applicationMessage)
+        if(res.statusCode==200) {
+            loadHomePage()
+        } else {
+            throw new Error("register failed")
         }
-
     } catch(e) {
         console.error(e)
     }
 }
 
 async function sendMailAddressList() {
-    const url = "https://192.168.64.6/mailaddress/send"
+    const url = "https://192.168.64.6/mail/list"
 
     try {
         const res = await request.requestToServer(url,"GET")
-        if(res.applicationStatusCode=="problem_process") {
-            throw new Error(res.applicationMessage)
+        if(res.statusCode!=200) {
+            throw new Error("register failed")
         }
-
     } catch(e) {
         console.error(e)
     }
 }
 
-async function loadDaiyDiaryPage() {
-    const url = "https://192.168.64.6/daily"
+async function loadReportPage() {
+    const url = "https://192.168.64.6/report"
 
     try {
         await request.requestPageToServer(url,"GET")
-        window.location.href = `${url}`
+        window.location.href = url
     } catch(e) {
         console.error(e)
     } 
