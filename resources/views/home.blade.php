@@ -63,30 +63,30 @@
       <th scope="col">削除</th>
     </tr>
   </thead>
-  <!-- <tbody>
-    {foreach from=$reportList item=value name=report}
+  <tbody>
+    @foreach ($reportList as $report)
       <tr>
-        <th scope="row">{$value["title"]}</th>
-        <td>{$value["sei"]}</td>
-        <td>{$value["mei"]}</td>
-        <td>{$value["category"]}</td>
-        <td><button class="show_report_btn btn btn-primary" value={$value["id"]}>閲覧</button></td>
-        <td><button class="navigate_to_update_report_btn btn btn-success" value={$value["id"]}>編集</button></td>
-        <td><button class="delete_report_btn btn btn-dark" value={$value["id"]}>削除</button></td>
+        <th scope="row">{{$report->title}}</th>
+        <td>{{$report->sei}}</td>
+        <td>{{$report->mei}}</td>
+        <td>{{$report->category}}</td>
+        <td><button class="show_report_btn btn btn-primary" value={{$report->id}}>閲覧</button></td>
+        <td><button class="navigate_to_update_report_btn btn btn-success" value={{$report->id}}>編集</button></td>
+        <td><button class="delete_report_btn btn btn-dark" value={{$report->id}}>削除</button></td>
       </tr>
-    {/foreach}
-  </tbody> -->
+    @endforeach
+  </tbody>
 </table>
 
-<!-- <nav aria-label="Page navigation example">
+<nav aria-label="Page navigation example">
   <ul class="pagination justify-content-center">
     <li class="page-item" id="pagenation_previous"><a class="page-link" href="#">Previous</a></li>
-    {for $val=1 to $reportCount}
-      <li class="pagenation-item" value={$val}><a class="page-link" href="#">{$val}</a></li>
-    {/for}
+    @for ($i=1;$i<=$reportSize;$i++)
+      <li class="pagenation-item" value={{$i}}><a class="page-link" href="#">{{$i}}</a></li>
+    @endfor
     <li class="page-item" id="pagenation_next"><a class="page-link" href="#">Next</a></li>
   </ul>
-</nav> -->
+</nav>
 
 </body>
 </html>

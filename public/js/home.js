@@ -193,10 +193,11 @@ async function submissionReport() {
 
     try {
         const res = await request.requestToServer(apiUrl,"POST",body)
-        if(res.applicationStatusCode=="problem_process") {
-            throw new Error(res.applicationMessage)
+        if(res.statusCode==200) {
+            loadHomePage()
+        } else {
+            throw new Error("register failed")
         }
-        loadHomePage()
     } catch(e) {
         console.error(e)
     }   
@@ -209,7 +210,7 @@ async function isShowReport(id) {
 
     const params = {reportid:id}
     const query = new URLSearchParams(params).toString()
-    const url = `https://192.168.64.6/report?${query}`
+    const url = `https://192.168.64.6/report/show?${query}`
 
     try {
         const res = await request.requestPageToServer(url,"GET")

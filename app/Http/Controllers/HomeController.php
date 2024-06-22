@@ -3,16 +3,31 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Report;
+use App\Models\User;
 
 class HomeController extends Controller
 {
+    private $user;
+    private $report;
+
+    public function __construct() {
+        $this->user = new User();
+        $this->report = new Report();
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $query = $request->query("page");
-        return view('home')->with("page",$query);
+        $page = $request->query("page");
+        $token = $request->cookie('sessionToken');
+        $user_id = $this->user->getLoginUserId($token);
+
+        $reportList = $this->report->getReportList($page,$user_id);
+        $reportSize = $this->report->getReportSize($user_id);
+        return view('home')->with("reportList",$reportList)->with("reportSize",$reportSize);
     }
 
     /**

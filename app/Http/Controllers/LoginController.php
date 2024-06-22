@@ -1,23 +1,5 @@
 <?php
 
-// public function apiIsLogout() {
-//     $sessionToken = $_COOKIE["sessionToken"];
-//     if(!$sessionToken) {
-//         $this->response->responseProblemSessiionToken("Session does not exist");
-//         return;
-//     }
-//     $deleteSession = $this->redis->deleteSessionToken($sessionToken);
-//     if(!$deleteSession) {
-//         $this->response->responseProblemSessiionToken("Failed to delete Session");
-//         return;
-//     }
-//     $responseBody = [
-//         "applicationStatusCode" => "Success",
-//         "applicationMessage" => "Success"
-//     ];
-//     $this->response->doResponse(200,$this->RESPONSE_HEADER,$responseBody);
-// }
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
