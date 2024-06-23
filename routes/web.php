@@ -12,6 +12,10 @@ use App\Http\Controllers\ReportController;
 //     return view('welcome');
 // });
 
+Route::get('/report/show', 'ReportController@isShowReport');
+Route::get('/report/update', 'ReportController@isShowUpdateReportPage');
+Route::put('/report', 'ReportController@update');
+Route::delete('/report', 'ReportController@destroy');
 Route::resource('login', 'LoginController');
 Route::resource('register', 'UserRegisterController');
 Route::resource('home', 'HomeController');

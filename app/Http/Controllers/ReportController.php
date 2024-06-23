@@ -79,17 +79,58 @@ class ReportController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        $report_id = $request->query("reportid");
+
+        $requestBody = [
+            'id' => $report_id,
+            'title' => $request->input("title"),
+            'sei' => $request->input("sei"),
+            'mei'=> $request->input("mei"),
+            'category'=> $request->input("category"),
+            'content' => $request->input("content"),
+            'url'=> $request->input("url"),
+            'image_path' => $request->input("image_path")
+        ];
+        
+        $res = $this->report->updateReport($requestBody);
+
+        if($res) {
+            return response()->json(['statusCode' => 200]);
+        } else {
+            return response()->json(['statusCode' => 500]);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        //
+        $report_id = $request->query("reportid");
+        $res = $this->report->deleteReport($report_id);
+
+        if($res) {
+            return response()->json(['statusCode' => 200]);
+        } else {
+            return response()->json(['statusCode' => 500]);
+        }
     }
 
+    public function isShowReport(Request $request) {
+        $report_id = $request->query("reportid");
+        $report = $this->fetchReport($report_id);
+        return view('report')->with("report",$report);
+    }
+
+    public function isShowUpdateReportPage(Request $request) {
+        $report_id = $request->query("reportid");
+        $report = $this->fetchReport($report_id);
+        return view('updateReport')->with("report",$report);
+    }
+
+    private function fetchReport($report_id) {
+        return $this->report->getReport($report_id);
+    }
 }

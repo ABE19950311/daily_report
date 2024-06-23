@@ -44,6 +44,44 @@ class Report extends Model
         }
     }
 
+    public function updateReport($requestBody) {
+        $params = [
+            ":id" => $requestBody["id"],
+            ":title" => $requestBody["title"],
+            ":sei" => $requestBody["sei"],
+            ":mei" => $requestBody["mei"],
+            ":category" => $requestBody["category"],
+            ":content" => $requestBody["content"],
+            ":url" => $requestBody["url"],
+            ":image_path" => $requestBody["image_path"],
+        ];
+
+        $column = "title=:title,sei=:sei,mei=:mei,category=:category,content=:content,url=:url,image_path=:image_path";
+        $query = "id=:id";
+
+        try {
+            DB::update("UPDATE reports SET $column WHERE $query",$params);
+            return true;
+        } catch (Exception $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
+
+    public function deleteReport($report_id) {
+        $query = "id=:report_id";
+        $params = [
+            ":report_id" => $report_id
+        ];
+        try {
+            DB::delete("DELETE FROM reports WHERE $query",$params);
+            return true;
+        } catch (Exception $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
+
     public function getReportList($page,$user_id) {
 
         $reportsDisplayLimit = 10;
@@ -62,15 +100,20 @@ class Report extends Model
         }
     }
 
-    public function getReport() {
-        $reportId = $_GET["reportid"];
-        
+    public function getReport($report_id) {
         $column = "id,title,sei,mei,category,content,url,image_path";
-        $query = "id=:reportId";
-        $params = ["reportId"=>$reportId];
+        $query = "id=:report_id";
+        $params = [
+            ":report_id" => $report_id
+        ];
 
-        $report = $this->mysql->dbSelect("report",$column,$query,$params);
-        return $report;
+        try {
+            $report = DB::select("select $column from reports where $query",$params);
+            return $report[0];
+        } catch (Exception $e) {
+            echo $e->getMessage();
+            return false;
+        }
     }
 
     public function getReportSize($user_id) {

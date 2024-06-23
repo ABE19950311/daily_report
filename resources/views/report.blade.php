@@ -55,7 +55,7 @@
     <div class="container">
     <main>
       <div class="py-5 text-center">
-        <h2>{$report[0]["title"]}</h2>
+        <h2>{{$report->title}}</h2>
       </div>
 
       <div class="row g-5">
@@ -63,23 +63,23 @@
             <div class="row g-3">
               <div class="col-sm-6">
                 <label for="sei" class="form-label">姓</label>
-                <h3>{$report[0]["sei"]}</h3>
+                <h3>{{$report->sei}}</h3>
               </div>
               <div class="col-sm-6">
                 <label for="mei" class="form-label">名</label>
-                <h3>{$report[0]["mei"]}</h3>
+                <h3>{{$report->mei}}</h3>
               </div>
 
               <div class="col-16">
                 <span>内容</span>
                 <br>
-                <span>{$report[0]["content"]}</span>
+                <span>{{$report->content}}</span>
               </div>
 
               <div class="col-16">
                 <span>参照</span>
                 <br>
-                <span>{$report[0]["url"]}</span>
+                <span>{{$report->url}}</span>
               </div>
             </div>
 

@@ -214,17 +214,18 @@ async function isShowReport(id) {
 
     try {
         const res = await request.requestPageToServer(url,"GET")
-        window.location.href = `${url}`
+        window.location.href = url
     } catch(e) {
         console.error(e)
     }
 }
 
 async function isUpdateReport() {
-    const url = `https://192.168.64.6/report`
+    const params = {reportid:report.updateReport.value}
+    const query = new URLSearchParams(params).toString()
+    const url = `https://192.168.64.6/report?${query}`
 
     const body = {
-        reportid: report.updateReport.value,
         title: report.updateTitle.value,
         sei: report.updateSei.value,
         mei: report.updateMei.value,
@@ -236,10 +237,11 @@ async function isUpdateReport() {
 
     try {
         const res = await request.requestToServer(url,"PUT",body)
-        if(res.applicationStatusCode=="problem_process") {
-            throw new Error(res.applicationMessage)
+        if(res.statusCode==200) {
+            loadHomePage()
+        } else {
+            throw new Error("register failed")
         }
-        //loadHomePage()
     } catch(e) {
         console.error(e)
     }
@@ -255,10 +257,11 @@ async function isDeleteReport(id) {
 
     try {
         const res = await request.requestToServer(url,"DELETE")
-        if(res.applicationStatusCode=="problem_process") {
-            throw new Error(res.applicationMessage)
+        if(res.statusCode==200) {
+            loadHomePage()
+        } else {
+            throw new Error("register failed")
         }
-        loadHomePage()
     } catch(e) {
         console.error(e)
     }
@@ -275,7 +278,7 @@ async function navigateToReportPage(id) {
 
     try {
         const res = await request.requestPageToServer(url,"GET")
-        window.location.href = `${url}`
+        window.location.href = url
     } catch(e) {
         console.error(e)
     }

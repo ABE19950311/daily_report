@@ -51,6 +51,21 @@
     </nav>
 </div>
 
+<div class="input-group">
+  <input type="text" placeholder="タイトルで検索">
+  <button class="btn btn-outline-success" type="button" id="button-addon2"><i class="fas fa-search"></i> 検索</button>
+</div>
+
+<div class="input-group">
+<select aria-label="Default select example">
+  <option selected>Open this select menu</option>
+  <option value="1">One</option>
+  <option value="2">Two</option>
+  <option value="3">Three</option>
+</select>
+<button class="btn btn-outline-success" type="button" id="button-addon2"><i class="fas fa-search"></i> 検索</button>
+</div>
+
 <table class="table">
   <thead class="table-dark">
     <tr>
