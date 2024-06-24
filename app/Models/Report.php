@@ -82,17 +82,28 @@ class Report extends Model
         }
     }
 
-    public function getReportList($page,$user_id) {
+    public function getReportList($page,$user_id,$titleSearch) {
 
         $reportsDisplayLimit = 10;
         $offset = ($page-1) * $reportsDisplayLimit;
+        $query = null;
+        $params = [];
 
-        $params = [
-            ":user_id" => $user_id,
-        ];
+        if(!is_null($titleSearch)) {
+            $query = "user_id=:user_id and title=:titleSearch";
+            $params = [
+                ":user_id" => $user_id,
+                ":titleSearch" => $titleSearch
+            ];
+        } else {
+            $query = "user_id=:user_id";
+            $params = [
+                ":user_id" => $user_id,
+            ];
+        }
 
         try {
-            $reportList = DB::select("select id,title,sei,mei,category,content,url,image_path from reports where user_id=:user_id LIMIT $reportsDisplayLimit OFFSET $offset",$params);
+            $reportList = DB::select("select id,title,sei,mei,category,content,url,image_path from reports where $query LIMIT $reportsDisplayLimit OFFSET $offset",$params);
             return $reportList;
         } catch (Exception $e) {
             echo $e->getMessage();
@@ -116,15 +127,26 @@ class Report extends Model
         }
     }
 
-    public function getReportSize($user_id) {
+    public function getReportSize($user_id,$titleSearch) {
         $reportDisplayLimit = 10;
+        $query = null;
+        $params = [];
 
-        $params = [
-            ":user_id" => $user_id,
-        ];
+        if(!is_null($titleSearch)) {
+            $query = "user_id=:user_id and title=:titleSearch";
+            $params = [
+                ":user_id" => $user_id,
+                ":titleSearch" => $titleSearch
+            ];
+        } else {
+            $query = "user_id=:user_id";
+            $params = [
+                ":user_id" => $user_id,
+            ];
+        }
 
         try {
-            $reportCount = DB::select("select count(*) as record from reports where user_id=:user_id",$params);
+            $reportCount = DB::select("select count(*) as record from reports where $query",$params);
             return floor($reportCount[0]->record/$reportDisplayLimit)+1;
         } catch (Exception $e) {
             echo $e->getMessage();

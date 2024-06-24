@@ -1,8 +1,7 @@
 import * as page from "./class.js";
 import * as request from "./request.js";
 
-let login = null;
-let register = null;
+let home = null;
 let header = null;
 let notification = null;
 let initialData = null;
@@ -10,8 +9,7 @@ let report = null;
 
 window.addEventListener("DOMContentLoaded",()=>{
     try {
-        login = new page.Login();
-        register = new page.Register();   
+        home = new page.Home();
         header = new page.Header();
         notification = new page.Notification();
         initialData = new page.initialData();
@@ -24,7 +22,11 @@ window.addEventListener("DOMContentLoaded",()=>{
 
 async function main() {
     initialEvents();
+    //ページネーション用に現在のページをセッターにセットする
     initialReportCurrentPage();
+    //title検索欄の値をセッターにセットする
+    //セットした値で検索状態を継続してページ遷移する
+    initialTitleSearchValue()
 }
 
 function initialEvents() {
@@ -38,6 +40,8 @@ function initialEvents() {
     if(report.updateReportSubmitBtn) report.updateReportSubmitBtn.addEventListener("click",isUpdateReport)
     if(report.previousBtn) report.previousBtn.addEventListener("click", {flag:"previous",page:null,handleEvent:updateCurrentPage})
     if(report.nextBtn) report.nextBtn.addEventListener("click", {flag:"next",page:null,handleEvent:updateCurrentPage})
+    if(home.titleSearchBtn) home.titleSearchBtn.addEventListener("click", setTitleSearchValue)
+    //if(home.categorySearchBtn) home.categorySearchBtn.addEventListener("click")
     //smartyで作成したreportListをquerySelectorAll使って配列でdom要素受け取る
     //forEachで取得要素にevent付与してく
     if(report.showReportBtn.length) {
@@ -77,9 +81,17 @@ function initialEvents() {
 }
 
 function initialReportCurrentPage() {
-    if(window.location.search.match(/^\?page=/g)) {
-        report.currentPage = window.location.search.split("").pop()
+    const url = window.location.href
+    const urlObj = new URL(url)
+    const params = new URLSearchParams(urlObj.search);
+    const page = params.get('page');
+    if(page) {
+        report.currentPage = page
     }
+}
+
+function initialTitleSearchValue() {
+    home.titleSearchVal = home.titleSearch.value
 }
 
 async function isLogout() {
@@ -111,14 +123,25 @@ async function loadLoginPage() {
 
 async function loadHomePage() {
     const page = report.currentPage ? report.currentPage : 1
-
-    const params = {page:page}
+    const titleSearch = home.titleSearchVal ? home.titleSearchVal : null
+    let params = {}
+    
+    if(titleSearch) {
+        params = {
+            page:page,
+            titleSearch:titleSearch
+        }
+    } else {
+        params = {
+            page:page
+        }
+    }
     const query = new URLSearchParams(params).toString()
     const url = `https://192.168.64.6/home?${query}`
 
     try {
         await request.requestPageToServer(url,"GET")
-        window.location.href = `${url}`
+        window.location.href = url
     } catch(e) {
         console.error(e)
     } 
@@ -309,5 +332,10 @@ function updateCurrentPage(flag,page) {
         break;
     }
 
+    loadHomePage()
+}
+
+function setTitleSearchValue() {
+    home.titleSearchVal = home.titleSearch.value
     loadHomePage()
 }

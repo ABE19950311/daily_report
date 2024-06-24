@@ -22,12 +22,13 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         $page = $request->query("page");
+        $titleSearch = $request->query("titleSearch");
         $token = $request->cookie('sessionToken');
         $user_id = $this->user->getLoginUserId($token);
 
-        $reportList = $this->report->getReportList($page,$user_id);
-        $reportSize = $this->report->getReportSize($user_id);
-        return view('home')->with("reportList",$reportList)->with("reportSize",$reportSize);
+        $reportList = $this->report->getReportList($page,$user_id,$titleSearch);
+        $reportSize = $this->report->getReportSize($user_id,$titleSearch);
+        return view('home')->with("reportList",$reportList)->with("reportSize",$reportSize)->with("titleSearch",$titleSearch);
     }
 
     /**

@@ -103,3 +103,19 @@ export class initialData {
         return this._userMailAddressList;
     }
 }
+
+export class Home {
+    constructor() {
+        this.categorySearchBtn = document.getElementById("category_search_btn")
+        this.titleSearchBtn = document.getElementById("title_search_btn")
+        this.titleSearch = document.getElementById("title_search")
+        this.titleSearchVal = null
+    }
+
+    set titleSearchVal(value) {
+        this._titleSearchVal = value
+    }
+    get titleSearchVal() {
+        return this._titleSearchVal
+    }
+}
