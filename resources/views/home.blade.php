@@ -61,16 +61,17 @@
 </div>
 
 <div class="input-group">
-<select aria-label="Default select example">
-  <option value="開発">開発</option>
-  <option value="サーバ">サーバ</option>
-  <option value="ネットワーク">ネットワーク</option>
-  <option value="AWS">AWS</option>
-  <option value="コマンドライン">コマンドライン</option>
-  <option value="OS">OS</option>
-  <option value="ミドルウェア">ミドルウェア</option>
-  <option value="エラー対応">エラー対応</option>
-  <option value="その他">その他</option>
+<select aria-label="Default select example" id="category_search">
+  <option value="">カテゴリを選択して下さい</option>
+  <option {{ $categorySearch=='開発' ? 'selected' : '' }} value="開発">開発</option>
+  <option {{ $categorySearch=='サーバ' ? 'selected' : '' }} value="サーバ">サーバ</option>
+  <option {{ $categorySearch=='ネットワーク' ? 'selected' : '' }} value="ネットワーク">ネットワーク</option>
+  <option {{ $categorySearch=='AWS' ? 'selected' : '' }} value="AWS">AWS</option>
+  <option {{ $categorySearch=='コマンドライン' ? 'selected' : '' }} value="コマンドライン">コマンドライン</option>
+  <option {{ $categorySearch=='OS' ? 'selected' : '' }} value="OS">OS</option>
+  <option {{ $categorySearch=='ミドルウェア' ? 'selected' : '' }} value="ミドルウェア">ミドルウェア</option>
+  <option {{ $categorySearch=='エラー対応' ? 'selected' : '' }} value="エラー対応">エラー対応</option>
+  <option {{ $categorySearch=='その他' ? 'selected' : '' }} value="その他">その他</option>
 </select>
 <button class="btn btn-outline-success" type="button" id="category_search_btn"><i class="fas fa-search"></i> 検索</button>
 </div>

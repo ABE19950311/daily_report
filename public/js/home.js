@@ -27,6 +27,7 @@ async function main() {
     //title検索欄の値をセッターにセットする
     //セットした値で検索状態を継続してページ遷移する
     initialTitleSearchValue()
+    initialCategorySearchValue()
 }
 
 function initialEvents() {
@@ -41,7 +42,7 @@ function initialEvents() {
     if(report.previousBtn) report.previousBtn.addEventListener("click", {flag:"previous",page:null,handleEvent:updateCurrentPage})
     if(report.nextBtn) report.nextBtn.addEventListener("click", {flag:"next",page:null,handleEvent:updateCurrentPage})
     if(home.titleSearchBtn) home.titleSearchBtn.addEventListener("click", setTitleSearchValue)
-    //if(home.categorySearchBtn) home.categorySearchBtn.addEventListener("click")
+    if(home.categorySearchBtn) home.categorySearchBtn.addEventListener("click",loadHomePage)
     //smartyで作成したreportListをquerySelectorAll使って配列でdom要素受け取る
     //forEachで取得要素にevent付与してく
     if(report.showReportBtn.length) {
@@ -78,6 +79,11 @@ function initialEvents() {
             elm.addEventListener("click",{flag:null,page:elm.value,handleEvent:updateCurrentPage})
         })
     }
+    if(home.categorySearch) {
+        home.categorySearch.addEventListener("change",(event)=>{
+            home.categorySearchVal = event.target.value
+        })
+    }
 }
 
 function initialReportCurrentPage() {
@@ -92,6 +98,13 @@ function initialReportCurrentPage() {
 
 function initialTitleSearchValue() {
     home.titleSearchVal = home.titleSearch.value
+}
+
+function initialCategorySearchValue() {
+    const categoryIndex = home.categorySearch.selectedIndex
+    const category = home.categorySearch.options[categoryIndex].value
+    home.categorySearchVal = category
+    console.log(home.categorySearchVal)
 }
 
 async function isLogout() {
@@ -123,19 +136,14 @@ async function loadLoginPage() {
 
 async function loadHomePage() {
     const page = report.currentPage ? report.currentPage : 1
-    const titleSearch = home.titleSearchVal ? home.titleSearchVal : null
-    let params = {}
+    const titleSearch = home.titleSearchVal ? home.titleSearchVal : ""
+    const categorySearch = home.categorySearchVal ? home.categorySearchVal : ""
     
-    if(titleSearch) {
-        params = {
+    const params = {
             page:page,
-            titleSearch:titleSearch
+            titleSearch:titleSearch,
+            categorySearch:categorySearch
         }
-    } else {
-        params = {
-            page:page
-        }
-    }
     const query = new URLSearchParams(params).toString()
     const url = `https://192.168.64.6/home?${query}`
 

@@ -23,12 +23,13 @@ class HomeController extends Controller
     {
         $page = $request->query("page");
         $titleSearch = $request->query("titleSearch");
+        $categorySearch = $request->query("categorySearch");
         $token = $request->cookie('sessionToken');
         $user_id = $this->user->getLoginUserId($token);
 
-        $reportList = $this->report->getReportList($page,$user_id,$titleSearch);
-        $reportSize = $this->report->getReportSize($user_id,$titleSearch);
-        return view('home')->with("reportList",$reportList)->with("reportSize",$reportSize)->with("titleSearch",$titleSearch);
+        $reportList = $this->report->getReportList($page,$user_id,$titleSearch,$categorySearch);
+        $reportSize = $this->report->getReportSize($user_id,$titleSearch,$categorySearch);
+        return view('home')->with("reportList",$reportList)->with("reportSize",$reportSize)->with("titleSearch",$titleSearch)->with("categorySearch",$categorySearch);
     }
 
     /**

@@ -107,9 +107,11 @@ export class initialData {
 export class Home {
     constructor() {
         this.categorySearchBtn = document.getElementById("category_search_btn")
+        this.categorySearch = document.getElementById("category_search")
         this.titleSearchBtn = document.getElementById("title_search_btn")
         this.titleSearch = document.getElementById("title_search")
         this.titleSearchVal = null
+        this.categorySearchVal = null
     }
 
     set titleSearchVal(value) {
@@ -117,5 +119,12 @@ export class Home {
     }
     get titleSearchVal() {
         return this._titleSearchVal
+    }
+
+    set categorySearchVal(value) {
+        this._categorySearchVal = value
+    }
+    get categorySearchVal() {
+        return this._categorySearchVal
     }
 }
