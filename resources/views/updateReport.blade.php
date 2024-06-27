@@ -117,14 +117,14 @@
               <div class="col-16">
                 <div class="input-group">
                     <span class="input-group-text">内容</span>
-                    <textarea class="form-control" aria-label="With textarea" id="update_report_content" value={{$report->content}}></textarea>
+                    <textarea class="form-control" aria-label="With textarea" id="update_report_content" value={{$report->content}}>{{$report->content}}</textarea>
                 </div>
               </div>
 
               <div class="col-16">
                 <div class="input-group">
                     <span class="input-group-text">参照</span>
-                    <textarea class="form-control" aria-label="With textarea" id="update_report_url" value={{$report->url}}></textarea>
+                    <textarea class="form-control" aria-label="With textarea" id="update_report_url" value={{$report->url}}>{{$report->url}}</textarea>
                 </div>
               </div>
 
@@ -135,7 +135,8 @@
               </div>
             </div>
 
-            <button class="w-100 btn btn-primary btn-lg" id="update_report_submit_btn">編集</button>
+            <button class="btn btn-primary btn-lg" id="update_report_submit_release_btn">編集（公開）</button>
+            <button class="btn btn-secondary btn-lg" id="update_report_submit_btn">編集（非公開）</button>
         </div>
       </div>
     </main>

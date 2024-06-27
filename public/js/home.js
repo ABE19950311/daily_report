@@ -37,8 +37,10 @@ function initialEvents() {
     if(header.dailyDiaryBtn) header.dailyDiaryBtn.addEventListener("click",loadReportPage);
     if(notification.notificationRecordBtn) notification.notificationRecordBtn.addEventListener("click",registerMailAddress);
     if(notification.notificationSubmitBtn) notification.notificationSubmitBtn.addEventListener("click",sendMailAddressList);
-    if(report.reportSubmitBtn) report.reportSubmitBtn.addEventListener("click",submissionReport);
-    if(report.updateReportSubmitBtn) report.updateReportSubmitBtn.addEventListener("click",isUpdateReport)
+    if(report.reportSubmitReleaseBtn) report.reportSubmitReleaseBtn.addEventListener("click",{release:"1",handleEvent:submissionReport});
+    if(report.reportSubmitBtn) report.reportSubmitBtn.addEventListener("click",{release:"0",handleEvent:submissionReport});
+    if(report.updateReportSubmitReleaseBtn) report.updateReportSubmitReleaseBtn.addEventListener("click",{release:"1",handleEvent:isUpdateReport})
+    if(report.updateReportSubmitBtn) report.updateReportSubmitBtn.addEventListener("click",{release:"0",handleEvent:isUpdateReport})
     if(report.previousBtn) report.previousBtn.addEventListener("click", {flag:"previous",page:null,handleEvent:updateCurrentPage})
     if(report.nextBtn) report.nextBtn.addEventListener("click", {flag:"next",page:null,handleEvent:updateCurrentPage})
     if(home.titleSearchBtn) home.titleSearchBtn.addEventListener("click", setTitleSearchValue)
@@ -209,7 +211,11 @@ async function loadReportPage() {
     } 
 }
 
-async function submissionReport() {
+async function submissionReport(release) {
+    if(this.release) {
+        release = this.release
+    }
+
     const apiUrl = "https://192.168.64.6/report"
 
     const body = {
@@ -219,7 +225,8 @@ async function submissionReport() {
         category: report.checkCategory,
         content: report.content.value,
         url: report.url.value,
-        image_path: report.image.value
+        image_path: report.image.value,
+        is_release: release
     }
 
     try {
@@ -251,7 +258,11 @@ async function isShowReport(id) {
     }
 }
 
-async function isUpdateReport() {
+async function isUpdateReport(release) {
+    if(this.release) {
+        release = this.release
+    }
+
     const params = {reportid:report.updateReport.value}
     const query = new URLSearchParams(params).toString()
     const url = `https://192.168.64.6/report?${query}`
@@ -263,7 +274,8 @@ async function isUpdateReport() {
         category: report.updateCheckCategory,
         content: report.updateContent.value,
         url: report.updateUrl.value,
-        image_path: report.updateImage.value
+        image_path: report.updateImage.value,
+        is_release: release
     }
 
     try {

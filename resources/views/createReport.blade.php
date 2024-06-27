@@ -135,7 +135,8 @@
               </div>
             </div>
 
-            <button class="w-100 btn btn-primary btn-lg" id="report_submit_btn">日記を出す</button>
+            <button class="btn btn-primary btn-lg" id="report_submit_release_btn">提出（公開）</button>
+            <button class="btn btn-secondary btn-lg" id="report_submit_btn">提出（非公開）</button>
         </div>
       </div>
     </main>

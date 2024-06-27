@@ -48,6 +48,7 @@ class ReportController extends Controller
             'content' => $request->input("content"),
             'url'=> $request->input("url"),
             'image_path' => $request->input("image_path"),
+            'is_release' => intval($request->input("is_release")),
             'user_id' => $user_id
         ];
 
@@ -91,7 +92,8 @@ class ReportController extends Controller
             'category'=> $request->input("category"),
             'content' => $request->input("content"),
             'url'=> $request->input("url"),
-            'image_path' => $request->input("image_path")
+            'image_path' => $request->input("image_path"),
+            'is_release' => intval($request->input("is_release"))
         ];
         
         $res = $this->report->updateReport($requestBody);

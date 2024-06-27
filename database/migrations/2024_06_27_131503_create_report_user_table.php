@@ -11,16 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('reports', function (Blueprint $table) {
+        Schema::create('report_user', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('sei');
-            $table->string('mei');
-            $table->string('category');
-            $table->longText('content');
-            $table->longText('url')->nullable();
-            $table->string('image_path')->nullable();
-            $table->boolean('is_release');
+            $table->foreignId('report_id')->constrained('reports');
             $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
         });
@@ -31,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('reports');
+        Schema::dropIfExists('report_user');
     }
 };

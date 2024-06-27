@@ -46,6 +46,7 @@ export class Report {
         this.content = document.getElementById("report_content")
         this.url = document.getElementById("report_url")
         this.image = document.getElementById("report_image")
+        this.reportSubmitReleaseBtn = document.getElementById("report_submit_release_btn")
         this.reportSubmitBtn = document.getElementById("report_submit_btn")
         this.checkCategory = null;
 
@@ -58,6 +59,7 @@ export class Report {
         this.updateContent = document.getElementById("update_report_content")
         this.updateUrl = document.getElementById("update_report_url")
         this.updateImage = document.getElementById("update_report_image")
+        this.updateReportSubmitReleaseBtn = document.getElementById("update_report_submit_release_btn")
         this.updateReportSubmitBtn = document.getElementById("update_report_submit_btn")
         this.updateCheckCategory = null;
 

@@ -20,6 +20,7 @@ class Report extends Model
         'content',
         'url',
         'image_path',
+        'is_release',
         'user_id'
     ];
 
@@ -32,11 +33,12 @@ class Report extends Model
             ":content" => $requestBody["content"],
             ":url" => $requestBody["url"],
             ":image_path" => $requestBody["image_path"],
+            ":is_release" => $requestBody["is_release"],
             ":user_id" => $requestBody["user_id"]
         ];
 
         try {
-            DB::insert("insert into reports (title,sei,mei,category,content,url,image_path,user_id) values (:title,:sei,:mei,:category,:content,:url,:image_path,:user_id)",$params);
+            DB::insert("insert into reports (title,sei,mei,category,content,url,image_path,is_release,user_id) values (:title,:sei,:mei,:category,:content,:url,:image_path,:is_release,:user_id)",$params);
             return true;
         } catch (Exception $e) {
             echo $e->getMessage();
@@ -54,9 +56,10 @@ class Report extends Model
             ":content" => $requestBody["content"],
             ":url" => $requestBody["url"],
             ":image_path" => $requestBody["image_path"],
+            ":is_release" => $requestBody["is_release"]
         ];
 
-        $column = "title=:title,sei=:sei,mei=:mei,category=:category,content=:content,url=:url,image_path=:image_path";
+        $column = "title=:title,sei=:sei,mei=:mei,category=:category,content=:content,url=:url,image_path=:image_path,is_release=:is_release";
         $query = "id=:id";
 
         try {
