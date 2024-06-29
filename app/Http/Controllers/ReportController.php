@@ -5,15 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Report;
 use App\Models\User;
+use App\Models\ReportUser;
 
 class ReportController extends Controller
 {
     private $user;
     private $report;
+    private $report_user;
 
     public function __construct() {
         $this->user = new User();
         $this->report = new Report();
+        $this->report_user = new ReportUser();
     }
 
     /**
@@ -122,7 +125,9 @@ class ReportController extends Controller
 
     public function isShowReport(Request $request) {
         $report_id = $request->query("reportid");
+
         $report = $this->fetchReport($report_id);
+
         return view('report')->with("report",$report);
     }
 
@@ -134,5 +139,19 @@ class ReportController extends Controller
 
     private function fetchReport($report_id) {
         return $this->report->getReport($report_id);
+    }
+
+    public function recordUserReportShow(Request $request) {
+        $token = $request->cookie('sessionToken');
+        $user_id = $this->user->getLoginUserId($token);
+        $report_id = $request->query("reportid");
+    
+        $setRecord = $this->report_user->setRecordUserReportShow($user_id,$report_id);
+
+        if($setRecord) {
+            return response()->json(['statusCode' => 200]);
+        } else {
+            return response()->json(['statusCode' => 500]);
+        }
     }
 }

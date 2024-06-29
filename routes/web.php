@@ -13,6 +13,7 @@ use App\Http\Controllers\ReportController;
 // });
 
 Route::get('/report/show', 'ReportController@isShowReport');
+Route::get('/report/record', 'ReportController@recordUserReportShow');
 Route::get('/report/update', 'ReportController@isShowUpdateReportPage');
 Route::put('/report', 'ReportController@update');
 Route::delete('/report', 'ReportController@destroy');

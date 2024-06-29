@@ -246,15 +246,39 @@ async function isShowReport(id) {
         id = this.id
     }
 
+    const recordShowReport = await recordUserReportShowRequest(id)
+
+    if(!recordShowReport) return
+
     const params = {reportid:id}
     const query = new URLSearchParams(params).toString()
     const url = `https://192.168.64.6/report/show?${query}`
 
     try {
         const res = await request.requestPageToServer(url,"GET")
-        window.location.href = url
+        if (res.status==200) {
+            window.location.href = url;
+        }
     } catch(e) {
         console.error(e)
+    }
+}
+
+async function recordUserReportShowRequest(id) {
+    const params = {reportid:id}
+    const query = new URLSearchParams(params).toString()
+    const url = `https://192.168.64.6/report/record?${query}`
+
+    try {
+        const res = await request.requestToServer(url,"GET")
+        if(res.statusCode==200) {
+            return true
+        } else {
+            throw new Error("register failed")
+        }
+    } catch(e) {
+        console.error(e)
+        return false
     }
 }
 
