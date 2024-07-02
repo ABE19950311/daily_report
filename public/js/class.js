@@ -19,10 +19,7 @@ export class Register {
 
 export class Header {
     constructor() {
-        this.logoutBtn = document.getElementById("logout_btn")
         this.diaryListHomeBtn = document.getElementById("diary_list_home_btn")
-        this.notificationTransitionBtn = document.getElementById("notification_register_btn")
-        this.dailyDiaryBtn = document.getElementById("daily_diary_btn")
     }
 }
 
@@ -38,17 +35,6 @@ export class Notification {
 
 export class Report {
     constructor() {
-        //create
-        this.title = document.getElementById("report_title")
-        this.sei = document.getElementById("report_sei")
-        this.mei = document.getElementById("report_mei")
-        this.radioCategory = document.querySelectorAll('input[name="category"]')
-        this.content = document.getElementById("report_content")
-        this.url = document.getElementById("report_url")
-        this.image = document.getElementById("report_image")
-        this.reportSubmitReleaseBtn = document.getElementById("report_submit_release_btn")
-        this.reportSubmitBtn = document.getElementById("report_submit_btn")
-        this.checkCategory = null;
 
         //update
         this.updateReport = document.getElementById("update_report")

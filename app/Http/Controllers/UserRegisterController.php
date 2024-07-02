@@ -35,9 +35,9 @@ class UserRegisterController extends Controller
         $response = $user->isRegisterUser($requestUser,$password);
         
         if($response) {
-            return response()->json(['statusCode' => 200, 'redirect' => url('/login')]);
+            return redirect('/login');
         } else {
-            return response()->json(['statusCode' => 500, 'redirect' => url('/register')]);
+            return redirect('/userRegister');;
         }
     }
 

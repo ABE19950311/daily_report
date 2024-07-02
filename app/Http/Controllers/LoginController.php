@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Cookie;
 
 class LoginController extends Controller
 {
+
+    public function __construct() {
+        
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -38,16 +43,15 @@ class LoginController extends Controller
         $response = $user->loginCheck($loginUser,$password);
         
         if(!$response) {
-            return response()->json(['statusCode' => 500, 'redirect' => url('/register'), 'message' => "user or password does not exsist"]);
+            return redirect('/login');
         } 
 
         $token = $user->setSessionToken($loginUser);
 
         if($token) {
-            return response()->json(['statusCode' => 200])
-                    ->withCookie('sessionToken', $token);
+            return redirect('/home/1')->withCookie('sessionToken', $token);
         } else {
-            return response()->json(['statusCode' => 500, 'redirect' => url('/register'), 'message' => "failed to generate session token"]);
+            return redirect('/login');
         }
     }
 

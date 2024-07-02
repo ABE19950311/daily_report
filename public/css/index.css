@@ -10,6 +10,10 @@
   margin-top:10%;
 }
 
+.nav-link {
+  cursor: pointer;
+}
+
 .topBtn{
   margin-top:15px;
 }

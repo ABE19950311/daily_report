@@ -88,7 +88,7 @@ class Report extends Model
     public function getReportList($page,$user_id,$titleSearch,$categorySearch) {
         //動的クエリ　共通項を先に変数宣言と代入しておく
         $reportsDisplayLimit = 10;
-        $offset = ($page-1) * $reportsDisplayLimit;
+        $offset = (intval($page)-1) * $reportsDisplayLimit;
         $query = "select id,title,sei,mei,category,content,url,image_path from reports where user_id=:user_id";
         $params = [":user_id" => $user_id];
 

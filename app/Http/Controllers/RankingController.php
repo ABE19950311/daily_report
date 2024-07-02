@@ -3,25 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Report;
-use App\Models\User;
+use App\Models\ReportUser;
 
-class HomeController extends Controller
+class RankingController extends Controller
 {
-    private $user;
-    private $report;
+    private $report_user;
 
     public function __construct() {
-        $this->user = new User();
-        $this->report = new Report();
+        $this->report_user = new ReportUser();
     }
 
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        return view('home');
+        return view("ranking");
     }
 
     /**
@@ -43,16 +40,9 @@ class HomeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request,string $page)
-    {   
-        $titleSearch = $request->query("titleSearch");
-        $categorySearch = $request->query("categorySearch");
-        $token = $request->cookie('sessionToken');
-        $user_id = $this->user->getLoginUserId($token);
-
-        $reportList = $this->report->getReportList($page,$user_id,$titleSearch,$categorySearch);
-        $reportSize = $this->report->getReportSize($user_id,$titleSearch,$categorySearch);
-        return view('home')->with("reportList",$reportList)->with("reportSize",$reportSize)->with("titleSearch",$titleSearch)->with("categorySearch",$categorySearch);
+    public function show(string $id)
+    {
+        //
     }
 
     /**

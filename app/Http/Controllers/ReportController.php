@@ -58,9 +58,9 @@ class ReportController extends Controller
         $res = $this->report->submissonReport($requestBody);
 
         if($res) {
-            return response()->json(['statusCode' => 200]);
+            return redirect('/home/1');
         } else {
-            return response()->json(['statusCode' => 500]);
+            return back()->withInput();
         }
     }
 
@@ -102,9 +102,9 @@ class ReportController extends Controller
         $res = $this->report->updateReport($requestBody);
 
         if($res) {
-            return response()->json(['statusCode' => 200]);
+            return redirect('/home/1');
         } else {
-            return response()->json(['statusCode' => 500]);
+            return back()->withInput();
         }
     }
 

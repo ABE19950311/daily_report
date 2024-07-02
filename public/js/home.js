@@ -31,18 +31,16 @@ async function main() {
 }
 
 function initialEvents() {
-    if(header.logoutBtn) header.logoutBtn.addEventListener("click",isLogout);
     if(header.diaryListHomeBtn) header.diaryListHomeBtn.addEventListener("click",loadHomePage);
-    if(header.notificationTransitionBtn) header.notificationTransitionBtn.addEventListener("click",loadNotificationPage)
-    if(header.dailyDiaryBtn) header.dailyDiaryBtn.addEventListener("click",loadReportPage);
+
     if(notification.notificationRecordBtn) notification.notificationRecordBtn.addEventListener("click",registerMailAddress);
     if(notification.notificationSubmitBtn) notification.notificationSubmitBtn.addEventListener("click",sendMailAddressList);
-    if(report.reportSubmitReleaseBtn) report.reportSubmitReleaseBtn.addEventListener("click",{release:"1",handleEvent:submissionReport});
-    if(report.reportSubmitBtn) report.reportSubmitBtn.addEventListener("click",{release:"0",handleEvent:submissionReport});
+
     if(report.updateReportSubmitReleaseBtn) report.updateReportSubmitReleaseBtn.addEventListener("click",{release:"1",handleEvent:isUpdateReport})
     if(report.updateReportSubmitBtn) report.updateReportSubmitBtn.addEventListener("click",{release:"0",handleEvent:isUpdateReport})
     if(report.previousBtn) report.previousBtn.addEventListener("click", {flag:"previous",page:null,handleEvent:updateCurrentPage})
     if(report.nextBtn) report.nextBtn.addEventListener("click", {flag:"next",page:null,handleEvent:updateCurrentPage})
+
     if(home.titleSearchBtn) home.titleSearchBtn.addEventListener("click", setTitleSearchValue)
     if(home.categorySearchBtn) home.categorySearchBtn.addEventListener("click",loadHomePage)
     //smartyで作成したreportListをquerySelectorAll使って配列でdom要素受け取る
@@ -99,41 +97,17 @@ function initialReportCurrentPage() {
 }
 
 function initialTitleSearchValue() {
-    home.titleSearchVal = home.titleSearch.value
-}
-
-function initialCategorySearchValue() {
-    const categoryIndex = home.categorySearch.selectedIndex
-    const category = home.categorySearch.options[categoryIndex].value
-    home.categorySearchVal = category
-    console.log(home.categorySearchVal)
-}
-
-async function isLogout() {
-    const url = "https://192.168.64.6/logout"
-
-    try {
-        const res = await request.requestToServer(url,"GET")
-        if(res.statusCode==200) {
-            document.cookie = "sessionToken=; max-age=0"
-            loadLoginPage()
-        } else {
-            throw new Error("error")
-        }
-    } catch(e) {
-        console.error(e)
+    if(home.titleSearchVal) {
+        home.titleSearchVal = home.titleSearch.value
     }
 }
 
-async function loadLoginPage() {
-    const url = "https://192.168.64.6/login"
-
-    try {
-        await request.requestPageToServer(url,"GET")
-        window.location.href = url
-    } catch(e) {
-        console.error(e)
-    } 
+function initialCategorySearchValue() {
+    if(home.categorySearch) {
+        const categoryIndex = home.categorySearch.selectedIndex
+        const category = home.categorySearch.options[categoryIndex].value
+        home.categorySearchVal = category
+    }
 }
 
 async function loadHomePage() {
@@ -142,26 +116,13 @@ async function loadHomePage() {
     const categorySearch = home.categorySearchVal ? home.categorySearchVal : ""
     
     const params = {
-            page:page,
             titleSearch:titleSearch,
             categorySearch:categorySearch
         }
     const query = new URLSearchParams(params).toString()
-    const url = `https://192.168.64.6/home?${query}`
+    const url = `https://192.168.64.6/home/${page}?${query}`
 
     try {
-        await request.requestPageToServer(url,"GET")
-        window.location.href = url
-    } catch(e) {
-        console.error(e)
-    } 
-}
-
-async function loadNotificationPage() {
-    const url = "https://192.168.64.6/mail"
-
-    try {
-        await request.requestPageToServer(url,"GET")
         window.location.href = url
     } catch(e) {
         console.error(e)
@@ -198,47 +159,6 @@ async function sendMailAddressList() {
     } catch(e) {
         console.error(e)
     }
-}
-
-async function loadReportPage() {
-    const url = "https://192.168.64.6/report"
-
-    try {
-        await request.requestPageToServer(url,"GET")
-        window.location.href = url
-    } catch(e) {
-        console.error(e)
-    } 
-}
-
-async function submissionReport(release) {
-    if(this.release) {
-        release = this.release
-    }
-
-    const apiUrl = "https://192.168.64.6/report"
-
-    const body = {
-        title: report.title.value,
-        sei: report.sei.value,
-        mei: report.mei.value,
-        category: report.checkCategory,
-        content: report.content.value,
-        url: report.url.value,
-        image_path: report.image.value,
-        is_release: release
-    }
-
-    try {
-        const res = await request.requestToServer(apiUrl,"POST",body)
-        if(res.statusCode==200) {
-            loadHomePage()
-        } else {
-            throw new Error("register failed")
-        }
-    } catch(e) {
-        console.error(e)
-    }   
 }
 
 async function isShowReport(id) {
