@@ -3,16 +3,12 @@ import * as request from "./request.js";
 
 let home = null;
 let header = null;
-let notification = null;
-let initialData = null;
 let report = null;
 
 window.addEventListener("DOMContentLoaded",()=>{
     try {
         home = new page.Home();
         header = new page.Header();
-        notification = new page.Notification();
-        initialData = new page.initialData();
         report = new page.Report();
         main();
     } catch(e) {
@@ -30,14 +26,15 @@ async function main() {
     initialCategorySearchValue()
 }
 
+//TODO
+//検索機能formにする
+//categoryとタイトル検索欄２つ用意する、ボタンは両方共有で１個
+//page番号はフロントから渡した番号をbladeに埋め込んでおく
+//検索時に埋め込んだ番号も渡す
+
 function initialEvents() {
     if(header.diaryListHomeBtn) header.diaryListHomeBtn.addEventListener("click",loadHomePage);
 
-    if(notification.notificationRecordBtn) notification.notificationRecordBtn.addEventListener("click",registerMailAddress);
-    if(notification.notificationSubmitBtn) notification.notificationSubmitBtn.addEventListener("click",sendMailAddressList);
-
-    if(report.updateReportSubmitReleaseBtn) report.updateReportSubmitReleaseBtn.addEventListener("click",{release:"1",handleEvent:isUpdateReport})
-    if(report.updateReportSubmitBtn) report.updateReportSubmitBtn.addEventListener("click",{release:"0",handleEvent:isUpdateReport})
     if(report.previousBtn) report.previousBtn.addEventListener("click", {flag:"previous",page:null,handleEvent:updateCurrentPage})
     if(report.nextBtn) report.nextBtn.addEventListener("click", {flag:"next",page:null,handleEvent:updateCurrentPage})
 
@@ -45,35 +42,7 @@ function initialEvents() {
     if(home.categorySearchBtn) home.categorySearchBtn.addEventListener("click",loadHomePage)
     //smartyで作成したreportListをquerySelectorAll使って配列でdom要素受け取る
     //forEachで取得要素にevent付与してく
-    if(report.showReportBtn.length) {
-        report.showReportBtn.forEach((elm)=>{
-            elm.addEventListener("click",{id:elm.value,handleEvent:isShowReport})
-        })
-    }
-    if(report.navigateToUpdateReportBtn.length) {
-        report.navigateToUpdateReportBtn.forEach((elm)=>{
-            elm.addEventListener("click",{id:elm.value,handleEvent:navigateToReportPage})
-        })
-    }
-    if(report.deleteReportBtn.length) {
-        report.deleteReportBtn.forEach((elm)=>{
-            elm.addEventListener("click",{id:elm.value,handleEvent:isDeleteReport})
-        })
-    }
-    if(report.radioCategory) {
-        report.radioCategory.forEach((radio)=>{
-            radio.addEventListener("change",(event)=>{
-                report.checkCategory = event.target.value
-            });
-        })
-    }
-    if(report.updateRadioCategory) {
-        report.updateRadioCategory.forEach((radio)=>{
-            radio.addEventListener("change",(event)=>{
-                report.updateCheckCategory = event.target.value
-            })
-        })
-    }
+    
     if(report.pagenationBtn.length) {
         report.pagenationBtn.forEach((elm)=>{
             elm.addEventListener("click",{flag:null,page:elm.value,handleEvent:updateCurrentPage})
@@ -127,148 +96,6 @@ async function loadHomePage() {
     } catch(e) {
         console.error(e)
     } 
-}
-
-async function registerMailAddress() {
-    const url = "https://192.168.64.6/mail"
-
-    const body = {
-        mailAddress: notification.notification.value
-    }
-
-    try {
-        const res = await request.requestToServer(url,"POST",body)
-        if(res.statusCode==200) {
-            loadHomePage()
-        } else {
-            throw new Error("register failed")
-        }
-    } catch(e) {
-        console.error(e)
-    }
-}
-
-async function sendMailAddressList() {
-    const url = "https://192.168.64.6/mail/list"
-
-    try {
-        const res = await request.requestToServer(url,"GET")
-        if(res.statusCode!=200) {
-            throw new Error("register failed")
-        }
-    } catch(e) {
-        console.error(e)
-    }
-}
-
-async function isShowReport(id) {
-    if(this.id) {
-        id = this.id
-    }
-
-    const recordShowReport = await recordUserReportShowRequest(id)
-
-    if(!recordShowReport) return
-
-    const params = {reportid:id}
-    const query = new URLSearchParams(params).toString()
-    const url = `https://192.168.64.6/report/show?${query}`
-
-    try {
-        const res = await request.requestPageToServer(url,"GET")
-        if (res.status==200) {
-            window.location.href = url;
-        }
-    } catch(e) {
-        console.error(e)
-    }
-}
-
-async function recordUserReportShowRequest(id) {
-    const params = {reportid:id}
-    const query = new URLSearchParams(params).toString()
-    const url = `https://192.168.64.6/report/record?${query}`
-
-    try {
-        const res = await request.requestToServer(url,"GET")
-        if(res.statusCode==200) {
-            return true
-        } else {
-            throw new Error("register failed")
-        }
-    } catch(e) {
-        console.error(e)
-        return false
-    }
-}
-
-async function isUpdateReport(release) {
-    if(this.release) {
-        release = this.release
-    }
-
-    const params = {reportid:report.updateReport.value}
-    const query = new URLSearchParams(params).toString()
-    const url = `https://192.168.64.6/report?${query}`
-
-    const body = {
-        title: report.updateTitle.value,
-        sei: report.updateSei.value,
-        mei: report.updateMei.value,
-        category: report.updateCheckCategory,
-        content: report.updateContent.value,
-        url: report.updateUrl.value,
-        image_path: report.updateImage.value,
-        is_release: release
-    }
-
-    try {
-        const res = await request.requestToServer(url,"PUT",body)
-        if(res.statusCode==200) {
-            loadHomePage()
-        } else {
-            throw new Error("register failed")
-        }
-    } catch(e) {
-        console.error(e)
-    }
-}
-
-async function isDeleteReport(id) {
-    if(this.id) {
-        id = this.id
-    }
-    const params = {reportid:id}
-    const query = new URLSearchParams(params).toString()
-    const url = `https://192.168.64.6/report?${query}`
-
-    try {
-        const res = await request.requestToServer(url,"DELETE")
-        if(res.statusCode==200) {
-            loadHomePage()
-        } else {
-            throw new Error("register failed")
-        }
-    } catch(e) {
-        console.error(e)
-    }
-}
-
-async function navigateToReportPage(id) {
-    if(this.id) {
-        id = this.id
-    }
-
-    const params = {reportid:id}
-    const query = new URLSearchParams(params).toString()
-    const url = `https://192.168.64.6/report/update?${query}`
-
-    try {
-        const res = await request.requestPageToServer(url,"GET")
-        window.location.href = url
-    } catch(e) {
-        console.error(e)
-    }
 }
 
 function updateCurrentPage(flag,page) {

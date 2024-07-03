@@ -20,7 +20,6 @@ Route::resource('register', 'UserRegisterController');
 Route::middleware([CheckAuth::class])->group(function () {
 
     Route::get('/report/show', 'ReportController@isShowReport');
-    Route::get('/report/record', 'ReportController@recordUserReportShow');
     Route::get('/report/update', 'ReportController@isShowUpdateReportPage');
     Route::put('/report', 'ReportController@update');
     Route::delete('/report', 'ReportController@destroy');

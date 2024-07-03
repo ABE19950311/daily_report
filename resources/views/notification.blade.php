@@ -9,12 +9,15 @@
         <div class="col-auto">
             <h2>通知先</h2>
         </div>
+        <form method="POST" action="https://192.168.64.6/mail">
+        @csrf
         <div class="col-auto">
-            <input type="password" class="form-control" id="notification_address">
+            <input type="text" name="mailAddress" class="form-control" id="notification_address">
         </div>
         <div class="col-auto">
             <button type="submit" class="btn btn-primary mb-3" id="notification_record_btn">登録する</button>
         </div>
+        </form>
     </div>
     <table class="table table-striped table-hover" class="d-none">
         <thead>
@@ -32,10 +35,6 @@
             @endforeach
         @endif
     </table>
-
-    <div class="col-auto">
-        <button type="submit" class="btn btn-primary mb-3" id="notification_submit_btn">メールを送信する</button>
-    </div>
 </div>
 
 </body>

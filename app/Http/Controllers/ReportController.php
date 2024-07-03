@@ -85,10 +85,8 @@ class ReportController extends Controller
      */
     public function update(Request $request)
     {
-        $report_id = $request->query("reportid");
-
         $requestBody = [
-            'id' => $report_id,
+            'id' => $request->input("reportid"),
             'title' => $request->input("title"),
             'sei' => $request->input("sei"),
             'mei'=> $request->input("mei"),
@@ -98,7 +96,7 @@ class ReportController extends Controller
             'image_path' => $request->input("image_path"),
             'is_release' => intval($request->input("is_release"))
         ];
-        
+       
         $res = $this->report->updateReport($requestBody);
 
         if($res) {
@@ -113,18 +111,26 @@ class ReportController extends Controller
      */
     public function destroy(Request $request)
     {
-        $report_id = $request->query("reportid");
+        $report_id = $request->input("reportid");
         $res = $this->report->deleteReport($report_id);
 
         if($res) {
-            return response()->json(['statusCode' => 200]);
+            return redirect('/home/1');
         } else {
-            return response()->json(['statusCode' => 500]);
+            return back()->withInput();
         }
     }
 
     public function isShowReport(Request $request) {
         $report_id = $request->query("reportid");
+        $token = $request->cookie('sessionToken');
+        $user_id = $this->user->getLoginUserId($token);
+
+        $res = $this->recordUserReportShow($user_id,$report_id);
+
+        if(!$res) {
+            return back()->withInput();
+        }
 
         $report = $this->fetchReport($report_id);
 
@@ -141,17 +147,14 @@ class ReportController extends Controller
         return $this->report->getReport($report_id);
     }
 
-    public function recordUserReportShow(Request $request) {
-        $token = $request->cookie('sessionToken');
-        $user_id = $this->user->getLoginUserId($token);
-        $report_id = $request->query("reportid");
-    
+    private function recordUserReportShow($user_id,$report_id) {
+        
         $setRecord = $this->report_user->setRecordUserReportShow($user_id,$report_id);
 
         if($setRecord) {
-            return response()->json(['statusCode' => 200]);
+            return true;
         } else {
-            return response()->json(['statusCode' => 500]);
+            return false;
         }
     }
 }

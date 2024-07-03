@@ -20,7 +20,7 @@ class CheckAuth
         $token = $request->cookie('sessionToken');
         $user_id = $user->getLoginUserId($token);
         if (!$user_id) {
-            return redirect('/login');
+            return redirect('/login')->withoutCookie('sessionToken');
         }
 
         return $next($request);

@@ -23,9 +23,9 @@ class SessionController extends Controller
         $token = $request->cookie('sessionToken');
         $res = $user->deleteToken($token);
         if($res) {
-            return response()->json(['statusCode' => 200]);
+            return redirect('/login')->withoutCookie('sessionToken');
         } else {
-            return response()->json(['statusCode' => 500]);
+            return back()->withInput();
         }
     }
 }

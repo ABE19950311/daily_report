@@ -9,21 +9,27 @@ use App\Models\User;
 
 class MailController extends Controller
 {
+    private $notification;
+    private $user;
+
+    public function __construct() {
+        $this->notification = new Notification();
+        $this->user = new User();
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $notification = new Notification();
-        $user = new User();
         $token = $request->cookie('sessionToken');
-        $user_id = $user->getLoginUserId($token);
+        $user_id = $this->user->getLoginUserId($token);
 
         if(!$user_id) {
-            return response()->json(['statusCode' => 500]);
+            return back()->withInput();
         }
 
-        $addressList = $notification->getAddress($user_id);
+        $addressList = $this->notification->getAddress($user_id);
 
         return view('notification')->with("addressList",$addressList);
     }
@@ -41,22 +47,20 @@ class MailController extends Controller
      */
     public function store(Request $request)
     {
-        $notification = new Notification();
-        $user = new User();
         $token = $request->cookie('sessionToken');
         $address = $request->input('mailAddress');
-        $user_id = $user->getLoginUserId($token);
+        $user_id = $this->user->getLoginUserId($token);
 
         if(!$user_id) {
-            return response()->json(['statusCode' => 500]);
+            return back()->withInput();
         }
 
-        $res = $notification->isRegisterAddress($address,$user_id);
+        $res = $this->notification->isRegisterAddress($address,$user_id);
 
         if($res) {
-            return response()->json(['statusCode' => 200]);
+            return redirect('/mail');
         } else {
-            return response()->json(['statusCode' => 500]);
+            return back()->withInput();
         }
     }
 

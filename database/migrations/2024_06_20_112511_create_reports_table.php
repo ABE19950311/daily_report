@@ -21,7 +21,7 @@ return new class extends Migration
             $table->longText('url')->nullable();
             $table->string('image_path')->nullable();
             $table->boolean('is_release');
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

@@ -5,12 +5,13 @@
 @extends('header')
 
 <div class="input-group">
+    <input type="hidden" name="page" value="hoge">
     @if (isset($titleSearch))
         <input type="text" id="title_search" value={{ $titleSearch }}>
     @else
         <input type="text" id="title_search" placeholder="タイトルで検索">
     @endif
-    <button class="btn btn-outline-success" type="button" id="title_search_btn"><i class="fas fa-search"></i>
+    <button class="btn btn-outline-success" type="submit" id="title_search_btn"><i class="fas fa-search"></i>
         検索</button>
 </div>
 
@@ -40,8 +41,6 @@
             <option value="その他">その他</option>
         @endif
     </select>
-    <button class="btn btn-outline-success" type="button" id="category_search_btn"><i class="fas fa-search"></i>
-        検索</button>
 </div>
 
 <table class="table">
@@ -63,10 +62,23 @@
                 <td>{{ $report->sei }}</td>
                 <td>{{ $report->mei }}</td>
                 <td>{{ $report->category }}</td>
-                <td><button class="show_report_btn btn btn-primary" value={{ $report->id }}>閲覧</button></td>
-                <td><button class="navigate_to_update_report_btn btn btn-success" value={{ $report->id }}>編集</button>
+                <td>
+                    <form method="GET" action="https://192.168.64.6/report/show">
+                        <button class="show_report_btn btn btn-primary" name="reportid" value={{ $report->id }}>閲覧</button>
+                    </form>
                 </td>
-                <td><button class="delete_report_btn btn btn-dark" value={{ $report->id }}>削除</button></td>
+                <td>
+                    <form method="GET" action="https://192.168.64.6/report/update">
+                        <button class="navigate_to_update_report_btn btn btn-success" name="reportid" value={{ $report->id }}>編集</button>
+                    </form>
+                </td>
+                <td>
+                    <form method="POST" action="https://192.168.64.6/report">
+                        @method('DELETE')
+                        @csrf
+                        <button class="delete_report_btn btn btn-dark" name="reportid" value={{ $report->id }}>削除</button>
+                    </form>
+                </td>
             </tr>
         @endforeach
     </tbody>

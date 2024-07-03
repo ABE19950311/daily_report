@@ -1,75 +1,15 @@
-export class Login {
-    constructor() {
-        this.loginBtn = document.getElementById("login_btn")
-        this.loginUser = document.getElementById("login_user")
-        this.loginPassword = document.getElementById("login_password")
-        this.loginRegisterBtn = document.getElementById("login_register_btn")
-        this.loginPage = document.getElementById("login_page");
-    }
-}
-
-export class Register {
-    constructor() {
-        this.user = document.getElementById("register_user")
-        this.password = document.getElementById("register_password")
-        this.submitBtn = document.getElementById("register_submit_btn")
-        this.backLoginBtn = document.getElementById("register_back_login_btn")
-    }
-}
-
 export class Header {
     constructor() {
         this.diaryListHomeBtn = document.getElementById("diary_list_home_btn")
     }
 }
 
-export class Notification {
-    constructor() {
-        this.notification = document.getElementById("notification_address")
-        this.notificationRecordBtn = document.getElementById("notification_record_btn")
-        this.mailAddressParent = document.getElementById("mailAddressBody")
-        this.mailAddressOrigin = document.getElementById("mailAddressList")
-        this.notificationSubmitBtn = document.getElementById("notification_submit_btn")
-    }
-}
-
 export class Report {
     constructor() {
-
-        //update
-        this.updateReport = document.getElementById("update_report")
-        this.updateTitle = document.getElementById("update_report_title")
-        this.updateSei = document.getElementById("update_report_sei")
-        this.updateMei = document.getElementById("update_report_mei")
-        this.updateRadioCategory = document.querySelectorAll('input[name="update_category"]')
-        this.updateContent = document.getElementById("update_report_content")
-        this.updateUrl = document.getElementById("update_report_url")
-        this.updateImage = document.getElementById("update_report_image")
-        this.updateReportSubmitReleaseBtn = document.getElementById("update_report_submit_release_btn")
-        this.updateReportSubmitBtn = document.getElementById("update_report_submit_btn")
-        this.updateCheckCategory = null;
-
-        this.showReportBtn = document.querySelectorAll(".show_report_btn")
-        this.navigateToUpdateReportBtn = document.querySelectorAll(".navigate_to_update_report_btn")
-        this.deleteReportBtn = document.querySelectorAll(".delete_report_btn")
         this.previousBtn = document.getElementById("pagenation_previous")
         this.nextBtn = document.getElementById("pagenation_next")
         this.pagenationBtn = document.querySelectorAll(".pagenation-item")
         this.currentPage = null;
-    }
-
-    set checkCategory(value) {
-        this._checkCategory = value;
-    }
-    get checkCategory() {
-        return this._checkCategory;
-    }
-
-    set updateCheckCategory(value) {
-        this._updateCheckCategory = value;
-    }
-    get updateCheckCategory() {
-        return this._updateCheckCategory;
     }
 
     set currentPage(value) {
@@ -77,18 +17,6 @@ export class Report {
     }
     get currentPage() {
         return this._currentPage;
-    }
-}
-
-export class initialData {
-    constructor() {
-        this._userMailAddressList = [];
-    }
-    set userMailAddressList(value) {
-        this._userMailAddressList = value;
-    }
-    get userMailAddressList() {
-        return this._userMailAddressList;
     }
 }
 
