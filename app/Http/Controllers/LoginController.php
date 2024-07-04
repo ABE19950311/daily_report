@@ -17,9 +17,9 @@ class LoginController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($userType)
     {
-        return view('login');
+        return view('login')->with("userType",$userType);
     }
 
     /**
@@ -33,17 +33,17 @@ class LoginController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request,$userType)
     {
         $user = new User();
 
         $loginUser = $request->input("user");
         $password = $request->input("password");
 
-        $response = $user->loginCheck($loginUser,$password);
+        $response = $user->exsistUserCheck($loginUser,$password,$userType);
         
         if(!$response) {
-            return redirect('/login');
+            return redirect("/${userType}/login");
         } 
 
         $token = $user->setSessionToken($loginUser);
@@ -51,7 +51,7 @@ class LoginController extends Controller
         if($token) {
             return redirect('/home/1')->withCookie('sessionToken', $token);
         } else {
-            return redirect('/login');
+            return back()->withInput();
         }
     }
 

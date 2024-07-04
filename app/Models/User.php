@@ -22,6 +22,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'password',
+        'group_id'
     ];
 
     /**
@@ -47,14 +48,25 @@ class User extends Authenticatable
         ];
     }
 
-    public function isRegisterUser($user,$password) {
-        $params = [
-            "name" => $user,
-            "password" => $password
+    public function isRegisterUser($user,$password,$userType) {
+        $types = [
+            "admin" => 1,
+            "report_owner" => 2,
+            "report_viewer" => 3
         ];
 
+        $group_id = $types[$userType];
+
+        $params = [
+            ":name" => $user,
+            ":password" => $password,
+            ":group_id" => $group_id
+        ];
+
+        $query = "insert into users (name,password,group_id) values (:name,:password,:group_id)";
+
         try {
-            DB::insert("insert into users (name,password) values (:name,:password)",$params);
+            DB::insert($query,$params);
             return true;
         } catch (Exception $e) {
             echo $e->getMessage();
@@ -62,7 +74,7 @@ class User extends Authenticatable
         }
     }
 
-    public function loginCheck($user,$password) {
+    public function exsistUserCheck($user,$password,$userType) {
         $params = [
             "name" => $user,
             "password" => $password

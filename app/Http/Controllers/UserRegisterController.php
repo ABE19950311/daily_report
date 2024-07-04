@@ -10,9 +10,9 @@ class UserRegisterController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($userType)
     {
-        return view("userRegister");
+        return view("userRegister")->with("userType",$userType);
     }
 
     /**
@@ -26,18 +26,18 @@ class UserRegisterController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request,$userType)
     {
         $user = new User();
         $requestUser = $request->input("user");
         $password = $request->input("password");
         
-        $response = $user->isRegisterUser($requestUser,$password);
+        $response = $user->isRegisterUser($requestUser,$password,$userType);
         
         if($response) {
-            return redirect('/login');
+            return redirect("/${userType}/login");
         } else {
-            return redirect('/userRegister');;
+            return redirect("/${userType}/userRegister");;
         }
     }
 

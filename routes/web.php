@@ -9,13 +9,19 @@ use App\Http\Controllers\MailController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RankingController;
 use App\Http\Middleware\CheckAuth;
+use App\Http\Middleware\CheckAuthUser;
 
 // Route::get('/', function () {
 //     return view('welcome');
 // });
 
-Route::resource('login', 'LoginController');
-Route::resource('register', 'UserRegisterController');
+Route::middleware([CheckAuthUser::class])->group(function () {
+    Route::get('/{userType}/login', 'LoginController@index');
+});
+
+Route::post('/{userType}/login', 'LoginController@store');
+Route::get('/{userType}/register', 'UserRegisterController@index');
+Route::post('/{userType}/register', 'UserRegisterController@store');
 
 Route::middleware([CheckAuth::class])->group(function () {
 

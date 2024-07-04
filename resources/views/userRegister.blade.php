@@ -16,7 +16,7 @@
 
 <body>
 
-    <form action="https://192.168.64.6/register" method="POST">
+    <form action="https://192.168.64.6/{{$userType}}/register" method="POST">
         @csrf
         <div id="register_page" class="page_class">
             <div class="mb-3">
@@ -36,7 +36,7 @@
             <button id="register_submit_btn" type="submit" class="btn btn-primary">Submit</button>
     </form>
 
-    <form action="https://192.168.64.6/login" method="GET">
+    <form action="https://192.168.64.6/{{$userType}}/login" method="GET">
         <button id="register_back_login_btn" type="submit" class="btn btn-primary">ログイン画面に戻る</button>
     </form>
     </div>

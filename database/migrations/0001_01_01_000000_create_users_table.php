@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('password');
+            $table->foreignId('group_id')->constrained('groups')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
 

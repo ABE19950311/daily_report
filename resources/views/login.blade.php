@@ -20,7 +20,7 @@
             <h3 class="title">Please sign in</h3>
             <hr class="divisor">
 
-            <form action="https://192.168.64.6/login" method="POST">
+            <form action="https://192.168.64.6/{{$userType}}/login" method="POST">
                 @csrf
                 <div class="form-group">
                     <label>Username</label>
@@ -40,7 +40,7 @@
                     in</button>
             </form>
 
-            <form action="https://192.168.64.6/register" method="GET">
+            <form action="https://192.168.64.6/{{$userType}}/register" method="GET">
                 <button id="login_register_btn" type="submit" class="btn btn-primary topBtn"><i
                         class="fa fa-sign-in"></i> 新規登録</button>
             </form>
