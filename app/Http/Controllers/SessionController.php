@@ -18,12 +18,13 @@ class SessionController extends Controller
         }
     }
 
-    public function isLogout(Request $request) {
+    public function isLogout(Request $request,$userType) {
         $user = new User();
         $token = $request->cookie('sessionToken');
-        $res = $user->deleteToken($token);
+        $res = $user->deleteSession($token);
+        
         if($res) {
-            return redirect('/login')->withoutCookie('sessionToken');
+            return redirect("/$userType/login")->withoutCookie('sessionToken');
         } else {
             return back()->withInput();
         }

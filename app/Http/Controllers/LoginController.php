@@ -43,10 +43,10 @@ class LoginController extends Controller
         $response = $user->exsistUserCheck($loginUser,$password,$userType);
         
         if(!$response) {
-            return redirect("/${userType}/login");
+            return back()->withInput();
         } 
 
-        $token = $user->setSessionToken($loginUser);
+        $token = $user->setSession($loginUser,$userType);
 
         if($token) {
             return redirect('/home/1')->withCookie('sessionToken', $token);

@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable
 {
@@ -59,7 +60,7 @@ class User extends Authenticatable
 
         $params = [
             ":name" => $user,
-            ":password" => $password,
+            ":password" => bcrypt($password),
             ":group_id" => $group_id
         ];
 
@@ -76,19 +77,24 @@ class User extends Authenticatable
 
     public function exsistUserCheck($user,$password,$userType) {
         $params = [
-            "name" => $user,
-            "password" => $password
+            ":name" => $user
         ];
 
+        $query = "select users.password,`groups`.group 
+                    from users inner join `groups` on users.group_id=`groups`.id
+                    where name=:name";
+
         try {
-            $res = DB::select("select name from users where name=:name and password=:password",$params);
-            if(count($res)) {
+            $user = DB::select($query,$params);
+            \Log::info($user);
+            // /admin/login(admin権限)でログインできるユーザならgroupにadminが返るはず。report_owner等も同様
+            if(count($user) && Hash::check($password,$user[0]->password) && $user[0]->group==$userType) {
                 return true;
             } else {
                 return false;
             }
         } catch (Exception $e) {
-            echo $e->getMessage();
+            \Log::info($e);
             return false;
         }
     }
@@ -97,13 +103,14 @@ class User extends Authenticatable
         return bin2hex(openssl_random_pseudo_bytes(16));
     }
 
-    public function setSessionToken($user) {
+    public function setSession($user,$userType) {
         try {
             $token = $this->generateToken();
             Redis::set($token, $user);
+            Redis::set($token . "userType", $userType);
             return $token;
         } catch (Exception $e) {
-            echo $e->getMessage();
+            \Log::info($e);
             return false;
         }
     }
@@ -113,17 +120,28 @@ class User extends Authenticatable
             $res = Redis::get($token);
             return $res;
         } catch (Exception $e) {
-            echo $e->getMessage();
+            \Log::info($e);
             return false;
         }
     }
 
-    public function deleteToken($token) {
+    public function getUserType($token) {
+        try {
+            $res = Redis::get($token . "userType");
+            return $res;
+        } catch (Exception $e) {
+            \Log::info($e);
+            return false;
+        }
+    }
+
+    public function deleteSession($token) {
         try {
             Redis::del($token);
+            Redis::del($token . "userType");
             return true;
         } catch (Exception $e) {
-            echo $e->getMessage();
+            \Log::info($e);
             return false;
         }
     }

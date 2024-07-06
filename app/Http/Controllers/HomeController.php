@@ -48,11 +48,19 @@ class HomeController extends Controller
         $titleSearch = $request->query("titleSearch");
         $categorySearch = $request->query("categorySearch");
         $token = $request->cookie('sessionToken');
+
         $user_id = $this->user->getLoginUserId($token);
+        $userType = $this->user->getUserType($token);
 
         $reportList = $this->report->getReportList($page,$user_id,$titleSearch,$categorySearch);
         $reportSize = $this->report->getReportSize($user_id,$titleSearch,$categorySearch);
-        return view('home')->with("reportList",$reportList)->with("reportSize",$reportSize)->with("titleSearch",$titleSearch)->with("categorySearch",$categorySearch);
+        
+        return view('home')
+                ->with("reportList",$reportList)
+                ->with("reportSize",$reportSize)
+                ->with("titleSearch",$titleSearch)
+                ->with("categorySearch",$categorySearch)
+                ->with("userType",$userType);
     }
 
     /**
