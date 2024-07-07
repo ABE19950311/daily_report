@@ -56,7 +56,7 @@
                             <a class="nav-link" id="notification_register_btn" href="https://192.168.64.6/mail">通知先</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="logout_btn" href="https://192.168.64.6/{{$userType}}/logout">LOGOUT</a>
+                            <a class="nav-link" id="logout_btn" href="https://192.168.64.6/logout">LOGOUT</a>
                         </li>
                     </ul>
                 </div>

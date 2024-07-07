@@ -7,20 +7,10 @@ use App\Models\User;
 
 class SessionController extends Controller
 {
-    public function sessionCheck(Request $request) {
+    public function isLogout(Request $request) {
         $user = new User();
         $token = $request->cookie('sessionToken');
-        $res = $user->getToken($token);
-        if($res) {
-            return response()->json(['statusCode' => 200]);
-        } else {
-            return response()->json(['statusCode' => 500]);
-        }
-    }
-
-    public function isLogout(Request $request,$userType) {
-        $user = new User();
-        $token = $request->cookie('sessionToken');
+        $userType = $user->getUserType($token);
         $res = $user->deleteSession($token);
         
         if($res) {

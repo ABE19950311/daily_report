@@ -5,16 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 
 class MailController extends Controller
 {
     private $notification;
-    private $user;
 
     public function __construct() {
+        parent::__construct();
         $this->notification = new Notification();
-        $this->user = new User();
     }
 
     /**
@@ -22,8 +20,7 @@ class MailController extends Controller
      */
     public function index(Request $request)
     {
-        $token = $request->cookie('sessionToken');
-        $user_id = $this->user->getLoginUserId($token);
+        list($user_id, $userType) = $this->getUserInfo($request);
 
         if(!$user_id) {
             return back()->withInput();
@@ -31,7 +28,9 @@ class MailController extends Controller
 
         $addressList = $this->notification->getAddress($user_id);
 
-        return view('notification')->with("addressList",$addressList);
+        return view('notification')
+                ->with("addressList",$addressList)
+                ->with("userType",$userType);
     }
 
     /**
@@ -47,9 +46,8 @@ class MailController extends Controller
      */
     public function store(Request $request)
     {
-        $token = $request->cookie('sessionToken');
+        list($user_id, $userType) = $this->getUserInfo($request);
         $address = $request->input('mailAddress');
-        $user_id = $this->user->getLoginUserId($token);
 
         if(!$user_id) {
             return back()->withInput();
@@ -58,7 +56,7 @@ class MailController extends Controller
         $res = $this->notification->isRegisterAddress($address,$user_id);
 
         if($res) {
-            return redirect('/mail');
+            return redirect('/mail')->with("userType",$userType);;
         } else {
             return back()->withInput();
         }

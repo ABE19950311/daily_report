@@ -4,15 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Report;
-use App\Models\User;
 
 class HomeController extends Controller
 {
-    private $user;
     private $report;
 
     public function __construct() {
-        $this->user = new User();
+        parent::__construct();
         $this->report = new Report();
     }
 
@@ -47,11 +45,9 @@ class HomeController extends Controller
     {   
         $titleSearch = $request->query("titleSearch");
         $categorySearch = $request->query("categorySearch");
-        $token = $request->cookie('sessionToken');
 
-        $user_id = $this->user->getLoginUserId($token);
-        $userType = $this->user->getUserType($token);
-
+        list($user_id, $userType) = $this->getUserInfo($request);
+       
         $reportList = $this->report->getReportList($page,$user_id,$titleSearch,$categorySearch);
         $reportSize = $this->report->getReportSize($user_id,$titleSearch,$categorySearch);
         

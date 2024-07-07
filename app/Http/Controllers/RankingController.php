@@ -18,7 +18,8 @@ class RankingController extends Controller
      */
     public function index()
     {
-        return view("ranking");
+        list($user_id, $userType) = $this->getUserInfo($request);
+        return view("ranking")->with("userType",$userType);
     }
 
     /**
