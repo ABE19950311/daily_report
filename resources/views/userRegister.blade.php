@@ -21,7 +21,7 @@
         <div id="register_page" class="page_class">
             <div class="mb-3">
                 <label class="form-label">ユーザ名</label>
-                <input type="email" name="user" class="form-control" id="register_user"
+                <input type="text" name="user" class="form-control" id="register_user"
                     aria-describedby="emailHelp">
                 <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
             </div>

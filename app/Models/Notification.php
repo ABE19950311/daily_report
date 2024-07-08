@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class Notification extends Model
 {
@@ -46,5 +47,13 @@ class Notification extends Model
             echo $e->getMessage();
             return false;
         }
+    }
+
+    public function validation($request) {
+        $rules = array(
+            'mailAddress' => 'required|email|max:255|unique:notifications,address'
+        );
+        $validator = Validator::make($request,$rules);
+        return $validator;
     }
 }

@@ -9,9 +9,10 @@ use Illuminate\Support\Facades\Cookie;
 
 class LoginController extends Controller
 {
+    private $user;
 
     public function __construct() {
-        
+        $this->user = new User();
     }
 
     /**
@@ -35,18 +36,22 @@ class LoginController extends Controller
      */
     public function store(Request $request,$userType)
     {
-        $user = new User();
+        $validator = $this->user->validation($request->all());
+
+        if($validator->fails()) {
+            return back()->withInput()->withErrors($validator);
+        }
 
         $loginUser = $request->input("user");
         $password = $request->input("password");
 
-        $response = $user->exsistUserCheck($loginUser,$password,$userType);
+        $response = $this->user->exsistUserCheck($loginUser,$password,$userType);
         
         if(!$response) {
             return back()->withInput();
         } 
 
-        $token = $user->setSession($loginUser,$userType);
+        $token = $this->user->setSession($loginUser,$userType);
 
         if($token) {
             return redirect('/home/1')->withCookie('sessionToken', $token);

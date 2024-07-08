@@ -46,6 +46,12 @@ class MailController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = $this->notification->validation($request->all());
+
+        if($validator->fails()) {
+            return back()->withInput()->withErrors($validator);
+        }
+
         list($user_id, $userType) = $this->getUserInfo($request);
         $address = $request->input('mailAddress');
 

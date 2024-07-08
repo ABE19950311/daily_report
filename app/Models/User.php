@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class User extends Authenticatable
 {
@@ -161,8 +162,17 @@ class User extends Authenticatable
                 return false;
             }
         } catch (Exception $e) {
-            echo $e->getMessage();
+            \Log::info($e);
             return false;
         }
+    }
+
+    public function validation($request) {
+        $rules = array(
+            'user' => 'required|max:255',
+            'password' => 'required|max:255'
+        );
+        $validator = Validator::make($request,$rules);
+        return $validator;
     }
 }

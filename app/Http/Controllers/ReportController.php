@@ -14,6 +14,7 @@ class ReportController extends Controller
     private $report_user;
 
     public function __construct() {
+        parent::__construct();
         $this->user = new User();
         $this->report = new Report();
         $this->report_user = new ReportUser();
@@ -40,8 +41,13 @@ class ReportController extends Controller
      */
     public function store(Request $request)
     {
-        $token = $request->cookie('sessionToken');
-        $user_id = $this->user->getLoginUserId($token);
+        $validator = $this->report->validation($request->all());
+
+        if($validator->fails()) {
+            return back()->withInput()->withErrors($validator);
+        }
+
+        list($user_id) = $this->getUserInfo($request);
 
         $requestBody = [
             'title' => $request->input("title"),
@@ -85,6 +91,7 @@ class ReportController extends Controller
      */
     public function update(Request $request)
     {
+        //TODO バリデーション追加する
         $requestBody = [
             'id' => $request->input("reportid"),
             'title' => $request->input("title"),

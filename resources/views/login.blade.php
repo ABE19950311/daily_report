@@ -24,7 +24,7 @@
                 @csrf
                 <div class="form-group">
                     <label>Username</label>
-                    <input type="email" class="form-control" name="user" id="login_user"
+                    <input type="text" class="form-control" name="user" id="login_user"
                         aria-describedby="emailHelp" placeholder="Enter email">
                 </div>
                 <div class="form-group">

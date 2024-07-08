@@ -7,6 +7,12 @@ use App\Models\User;
 
 class UserRegisterController extends Controller
 {
+    private $user;
+
+    public function __construct() {
+        $this->user = new User();
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -28,11 +34,16 @@ class UserRegisterController extends Controller
      */
     public function store(Request $request,$userType)
     {
-        $user = new User();
+        $validator = $this->user->validation($request->all());
+
+        if($validator->fails()) {
+            return back()->withInput()->withErrors($validator);
+        }
+
         $requestUser = $request->input("user");
         $password = $request->input("password");
         
-        $response = $user->isRegisterUser($requestUser,$password,$userType);
+        $response = $this->user->isRegisterUser($requestUser,$password,$userType);
         
         if($response) {
             return redirect("/${userType}/login");
