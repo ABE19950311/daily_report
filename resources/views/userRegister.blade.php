@@ -15,19 +15,27 @@
 </head>
 
 <body>
-
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
     <form action="https://192.168.64.6/{{$userType}}/register" method="POST">
         @csrf
         <div id="register_page" class="page_class">
             <div class="mb-3">
                 <label class="form-label">ユーザ名</label>
-                <input type="text" name="user" class="form-control" id="register_user"
+                <input type="text" name="user" class="form-control" id="register_user" value="{{ old('user') }}"
                     aria-describedby="emailHelp">
                 <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
             </div>
             <div class="mb-3">
                 <label class="form-label">パスワード</label>
-                <input type="password" name="password" class="form-control" id="register_password">
+                <input type="password" name="password" class="form-control" id="register_password" value="{{ old('password') }}" >
             </div>
             <div class="mb-3 form-check">
                 <input type="checkbox" class="form-check-input" id="exampleCheck1">

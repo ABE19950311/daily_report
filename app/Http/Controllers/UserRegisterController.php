@@ -34,7 +34,7 @@ class UserRegisterController extends Controller
      */
     public function store(Request $request,$userType)
     {
-        $validator = $this->user->validation($request->all());
+        $validator = $this->user->userRegisterValidation($request->all());
 
         if($validator->fails()) {
             return back()->withInput()->withErrors($validator);

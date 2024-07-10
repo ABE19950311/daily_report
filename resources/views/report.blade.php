@@ -40,6 +40,14 @@
             </div>
         </main>
 
+        <br>
+        <br>
+        <br>
+
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary mb-3" id="notification_record_btn">メール送信する</button>
+        </div>
+
         <footer class="my-5 pt-5 text-body-secondary text-center text-small">
             <p class="mb-1">&copy; 2017−2024 会社名</p>
             <ul class="list-inline">

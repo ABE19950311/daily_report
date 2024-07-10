@@ -167,6 +167,15 @@ class User extends Authenticatable
         }
     }
 
+    public function userRegisterValidation($request) {
+        $rules = array(
+            'user' => 'required|max:255|unique:users,name',
+            'password' => 'required|max:255'
+        );
+        $validator = Validator::make($request,$rules);
+        return $validator;
+    }
+
     public function validation($request) {
         $rules = array(
             'user' => 'required|max:255',

@@ -38,19 +38,12 @@ function initialEvents() {
     if(report.previousBtn) report.previousBtn.addEventListener("click", {flag:"previous",page:null,handleEvent:updateCurrentPage})
     if(report.nextBtn) report.nextBtn.addEventListener("click", {flag:"next",page:null,handleEvent:updateCurrentPage})
 
-    if(home.titleSearchBtn) home.titleSearchBtn.addEventListener("click", setTitleSearchValue)
-    if(home.categorySearchBtn) home.categorySearchBtn.addEventListener("click",loadHomePage)
     //smartyで作成したreportListをquerySelectorAll使って配列でdom要素受け取る
     //forEachで取得要素にevent付与してく
     
     if(report.pagenationBtn.length) {
         report.pagenationBtn.forEach((elm)=>{
             elm.addEventListener("click",{flag:null,page:elm.value,handleEvent:updateCurrentPage})
-        })
-    }
-    if(home.categorySearch) {
-        home.categorySearch.addEventListener("change",(event)=>{
-            home.categorySearchVal = event.target.value
         })
     }
 }
@@ -123,10 +116,5 @@ function updateCurrentPage(flag,page) {
         break;
     }
 
-    loadHomePage()
-}
-
-function setTitleSearchValue() {
-    home.titleSearchVal = home.titleSearch.value
     loadHomePage()
 }
