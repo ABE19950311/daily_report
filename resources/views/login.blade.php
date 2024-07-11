@@ -15,6 +15,15 @@
 </head>
 
 <body>
+     @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
     <div id="login_page" class="page_class">
         <div class="row mgTp">
             <h3 class="title">Please sign in</h3>
@@ -24,12 +33,12 @@
                 @csrf
                 <div class="form-group">
                     <label>Username</label>
-                    <input type="text" class="form-control" name="user" id="login_user"
+                    <input type="text" class="form-control" name="user" id="login_user" value="{{ old('user') }}"
                         aria-describedby="emailHelp" placeholder="Enter email">
                 </div>
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" class="form-control" name="password" id="login_password"
+                    <input type="password" class="form-control" name="password" id="login_password" value="{{ old('password') }}"
                         placeholder="Password">
                 </div>
                 <div class="form-check">

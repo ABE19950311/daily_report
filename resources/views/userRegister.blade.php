@@ -23,7 +23,7 @@
             @endforeach
         </ul>
     </div>
-@endif
+    @endif
     <form action="https://192.168.64.6/{{$userType}}/register" method="POST">
         @csrf
         <div id="register_page" class="page_class">

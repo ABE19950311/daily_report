@@ -10,6 +10,15 @@
             <div class="py-5 text-center">
                 <h2>日間日記</h2>
             </div>
+                    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
             <form method="POST" action="https://192.168.64.6/report">
             @method('PUT')
             @csrf
@@ -42,35 +51,35 @@
                         <div class="col-12">
                             <label class="form-label">カテゴリ</label>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="category" value="開発">開発
+                                <input class="form-check-input" type="radio" name="category" value="開発" {{ $report->category == '開発' ? 'checked' : '' }}>開発
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="category" value="サーバ">サーバ
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="category"
-                                    value="ネットワーク">ネットワーク
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="category" value="AWS">AWS
+                                <input class="form-check-input" type="radio" name="category" value="サーバ" {{ $report->category == 'サーバ' ? 'checked' : '' }}>サーバ
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="category"
-                                    value="コマンドライン">コマンドライン
+                                    value="ネットワーク" {{ $report->category == 'ネットワーク' ? 'checked' : '' }}>ネットワーク
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="category" value="OS">OS
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="category"
-                                    value="ミドルウェア">ミドルウェア
+                                <input class="form-check-input" type="radio" name="category" value="AWS" {{ $report->category == 'AWS' ? 'checked' : '' }}>AWS
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="category"
-                                    value="エラー対応">エラー対応
+                                    value="コマンドライン" {{ $report->category == 'コマンドライン' ? 'checked' : '' }}>コマンドライン
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="category" value="その他">その他
+                                <input class="form-check-input" type="radio" name="category" value="OS" {{ $report->category == 'OS' ? 'checked' : '' }}>OS
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="category"
+                                    value="ミドルウェア" {{ $report->category == 'ミドルウェア' ? 'checked' : '' }}>ミドルウェア
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="category"
+                                    value="エラー対応" {{ $report->category == 'エラー対応' ? 'checked' : '' }}>エラー対応
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="category" value="その他" {{ $report->category == 'その他' ? 'checked' : '' }}>その他
                             </div>
                         </div>
 
