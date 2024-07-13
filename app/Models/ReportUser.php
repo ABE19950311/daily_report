@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use App\Models\Report;
 
 class ReportUser extends Model
 {
@@ -30,7 +31,36 @@ class ReportUser extends Model
             DB::insert($query,$params);
             return true;
         } catch (Exception $e) {
-            echo $e->getMessage();
+            \Log::info($e);
+            return false;
+        }
+    }
+
+    public function getUserRankList() {
+
+        $query = "SELECT 
+                    COUNT(report_user.report_id) AS report_rank, 
+                    report_user.report_id,
+                    reports.title,
+                    reports.category
+                FROM 
+                    report_user 
+                INNER JOIN 
+                    reports ON report_user.report_id = reports.id
+                WHERE 
+                    reports.is_release = 1
+                GROUP BY 
+                    report_user.report_id
+                ORDER BY
+                    report_rank DESC
+                ";
+
+        try {
+            $rankList = DB::select($query);
+            \Log::info($rankList);
+            return $rankList;
+        } catch (Exception $e) {
+            \Log::info($e);
             return false;
         }
     }

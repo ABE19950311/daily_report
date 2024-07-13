@@ -10,16 +10,26 @@ class RankingController extends Controller
     private $report_user;
 
     public function __construct() {
+        parent::__construct();
         $this->report_user = new ReportUser();
     }
 
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         list($user_id, $userType) = $this->getUserInfo($request);
-        return view("ranking")->with("userType",$userType);
+        
+        $rankList = $this->report_user->getUserRankList();
+
+        if(!$rankList) {
+            return back();
+        }
+
+        return view("ranking")
+            ->with("userType",$userType)
+            ->with("rankList",$rankList);
     }
 
     /**
