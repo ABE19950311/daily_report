@@ -24,10 +24,18 @@ class ReportUser extends Model
             ":user_id" => $user_id
         ];
 
-        $query = "insert into report_user (report_id,user_id) values (:report_id,:user_id)";
+        $query = "INSERT INTO report_user (
+                    report_id,
+                    user_id
+                ) 
+                VALUES (
+                    :report_id,
+                    :user_id
+                )
+                ";
 
         try {
-            \Log::info("Attempting to insert report_user record for user_id: $user_id and report_id: $report_id");
+            // \Log::info("Attempting to insert report_user record for user_id: $user_id and report_id: $report_id");
             DB::insert($query,$params);
             return true;
         } catch (Exception $e) {

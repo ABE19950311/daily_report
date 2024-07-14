@@ -23,28 +23,47 @@ class Notification extends Model
             ":user_id" => $user_id
         ];
 
+        $query = "INSERT INTO notifications (
+                    address,
+                    user_id
+                ) 
+                VALUES (
+                    :address,
+                    :user_id
+                )
+                ";
+
         try {
-            DB::insert("insert into notifications (address,user_id) values (:address,:user_id)",$params);
+            DB::insert($query,$params);
             return true;
         } catch (Exception $e) {
-            echo $e->getMessage();
+            \Log::info($e);
             return false;
         }
     }
 
     public function getAddress($user_id) {
         $params = [
-            ":user_id"=>$user_id
+            ":user_id" => $user_id
         ];
+
+        $query = "SELECT 
+                    address 
+                FROM 
+                    notifications 
+                WHERE 
+                    user_id = :user_id
+                ";
+
         try {
-            $address = DB::select("select address from notifications where user_id=:user_id",$params);
+            $address = DB::select($query,$params);
             if(!empty($address)) {
                 return $address;
             } else {
                 return false;
             }
         } catch (Exception $e) {
-            echo $e->getMessage();
+            \Log::info($e);
             return false;
         }
     }

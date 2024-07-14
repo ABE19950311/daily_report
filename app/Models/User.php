@@ -65,13 +65,23 @@ class User extends Authenticatable
             ":group_id" => $group_id
         ];
 
-        $query = "insert into users (name,password,group_id) values (:name,:password,:group_id)";
+        $query = "INSERT INTO users (
+                    name,
+                    password,
+                    group_id
+                )
+                VALUES (
+                    :name,
+                    :password,
+                    :group_id
+                )
+                ";
 
         try {
             DB::insert($query,$params);
             return true;
         } catch (Exception $e) {
-            echo $e->getMessage();
+            \Log::info($e);
             return false;
         }
     }
@@ -81,9 +91,16 @@ class User extends Authenticatable
             ":name" => $user
         ];
 
-        $query = "select users.password,`groups`.group 
-                    from users inner join `groups` on users.group_id=`groups`.id
-                    where name=:name";
+        $query = "SELECT 
+                    users.password,
+                    `groups`.group 
+                FROM 
+                    users 
+                INNER JOIN 
+                    `groups` ON users.group_id = `groups`.id
+                WHERE 
+                    name = :name
+                ";
 
         try {
             $user = DB::select($query,$params);
@@ -154,8 +171,16 @@ class User extends Authenticatable
             ":name"=>$user
         ];
 
+        $query = "SELECT 
+                    id 
+                FROM 
+                    users 
+                WHERE 
+                    name = :name
+                ";
+
         try {
-            $user_id = DB::select("select id from users where name=:name",$params);
+            $user_id = DB::select($query,$params);
             if(!empty($user_id)) {
                 return $user_id[0]->id;
             } else {

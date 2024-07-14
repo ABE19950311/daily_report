@@ -48,7 +48,7 @@ class LoginController extends Controller
         $response = $this->user->exsistUserCheck($loginUser,$password,$userType);
         
         if(!$response) {
-            return back()->withInput()->withErrors("ユーザまたはパスワードが間違っています");;
+            return back()->withInput()->withErrors("ユーザまたはパスワードが間違っています");
         } 
 
         $token = $this->user->setSession($loginUser,$userType);

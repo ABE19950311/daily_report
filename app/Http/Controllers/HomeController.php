@@ -48,8 +48,8 @@ class HomeController extends Controller
 
         list($user_id, $userType) = $this->getUserInfo($request);
        
-        $reportList = $this->report->getReportList($page,$user_id,$titleSearch,$categorySearch);
-        $reportSize = $this->report->getReportSize($user_id,$titleSearch,$categorySearch);
+        $reportList = $this->report->getReportList($page,$user_id,$titleSearch,$categorySearch,$userType);
+        $reportSize = $this->report->getReportSize($user_id,$titleSearch,$categorySearch,$userType);
         
         return view('home')
                 ->with("reportList",$reportList)
