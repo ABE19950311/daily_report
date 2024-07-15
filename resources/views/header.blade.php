@@ -46,14 +46,19 @@
                         <li class="nav-item">
                             <a class="nav-link" aria-current="page" id="diary_list_home_btn">日記一覧</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="daily_diary_btn" href="https://192.168.64.6/report">日間日記</a>
-                        </li>
+                        @if ($userType != 'report_viewer')
+                            <li class="nav-item">
+                                <a class="nav-link" id="daily_diary_btn" href="https://192.168.64.6/report">日間日記</a>
+                            </li>
+                        @endif
                         <li class="nav-item">
                             <a class="nav-link" id="ranking_btn" href="https://192.168.64.6/ranking">ランキング</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="notification_register_btn" href="https://192.168.64.6/mail">通知先</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="https://192.168.64.6/contact">お問い合わせ</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="logout_btn" href="https://192.168.64.6/logout">LOGOUT</a>

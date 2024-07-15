@@ -5,9 +5,10 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserRegisterController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\MailController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RankingController;
+use App\Http\Controllers\ContactController;
 use App\Http\Middleware\CheckAuth;
 use App\Http\Middleware\CheckAuthUser;
 
@@ -32,9 +33,10 @@ Route::middleware([CheckAuth::class])->group(function () {
     Route::get('/logout', 'SessionController@isLogout');
 
     Route::resource('home', 'HomeController');
-    Route::resource('mail', 'MailController');
+    Route::resource('mail', 'NotificationController');
     Route::resource('report', 'ReportController');
     Route::resource('ranking', 'RankingController');
+    Route::resource('contact', 'ContactController');
     
 });
 

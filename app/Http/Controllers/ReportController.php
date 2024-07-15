@@ -23,9 +23,10 @@ class ReportController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('createReport');
+        list($user_id, $userType) = $this->getUserInfo($request);
+        return view('createReport')->with("userType", $userType);
     }
 
     /**
@@ -130,8 +131,8 @@ class ReportController extends Controller
 
     public function isShowReport(Request $request) {
         $report_id = $request->query("reportid");
-        $token = $request->cookie('sessionToken');
-        $user_id = $this->user->getLoginUserId($token);
+
+        list($user_id, $userType) = $this->getUserInfo($request);
 
         $res = $this->recordUserReportShow($user_id,$report_id);
 
@@ -141,7 +142,9 @@ class ReportController extends Controller
 
         $report = $this->fetchReport($report_id);
 
-        return view('report')->with("report",$report);
+        return view('report')
+                ->with("report",$report)
+                ->with("userType",$userType);
     }
 
     public function isShowUpdateReportPage(Request $request) {

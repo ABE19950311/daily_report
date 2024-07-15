@@ -3,16 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Notification;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Contact;
 
-class MailController extends Controller
+class ContactController extends Controller
 {
-    private $notification;
 
     public function __construct() {
         parent::__construct();
-        $this->notification = new Notification();
     }
 
     /**
@@ -21,16 +18,7 @@ class MailController extends Controller
     public function index(Request $request)
     {
         list($user_id, $userType) = $this->getUserInfo($request);
-
-        if(!$user_id) {
-            return back()->withInput();
-        }
-
-        $addressList = $this->notification->getAddress($user_id);
-
-        return view('notification')
-                ->with("addressList",$addressList)
-                ->with("userType",$userType);
+        return view("contact")->with("userType", $userType);
     }
 
     /**
@@ -46,26 +34,9 @@ class MailController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = $this->notification->validation($request->all());
-
-        if($validator->fails()) {
-            return back()->withInput()->withErrors($validator);
-        }
-
-        list($user_id, $userType) = $this->getUserInfo($request);
-        $address = $request->input('mailAddress');
-
-        if(!$user_id) {
-            return back()->withInput();
-        }
-
-        $res = $this->notification->isRegisterAddress($address,$user_id);
-
-        if($res) {
-            return redirect('/mail')->with("userType",$userType);;
-        } else {
-            return back()->withInput();
-        }
+        $name = $request->input("name");
+        $address = $request->input("address");
+        $contact = $request->input("contact");
     }
 
     /**

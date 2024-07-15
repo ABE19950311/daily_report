@@ -52,8 +52,10 @@
             <th scope="col">名前</th>
             <th scope="col">カテゴリ</th>
             <th scope="col">内容</th>
-            <th scope="col">編集</th>
-            <th scope="col">削除</th>
+            @if ($userType != 'report_viewer')
+                <th scope="col">編集</th>
+                <th scope="col">削除</th>
+            @endif
         </tr>
     </thead>
     <tbody>
@@ -69,20 +71,22 @@
                             value={{ $report->id }}>閲覧</button>
                     </form>
                 </td>
-                <td>
-                    <form method="GET" action="https://192.168.64.6/report/update">
-                        <button class="navigate_to_update_report_btn btn btn-success" name="reportid"
-                            value={{ $report->id }}>編集</button>
-                    </form>
-                </td>
-                <td>
-                    <form method="POST" action="https://192.168.64.6/report">
-                        @method('DELETE')
-                        @csrf
-                        <button class="delete_report_btn btn btn-dark" name="reportid"
-                            value={{ $report->id }}>削除</button>
-                    </form>
-                </td>
+                @if ($userType != 'report_viewer')
+                    <td>
+                        <form method="GET" action="https://192.168.64.6/report/update">
+                            <button class="navigate_to_update_report_btn btn btn-success" name="reportid"
+                                value={{ $report->id }}>編集</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form method="POST" action="https://192.168.64.6/report">
+                            @method('DELETE')
+                            @csrf
+                            <button class="delete_report_btn btn btn-dark" name="reportid"
+                                value={{ $report->id }}>削除</button>
+                        </form>
+                    </td>
+                @endif
             </tr>
         @endforeach
     </tbody>
