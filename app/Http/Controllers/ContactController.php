@@ -7,9 +7,11 @@ use App\Models\Contact;
 
 class ContactController extends Controller
 {
+    private $contact;
 
-    public function __construct() {
-        parent::__construct();
+    public function __construct(Request $request) {
+        parent::__construct($request);
+        $this->contact = new Contact();
     }
 
     /**
@@ -17,8 +19,7 @@ class ContactController extends Controller
      */
     public function index(Request $request)
     {
-        list($user_id, $userType) = $this->getUserInfo($request);
-        return view("contact")->with("userType", $userType);
+        return view("contact")->with("userType", $this->userType);
     }
 
     /**
@@ -34,9 +35,26 @@ class ContactController extends Controller
      */
     public function store(Request $request)
     {
-        $name = $request->input("name");
-        $address = $request->input("address");
-        $contact = $request->input("contact");
+        $validator = $this->contact->validation($request->all());
+
+        if($validator->fails()) {
+            return back()->withInput()->withErrors($validator);
+        }
+
+        $requestBody = [
+            "name" => $request->input("name"),
+            "address" => $request->input("address"),
+            "contact" => $request->input("contact"),
+            "user_id" => $this->userId
+        ];
+        
+        $response = $this->contact->isRegisterContact($requestBody);
+
+        if($response) {
+            return redirect("/contact/complete");
+        } else {
+            return back()->withInput();
+        }
     }
 
     /**
@@ -69,5 +87,9 @@ class ContactController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function isShowCompletePage() {
+        return view("contactComplete")->with("userType",$this->userType);
     }
 }

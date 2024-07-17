@@ -13,8 +13,8 @@ class ReportController extends Controller
     private $report;
     private $report_user;
 
-    public function __construct() {
-        parent::__construct();
+    public function __construct(Request $request) {
+        parent::__construct($request);
         $this->user = new User();
         $this->report = new Report();
         $this->report_user = new ReportUser();
@@ -25,8 +25,7 @@ class ReportController extends Controller
      */
     public function index(Request $request)
     {
-        list($user_id, $userType) = $this->getUserInfo($request);
-        return view('createReport')->with("userType", $userType);
+        return view('createReport')->with("userType", $this->userType);
     }
 
     /**
@@ -48,8 +47,6 @@ class ReportController extends Controller
             return back()->withInput()->withErrors($validator);
         }
 
-        list($user_id) = $this->getUserInfo($request);
-
         $requestBody = [
             'title' => $request->input("title"),
             'sei' => $request->input("sei"),
@@ -59,7 +56,7 @@ class ReportController extends Controller
             'url'=> $request->input("url"),
             'image_path' => $request->input("image_path"),
             'is_release' => intval($request->input("is_release")),
-            'user_id' => $user_id
+            'user_id' => $this->userId
         ];
 
         $res = $this->report->submissonReport($requestBody);
@@ -132,9 +129,7 @@ class ReportController extends Controller
     public function isShowReport(Request $request) {
         $report_id = $request->query("reportid");
 
-        list($user_id, $userType) = $this->getUserInfo($request);
-
-        $res = $this->recordUserReportShow($user_id,$report_id);
+        $res = $this->recordUserReportShow($this->userId,$report_id);
 
         if(!$res) {
             return back()->withInput();
@@ -144,13 +139,16 @@ class ReportController extends Controller
 
         return view('report')
                 ->with("report",$report)
-                ->with("userType",$userType);
+                ->with("userType",$this->userType);
     }
 
     public function isShowUpdateReportPage(Request $request) {
         $report_id = $request->query("reportid");
         $report = $this->fetchReport($report_id);
-        return view('updateReport')->with("report",$report);
+        
+        return view('updateReport')
+                ->with("report",$report)
+                ->with("userType",$this->userType);
     }
 
     private function fetchReport($report_id) {

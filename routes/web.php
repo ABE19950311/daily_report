@@ -31,6 +31,7 @@ Route::middleware([CheckAuth::class])->group(function () {
     Route::put('/report', 'ReportController@update');
     Route::delete('/report', 'ReportController@destroy');
     Route::get('/logout', 'SessionController@isLogout');
+    Route::get('/contact/complete', 'ContactController@isShowCompletePage');
 
     Route::resource('home', 'HomeController');
     Route::resource('mail', 'NotificationController');

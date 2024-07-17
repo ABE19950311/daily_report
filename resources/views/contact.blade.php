@@ -10,6 +10,17 @@
     <div class="row bg-light text-dark py-5">
         <div class="col-md-8 offset-md-2">
             <h2 class="fs-1 mb-5 text-center fw-bold">お問い合わせ</h2>
+
+            @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+    
             <form method="POST" action="https://192.168.64.6/contact">
                 @csrf
                 <div class="mb-3">

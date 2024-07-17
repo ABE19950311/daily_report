@@ -10,8 +10,8 @@ class NotificationController extends Controller
 {
     private $notification;
 
-    public function __construct() {
-        parent::__construct();
+    public function __construct(Request $request) {
+        parent::__construct($request);
         $this->notification = new Notification();
     }
 
@@ -20,17 +20,15 @@ class NotificationController extends Controller
      */
     public function index(Request $request)
     {
-        list($user_id, $userType) = $this->getUserInfo($request);
-
-        if(!$user_id) {
+        if(!$this->userId) {
             return back()->withInput();
         }
 
-        $addressList = $this->notification->getAddress($user_id);
+        $addressList = $this->notification->getAddress($this->userId);
 
         return view('notification')
                 ->with("addressList",$addressList)
-                ->with("userType",$userType);
+                ->with("userType",$this->userType);
     }
 
     /**
@@ -52,17 +50,16 @@ class NotificationController extends Controller
             return back()->withInput()->withErrors($validator);
         }
 
-        list($user_id, $userType) = $this->getUserInfo($request);
         $address = $request->input('mailAddress');
 
-        if(!$user_id) {
+        if(!$this->userId) {
             return back()->withInput();
         }
 
-        $res = $this->notification->isRegisterAddress($address,$user_id);
+        $res = $this->notification->isRegisterAddress($address,$this->userId);
 
         if($res) {
-            return redirect('/mail')->with("userType",$userType);;
+            return redirect('/mail')->with("userType",$this->userType);;
         } else {
             return back()->withInput();
         }

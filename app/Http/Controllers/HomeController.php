@@ -9,8 +9,8 @@ class HomeController extends Controller
 {
     private $report;
 
-    public function __construct() {
-        parent::__construct();
+    public function __construct(Request $request) {
+        parent::__construct($request);
         $this->report = new Report();
     }
 
@@ -45,18 +45,16 @@ class HomeController extends Controller
     {   
         $titleSearch = $request->query("titleSearch");
         $categorySearch = $request->query("categorySearch");
-
-        list($user_id, $userType) = $this->getUserInfo($request);
-       
-        $reportList = $this->report->getReportList($page,$user_id,$titleSearch,$categorySearch,$userType);
-        $reportSize = $this->report->getReportSize($user_id,$titleSearch,$categorySearch,$userType);
+   
+        $reportList = $this->report->getReportList($page,$this->userId,$titleSearch,$categorySearch,$this->userType);
+        $reportSize = $this->report->getReportSize($this->userId,$titleSearch,$categorySearch,$this->userType);
         
         return view('home')
                 ->with("reportList",$reportList)
                 ->with("reportSize",$reportSize)
                 ->with("titleSearch",$titleSearch)
                 ->with("categorySearch",$categorySearch)
-                ->with("userType",$userType);
+                ->with("userType",$this->userType);
     }
 
     /**
