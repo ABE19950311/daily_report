@@ -61,6 +61,9 @@
                             <a class="nav-link" href="https://192.168.64.6/contact">お問い合わせ</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="https://192.168.64.6/account">アカウント設定</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" id="logout_btn" href="https://192.168.64.6/logout">LOGOUT</a>
                         </li>
                     </ul>

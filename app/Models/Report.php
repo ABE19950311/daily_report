@@ -244,18 +244,4 @@ class Report extends Model
             return false;
         }
     }
-
-    public function validation($request) {
-        $rules = array(
-            'title' => 'required|max:255',
-            'sei' => 'required|string|max:255',
-            'mei' => 'required|string|max:255',
-            'category' => 'required',
-            'content' => 'required|max:65535',
-            'url' => 'max:65535',
-            'image_path' => 'max:255'
-        );
-        $validator = Validator::make($request,$rules);
-        return $validator;
-    }
 }

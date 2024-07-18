@@ -133,7 +133,7 @@ class User extends Authenticatable
         }
     }
 
-    public function getToken($token) {
+    public function getUserName($token) {
         try {
             $res = Redis::get($token);
             return $res;
@@ -165,7 +165,7 @@ class User extends Authenticatable
     }
 
     public function getLoginUserId($token) {
-        $user = $this->getToken($token);
+        $user = $this->getUserName($token);
 
         $params = [
             ":name"=>$user
@@ -190,23 +190,5 @@ class User extends Authenticatable
             \Log::info($e);
             return false;
         }
-    }
-
-    public function userRegisterValidation($request) {
-        $rules = array(
-            'user' => 'required|max:255|unique:users,name',
-            'password' => 'required|max:255'
-        );
-        $validator = Validator::make($request,$rules);
-        return $validator;
-    }
-
-    public function validation($request) {
-        $rules = array(
-            'user' => 'required|max:255',
-            'password' => 'required|max:255'
-        );
-        $validator = Validator::make($request,$rules);
-        return $validator;
     }
 }

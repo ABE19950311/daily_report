@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
 {
@@ -36,7 +37,7 @@ class LoginController extends Controller
      */
     public function store(Request $request,$userType)
     {
-        $validator = $this->user->validation($request->all());
+        $validator = $this->validation($request->all());
 
         if($validator->fails()) {
             return back()->withInput()->withErrors($validator);
@@ -90,5 +91,14 @@ class LoginController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    private function validation($request) {
+        $rules = array(
+            'user' => 'required|max:255',
+            'password' => 'required|max:255'
+        );
+        $validator = Validator::make($request,$rules);
+        return $validator;
     }
 }

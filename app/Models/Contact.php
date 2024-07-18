@@ -51,14 +51,4 @@ class Contact extends Model
             return false;
         }
     }
-
-    public function validation($request) {
-        $rules = array(
-            'name' => 'required|max:255',
-            'address' => 'required|email|max:255',
-            'contact' => 'required|max:65535'
-        );
-        $validator = Validator::make($request,$rules);
-        return $validator;
-    }
 }

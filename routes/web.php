@@ -9,6 +9,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RankingController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\AccountController;
 use App\Http\Middleware\CheckAuth;
 use App\Http\Middleware\CheckAuthUser;
 
@@ -32,12 +33,14 @@ Route::middleware([CheckAuth::class])->group(function () {
     Route::delete('/report', 'ReportController@destroy');
     Route::get('/logout', 'SessionController@isLogout');
     Route::get('/contact/complete', 'ContactController@isShowCompletePage');
+    Route::get('/account/password', 'AccountController@isShowPassChangePage');
 
     Route::resource('home', 'HomeController');
     Route::resource('mail', 'NotificationController');
     Route::resource('report', 'ReportController');
     Route::resource('ranking', 'RankingController');
     Route::resource('contact', 'ContactController');
+    Route::resource('account', 'AccountController');
     
 });
 

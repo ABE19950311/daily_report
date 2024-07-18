@@ -10,26 +10,14 @@ abstract class Controller
     private $user;
     protected $userId;
     protected $userType;
+    protected $userName;
 
     public function __construct(Request $request) {
         $this->user = new User();
-        $this->userId = $this->getUserId($request);
-        $this->userType = $this->getUserType($request);
-    }
-
-    private function getUserId($request) {
         $token = $request->cookie('sessionToken');
-
-        $userId = $this->user->getLoginUserId($token);
-
-        return $userId;
+        $this->userId = $this->user->getLoginUserId($token);
+        $this->userType = $this->user->getUserType($token);
+        $this->userName = $this->user->getUserName($token);
     }
 
-    private function getUserType($request) {
-        $token = $request->cookie('sessionToken');
-
-        $userType = $this->user->getUserType($token);
-
-        return $userType;
-    }
 }

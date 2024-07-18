@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Report;
 use App\Models\User;
 use App\Models\ReportUser;
+use Illuminate\Support\Facades\Validator;
 
 class ReportController extends Controller
 {
@@ -41,7 +42,7 @@ class ReportController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = $this->report->validation($request->all());
+        $validator = $this->validation($request->all());
 
         if($validator->fails()) {
             return back()->withInput()->withErrors($validator);
@@ -164,5 +165,19 @@ class ReportController extends Controller
         } else {
             return false;
         }
+    }
+
+    private function validation($request) {
+        $rules = array(
+            'title' => 'required|max:255',
+            'sei' => 'required|string|max:255',
+            'mei' => 'required|string|max:255',
+            'category' => 'required',
+            'content' => 'required|max:65535',
+            'url' => 'max:65535',
+            'image_path' => 'max:255'
+        );
+        $validator = Validator::make($request,$rules);
+        return $validator;
     }
 }

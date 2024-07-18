@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class NotificationController extends Controller
 {
@@ -44,7 +45,7 @@ class NotificationController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = $this->notification->validation($request->all());
+        $validator = $this->validation($request->all());
 
         if($validator->fails()) {
             return back()->withInput()->withErrors($validator);
@@ -95,5 +96,13 @@ class NotificationController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    private function validation($request) {
+        $rules = array(
+            'mailAddress' => 'required|email|max:255|unique:notifications,address'
+        );
+        $validator = Validator::make($request,$rules);
+        return $validator;
     }
 }

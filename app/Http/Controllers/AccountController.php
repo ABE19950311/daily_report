@@ -3,24 +3,24 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Contact;
 use Illuminate\Support\Facades\Validator;
 
-class ContactController extends Controller
+class AccountController extends Controller
 {
-    private $contact;
 
     public function __construct(Request $request) {
         parent::__construct($request);
-        $this->contact = new Contact();
     }
 
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        return view("contact")->with("userType", $this->userType);
+        return view('account')
+                ->with("userType", $this->userType)
+                ->with("userName", $this->userName)
+                ->with("userId", $this->userId);
     }
 
     /**
@@ -40,21 +40,6 @@ class ContactController extends Controller
 
         if($validator->fails()) {
             return back()->withInput()->withErrors($validator);
-        }
-
-        $requestBody = [
-            "name" => $request->input("name"),
-            "address" => $request->input("address"),
-            "contact" => $request->input("contact"),
-            "user_id" => $this->userId
-        ];
-        
-        $response = $this->contact->isRegisterContact($requestBody);
-
-        if($response) {
-            return redirect("/contact/complete");
-        } else {
-            return back()->withInput();
         }
     }
 
@@ -90,15 +75,17 @@ class ContactController extends Controller
         //
     }
 
-    public function isShowCompletePage() {
-        return view("contactComplete")->with("userType",$this->userType);
+    public function isShowPassChangePage() {
+        return view('passwordChange')
+                ->with("userType", $this->userType)
+                ->with("userName", $this->userName)
+                ->with("userId", $this->userId);
     }
 
     private function validation($request) {
         $rules = array(
-            'name' => 'required|max:255',
-            'address' => 'required|email|max:255',
-            'contact' => 'required|max:65535'
+            'oldPassword' => 'required|max:255',
+            'password' => 'required|max:255|confirmed'
         );
         $validator = Validator::make($request,$rules);
         return $validator;
