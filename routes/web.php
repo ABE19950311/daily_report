@@ -10,6 +10,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RankingController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Middleware\CheckAuth;
 use App\Http\Middleware\CheckAuthUser;
 
@@ -34,6 +35,9 @@ Route::middleware([CheckAuth::class])->group(function () {
     Route::get('/logout', 'SessionController@isLogout');
     Route::get('/contact/complete', 'ContactController@isShowCompletePage');
     Route::get('/account/password', 'AccountController@isShowPassChangePage');
+    Route::post('/account/password', 'AccountController@isPasswordChange');
+    Route::get('/account/user', 'AccountController@isShowUserNameChangePage');
+    Route::post('/account/user', 'AccountController@isUserNameChange');
 
     Route::resource('home', 'HomeController');
     Route::resource('mail', 'NotificationController');
@@ -41,6 +45,7 @@ Route::middleware([CheckAuth::class])->group(function () {
     Route::resource('ranking', 'RankingController');
     Route::resource('contact', 'ContactController');
     Route::resource('account', 'AccountController');
+    Route::resource('dashboard', 'DashboardController');
     
 });
 

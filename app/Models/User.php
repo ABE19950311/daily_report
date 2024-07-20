@@ -86,6 +86,50 @@ class User extends Authenticatable
         }
     }
 
+    public function isUpdatePassword($userId,$password) {
+        $params = [
+            ":id" => $userId,
+            ":password" => bcrypt($password)
+        ];
+
+        $query = "UPDATE users
+                SET
+                    password = :password
+                WHERE
+                    id = :id
+                ";
+
+        try {
+            DB::update($query,$params);
+            return true;
+        } catch (Exception $e) {
+            \Log::info($e);
+            return false;
+        }
+    }
+
+    public function isUpdateUserName($userId,$user) {
+        $params = [
+            ":id" => $userId,
+            ":name" => $user
+        ];
+
+        $query = "UPDATE users
+                SET
+                    name = :name
+                WHERE
+                    id = :id
+                ";
+
+        try {
+            DB::update($query,$params);
+            return true;
+        } catch (Exception $e) {
+            \Log::info($e);
+            return false;
+        }
+    }
+
     public function exsistUserCheck($user,$password,$userType) {
         $params = [
             ":name" => $user
@@ -127,6 +171,16 @@ class User extends Authenticatable
             Redis::set($token, $user);
             Redis::set($token . "userType", $userType);
             return $token;
+        } catch (Exception $e) {
+            \Log::info($e);
+            return false;
+        }
+    }
+
+    public function updateUserSession($token,$user) {
+        try {
+            Redis::getset($token, $user);
+            return true;
         } catch (Exception $e) {
             \Log::info($e);
             return false;

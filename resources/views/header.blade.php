@@ -35,7 +35,7 @@
     <div id="header" class="header_class">
         <nav class="navbar navbar-expand-lg bg-dark border-bottom border-body" data-bs-theme="dark">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">Navbar</a>
+                <a class="navbar-brand" href="https://192.168.64.6/home/1">Navbar</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false"
                     aria-label="Toggle navigation">
@@ -58,13 +58,16 @@
                             <a class="nav-link" id="notification_register_btn" href="https://192.168.64.6/mail">通知先</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="https://192.168.64.6/dashboard">ダッシュボード</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="https://192.168.64.6/contact">お問い合わせ</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="https://192.168.64.6/account">アカウント設定</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="logout_btn" href="https://192.168.64.6/logout">LOGOUT</a>
+                            <a class="nav-link" id="logout_btn" href="https://192.168.64.6/logout">ログアウト</a>
                         </li>
                     </ul>
                 </div>

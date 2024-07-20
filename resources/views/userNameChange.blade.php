@@ -14,21 +14,16 @@
     </div>
 @endif
 
-<form action="https://192.168.64.6/account/password" method="POST">
+<form action="https://192.168.64.6/account/user" method="POST">
     @csrf
     <div class="form-group">
-        <label>古いパスワード</label>
-        <input type="password" class="form-control" name="oldPassword" value="{{ old('oldPassword') }}"
-            aria-describedby="emailHelp" placeholder="Password">
-    </div>
-    <div class="form-group">
-        <label>新しいパスワード</label>
-        <input type="password" class="form-control" name="password" value="{{ old('password') }}"
+        <label>新しいユーザ名</label>
+        <input type="text" class="form-control" name="user" value="{{ old('user') }}"
             placeholder="Password">
     </div>
     <div class="form-group">
         <label>再度入力</label>
-        <input type="password" class="form-control" name="password_confirmation" value="{{ old('password_confirmation') }}"
+        <input type="text" class="form-control" name="user_confirmation" value="{{ old('user_confirmation') }}"
             placeholder="Password">
     </div>
     <button type="submit" class="btn btn-primary topBtn"><i class="fa fa-sign-in"></i>変更する</button>
