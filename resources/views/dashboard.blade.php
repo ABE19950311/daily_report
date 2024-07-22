@@ -4,4 +4,11 @@
 
 @extends('header')
 
-<h2>kouzinow</h2>
+<div class="conteiner">
+  <div class="wrap">
+    <div class="tgt" id="chart" ></div>
+    <div class="tgt" id="chart2" ></div>
+    <div class="tgt" id="chart3" ></div>
+    <div class="tgt" id="chart4" ></div>
+  </div>
+</div>

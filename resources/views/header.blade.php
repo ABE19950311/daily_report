@@ -12,6 +12,8 @@
     <title>Document</title>
     <!-- Bootstrap JS (optional, for components that require JS) -->
     <script src="{{ asset('/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="module" src="{{ asset('/js/dashboard.js') }}"></script>
     <script type="module" src="{{ asset('/js/home.js') }}"></script>
     <script type="module" src="{{ asset('/js/class.js') }}"></script>
     <script type="module" src="{{ asset('/js/request.js') }}"></script>
