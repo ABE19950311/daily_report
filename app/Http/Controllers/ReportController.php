@@ -167,6 +167,16 @@ class ReportController extends Controller
         }
     }
 
+    public function isGetReportData() {
+        $reportList = $this->report->getAllReportList($this->userId,$this->userType);
+
+        if($reportList) {
+            return response()->json(["status" => 200, "report" => $reportList]);
+        } else {
+            return response()->json(["status" => 500]);
+        }
+    }
+
     private function validation($request) {
         $rules = array(
             'title' => 'required|max:255',

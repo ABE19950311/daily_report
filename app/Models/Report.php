@@ -244,4 +244,39 @@ class Report extends Model
             return false;
         }
     }
+
+    public function getAllReportList($user_id,$userType) {
+        $addQuery = [];
+        $params = [];
+
+        $query = "SELECT 
+                    id,
+                    title,
+                    sei,
+                    mei,
+                    category,
+                    content,
+                    url,
+                    image_path 
+                FROM 
+                    reports 
+                ";
+        
+        if($userType == "report_owner") {
+            array_push($addQuery, "user_id = :user_id");
+            $params[":user_id"] = $user_id;
+        }
+
+        if(count($addQuery) > 0) {
+            $query .= " WHERE " . implode(" AND ", $addQuery);
+        }
+
+        try {
+            $reportList = DB::select($query,$params);
+            return $reportList;
+        } catch (Exception $e) {
+            \Log::info($e);
+            return false;
+        }
+    }
 }

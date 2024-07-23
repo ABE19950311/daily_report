@@ -30,6 +30,7 @@ Route::middleware([CheckAuth::class])->group(function () {
 
     Route::get('/report/show', 'ReportController@isShowReport');
     Route::get('/report/update', 'ReportController@isShowUpdateReportPage');
+    Route::post('/report/json', 'ReportController@isGetReportData');
     Route::put('/report', 'ReportController@update');
     Route::delete('/report', 'ReportController@destroy');
     Route::get('/logout', 'SessionController@isLogout');

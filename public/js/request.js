@@ -12,10 +12,10 @@ export async function requestToServer(url,method,body={}) {
 
     try {
         const res = await fetch(url,option)
-        //const data = await res.json()
-        console.log(res)
-        return res
+        const data = await res.json()
+        return data
     } catch(e) {
-        throw new Error(e)
+        console.error(e)
+        return false
     }
 }

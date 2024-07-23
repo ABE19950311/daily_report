@@ -44,3 +44,16 @@ export class Home {
         return this._categorySearchVal
     }
 }
+
+export class Dashboard {
+    constructor() {
+        this.reportList = null
+    }
+
+    set reportList(value) {
+        this._reportList = value
+    }
+    get reportList() {
+        return this._reportList
+    }
+}

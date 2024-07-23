@@ -1,6 +1,7 @@
 <link rel="stylesheet" href="{{ asset('/css/index.css') }}">
 <!-- Bootstrap CSS -->
 <link href="{{ asset('/css/bootstrap.min.css') }}" rel="stylesheet">
+<script type="module" src="{{ asset('/js/dashboard.js') }}"></script>
 
 @extends('header')
 

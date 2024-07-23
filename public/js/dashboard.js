@@ -1,15 +1,39 @@
 import * as page from "./class.js";
+import * as request from "./request.js";
+
+let dashboard = null
 
 window.addEventListener("DOMContentLoaded",()=>{
-    main()
+    try {
+        dashboard = new page.Dashboard()
+        main()
+    } catch(e) {
+        console.error(e)
+    }
 })
 
-function main() {
-    google.charts.load("current", { packages: ["corechart"] });
-    google.charts.setOnLoadCallback(drawChart);
-    google.charts.setOnLoadCallback(drawChart2);
-    google.charts.setOnLoadCallback(drawChart3);
-    google.charts.setOnLoadCallback(drawChart4);
+async function main() {
+    if(await getReportData()) {
+        console.log(dashboard.reportList)
+        google.charts.load("current", { packages: ["corechart"] });
+        google.charts.setOnLoadCallback(drawChart);
+        google.charts.setOnLoadCallback(drawChart2);
+        google.charts.setOnLoadCallback(drawChart3);
+        google.charts.setOnLoadCallback(drawChart4);
+    }
+}
+
+async function getReportData() {
+    const url = "https://192.168.64.6/report/json"
+
+    const response = await request.requestToServer(url,"POST");
+
+    if(response && response.status == 200) {
+        dashboard.reportList = response.report
+        return true
+    } else {
+        return false
+    }
 }
 
 function drawChart() {
