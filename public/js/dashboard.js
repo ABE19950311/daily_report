@@ -14,7 +14,6 @@ window.addEventListener("DOMContentLoaded",()=>{
 
 async function main() {
     if(await getReportData()) {
-        console.log(dashboard.reportList)
         google.charts.load("current", { packages: ["corechart"] });
         google.charts.setOnLoadCallback(drawChart);
         google.charts.setOnLoadCallback(drawChart2);
@@ -116,18 +115,49 @@ function drawChart3() {
     query.send(handleQueryResponse);
 }
 
-function handleQueryResponse(response) {
+async function handleQueryResponse(response) {
     var target = document.getElementById("chart3");
     var data;
     var options = {
     title: "Program Share",
     width: 500,
     height: 300,
-    colors: ["darkgreen", "crimson","mediumblue","olive"],
+    colors: ["darkgreen", "crimson","mediumblue","olive","yellow","green","purple","orange","black"],
     };
     var chart = new google.visualization.PieChart(target);
-    data = response.getDataTable();
+    let total = await doTotallingReportData() 
+    console.log(total)
+    var data = google.visualization.arrayToDataTable([
+        ['category', 'totalling Category'],
+        ['開発',    total["開発"]],
+        ['サーバ',  total["サーバ"]],
+        ['ネットワーク',    total["ネットワーク"]],
+        ['AWS', total["AWS"]],
+        ['コマンドライン',    total["コマンドライン"]],
+        ['OS',  total["OS"]],
+        ['ミドルウェア',    total["ミドルウェア"]],
+        ['エラー対応',  total["エラー対応"]],
+        ['その他',  total["その他"]]
+      ]);
     chart.draw(data, options);
+}
+
+async function doTotallingReportData() {
+    let total = {
+        "開発":0,
+        "サーバ":0,
+        "ネットワーク":0,
+        "AWS":0,
+        "コマンドライン":0,
+        "OS":0,
+        "ミドルウェア":0,
+        "エラー対応":0,
+        "その他":0
+    }
+    Object.entries(dashboard.reportList).forEach((data)=>{
+        total[data[1]["category"]] = total[data[1]["category"]]+1
+    })
+    return total
 }
   
 function drawChart4() {
