@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Cookie;
@@ -35,14 +36,8 @@ class LoginController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request,$userType)
+    public function store(LoginRequest $request,$userType)
     {
-        $validator = $this->validation($request->all());
-
-        if($validator->fails()) {
-            return back()->withInput()->withErrors($validator);
-        }
-
         $loginUser = $request->input("user");
         $password = $request->input("password");
 
@@ -91,14 +86,5 @@ class LoginController extends Controller
     public function destroy(string $id)
     {
         //
-    }
-
-    private function validation($request) {
-        $rules = array(
-            'user' => 'required|max:255',
-            'password' => 'required|max:255'
-        );
-        $validator = Validator::make($request,$rules);
-        return $validator;
     }
 }

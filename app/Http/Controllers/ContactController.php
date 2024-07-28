@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\ContactRequest;
 use App\Models\Contact;
 use Illuminate\Support\Facades\Validator;
 
@@ -34,14 +35,8 @@ class ContactController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ContactRequest $request)
     {
-        $validator = $this->validation($request->all());
-
-        if($validator->fails()) {
-            return back()->withInput()->withErrors($validator);
-        }
-
         $requestBody = [
             "name" => $request->input("name"),
             "address" => $request->input("address"),
@@ -92,15 +87,5 @@ class ContactController extends Controller
 
     public function isShowCompletePage() {
         return view("contactComplete")->with("userType",$this->userType);
-    }
-
-    private function validation($request) {
-        $rules = array(
-            'name' => 'required|max:255',
-            'address' => 'required|email|max:255',
-            'contact' => 'required|max:65535'
-        );
-        $validator = Validator::make($request,$rules);
-        return $validator;
     }
 }

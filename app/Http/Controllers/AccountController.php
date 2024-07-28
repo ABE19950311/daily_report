@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\AccountPasswordRequest;
+use App\Http\Requests\AccountUserNameRequest;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 
@@ -81,13 +83,7 @@ class AccountController extends Controller
                 ->with("userId", $this->userId);
     }
 
-    public function isPasswordChange(Request $request) {    
-        $validator = $this->passwordValidation($request->all());
-
-        if($validator->fails()) {
-            return back()->withInput()->withErrors($validator);
-        }
-
+    public function isPasswordChange(AccountPasswordRequest $request) {    
         $oldPassword = $request->input("oldPassword");
         $password = $request->input("password");
 
@@ -113,13 +109,7 @@ class AccountController extends Controller
                 ->with("userId", $this->userId);
     }
 
-    public function isUserNameChange(Request $request) {
-        $validator = $this->userNameValidation($request->all());
-
-        if($validator->fails()) {
-            return back()->withInput()->withErrors($validator);
-        }
-
+    public function isUserNameChange(AccountUserNameRequest $request) {
         $user = $request->input("user");
 
         $response = $this->user->isUpdateUserName($this->userId,$user);
@@ -131,23 +121,5 @@ class AccountController extends Controller
         } else {
             return back()->withInput()->withErrors("ユーザ名の更新に失敗しました");
         }
-    }
-
-    private function passwordValidation($request) {
-        $rules = array(
-            'oldPassword' => 'required|max:255',
-            'password' => 'required|max:255|confirmed'
-        );
-        $validator = Validator::make($request,$rules);
-        return $validator;
-    }
-
-    private function userNameValidation($request) {
-        $rules = array(
-            'user' => 'required|max:255|unique:users,name',
-            'user_confirmation' => 'required|same:user'
-        );
-        $validator = Validator::make($request,$rules);
-        return $validator;
     }
 }

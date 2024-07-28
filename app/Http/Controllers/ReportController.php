@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\ReportRequest;
 use App\Models\Report;
 use App\Models\User;
 use App\Models\ReportUser;
@@ -40,14 +41,8 @@ class ReportController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ReportRequest $request)
     {
-        $validator = $this->validation($request->all());
-
-        if($validator->fails()) {
-            return back()->withInput()->withErrors($validator);
-        }
-
         $requestBody = [
             'title' => $request->input("title"),
             'sei' => $request->input("sei"),
@@ -175,19 +170,5 @@ class ReportController extends Controller
         } else {
             return response()->json(["status" => 500]);
         }
-    }
-
-    private function validation($request) {
-        $rules = array(
-            'title' => 'required|max:255',
-            'sei' => 'required|string|max:255',
-            'mei' => 'required|string|max:255',
-            'category' => 'required',
-            'content' => 'required|max:65535',
-            'url' => 'max:65535',
-            'image_path' => 'max:255'
-        );
-        $validator = Validator::make($request,$rules);
-        return $validator;
     }
 }

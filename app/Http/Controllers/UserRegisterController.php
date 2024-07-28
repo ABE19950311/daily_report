@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\UserRegisterRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 
@@ -33,14 +34,8 @@ class UserRegisterController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request,$userType)
+    public function store(UserRegisterRequest $request,$userType)
     {
-        $validator = $this->validation($request->all());
-
-        if($validator->fails()) {
-            return back()->withInput()->withErrors($validator);
-        }
-
         $requestUser = $request->input("user");
         $password = $request->input("password");
         
@@ -83,14 +78,5 @@ class UserRegisterController extends Controller
     public function destroy(string $id)
     {
         //
-    }
-
-    private function validation($request) {
-        $rules = array(
-            'user' => 'required|max:255|unique:users,name',
-            'password' => 'required|max:255'
-        );
-        $validator = Validator::make($request,$rules);
-        return $validator;
     }
 }
