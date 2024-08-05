@@ -13,7 +13,8 @@ class LoginController extends Controller
 {
     private $user;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->user = new User();
     }
 
@@ -22,7 +23,7 @@ class LoginController extends Controller
      */
     public function index($userType)
     {
-        return view('login')->with("userType",$userType);
+        return view('login')->with("userType", $userType);
     }
 
     /**
@@ -36,20 +37,20 @@ class LoginController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(LoginRequest $request,$userType)
+    public function store(LoginRequest $request, $userType)
     {
-        $loginUser = $request->input("user");
-        $password = $request->input("password");
+        $loginUser = $request->user;
+        $password = $request->password;
 
-        $response = $this->user->exsistUserCheck($loginUser,$password,$userType);
-        
-        if(!$response) {
+        $response = $this->authenticateUser($loginUser, $password, $userType);
+
+        if (!$response) {
             return back()->withInput()->withErrors("ユーザまたはパスワードが間違っています");
-        } 
+        }
 
-        $token = $this->user->setSession($loginUser,$userType);
+        $token = $this->createSession($loginUser, $userType);
 
-        if($token) {
+        if ($token) {
             return redirect('/home/1')->withCookie('sessionToken', $token);
         } else {
             return back()->withInput();
@@ -86,5 +87,15 @@ class LoginController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    private function authenticateUser($loginUser, $password, $userType)
+    {
+        return $this->user->exsistUserCheck($loginUser, $password, $userType);
+    }
+
+    private function createSession($loginUser, $userType)
+    {
+        return $this->user->setSession($loginUser, $userType);
     }
 }
