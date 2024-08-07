@@ -9,7 +9,8 @@ class HomeController extends Controller
 {
     private $report;
 
-    public function __construct(Request $request) {
+    public function __construct(Request $request)
+    {
         parent::__construct($request);
         $this->report = new Report();
     }
@@ -41,20 +42,30 @@ class HomeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request,string $page)
-    {   
-        $titleSearch = $request->query("titleSearch");
-        $categorySearch = $request->query("categorySearch");
-   
-        $reportList = $this->report->getReportList($page,$this->userId,$titleSearch,$categorySearch,$this->userType);
-        $reportSize = $this->report->getReportSize($this->userId,$titleSearch,$categorySearch,$this->userType);
-        
+    public function show(Request $request, string $page)
+    {
+        $titleSearch = $request->titleSearch;
+        $categorySearch = $request->categorySearch;
+
+        $reportList = $this->isGetReportList($page, $titleSearch, $categorySearch);
+        $reportSize = $this->isGetReportSize($titleSearch, $categorySearch);
+
         return view('home')
-                ->with("reportList",$reportList)
-                ->with("reportSize",$reportSize)
-                ->with("titleSearch",$titleSearch)
-                ->with("categorySearch",$categorySearch)
-                ->with("userType",$this->userType);
+            ->with("reportList", $reportList)
+            ->with("reportSize", $reportSize)
+            ->with("titleSearch", $titleSearch)
+            ->with("categorySearch", $categorySearch)
+            ->with("userType", $this->userType);
+    }
+
+    private function isGetReportList($page, $titleSearch, $categorySearch)
+    {
+        return $this->report->getReportList($page, $this->userId, $titleSearch, $categorySearch, $this->userType);
+    }
+
+    private function isGetReportSize($titleSearch, $categorySearch)
+    {
+        return $this->report->getReportSize($this->userId, $titleSearch, $categorySearch, $this->userType);
     }
 
     /**

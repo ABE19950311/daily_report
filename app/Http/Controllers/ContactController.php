@@ -11,7 +11,8 @@ class ContactController extends Controller
 {
     private $contact;
 
-    public function __construct(Request $request) {
+    public function __construct(Request $request)
+    {
         parent::__construct($request);
         $this->contact = new Contact();
     }
@@ -37,20 +38,30 @@ class ContactController extends Controller
      */
     public function store(ContactRequest $request)
     {
-        $requestBody = [
-            "name" => $request->input("name"),
-            "address" => $request->input("address"),
-            "contact" => $request->input("contact"),
-            "user_id" => $this->userId
-        ];
-        
-        $response = $this->contact->isRegisterContact($requestBody);
+        $requestBody = $this->extractContactRequestData($request);
 
-        if($response) {
+        $response = $this->registerContact($requestBody);
+
+        if ($response) {
             return redirect("/contact/complete");
         } else {
             return back()->withInput();
         }
+    }
+
+    private function extractContactRequestData($request)
+    {
+        return [
+            "name" => $request->name,
+            "address" => $request->address,
+            "contact" => $request->contact,
+            "user_id" => $this->userId
+        ];
+    }
+
+    private function registerContact($requestBody)
+    {
+        return $this->contact->isRegisterContact($requestBody);
     }
 
     /**
@@ -85,7 +96,8 @@ class ContactController extends Controller
         //
     }
 
-    public function isShowCompletePage() {
-        return view("contactComplete")->with("userType",$this->userType);
+    public function isShowCompletePage()
+    {
+        return view("contactComplete")->with("userType", $this->userType);
     }
 }

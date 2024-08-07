@@ -12,7 +12,8 @@ class AccountController extends Controller
 {
     private $user;
 
-    public function __construct(Request $request) {
+    public function __construct(Request $request)
+    {
         parent::__construct($request);
         $this->user = new User();
     }
@@ -23,9 +24,9 @@ class AccountController extends Controller
     public function index()
     {
         return view('account')
-                ->with("userType", $this->userType)
-                ->with("userName", $this->userName)
-                ->with("userId", $this->userId);
+            ->with("userType", $this->userType)
+            ->with("userName", $this->userName)
+            ->with("userId", $this->userId);
     }
 
     /**
@@ -76,50 +77,71 @@ class AccountController extends Controller
         //
     }
 
-    public function isShowPassChangePage() {
+    public function isShowPassChangePage()
+    {
         return view('passwordChange')
-                ->with("userType", $this->userType)
-                ->with("userName", $this->userName)
-                ->with("userId", $this->userId);
+            ->with("userType", $this->userType)
+            ->with("userName", $this->userName)
+            ->with("userId", $this->userId);
     }
 
-    public function isPasswordChange(AccountPasswordRequest $request) {    
-        $oldPassword = $request->input("oldPassword");
-        $password = $request->input("password");
+    public function isPasswordChange(AccountPasswordRequest $request)
+    {
+        $check = $this->oldPasswordCheck($request->oldPassword);
 
-        $oldPasswordCheck = $this->user->exsistUserCheck($this->userName,$oldPassword,$this->userType);
-
-        if(!$oldPasswordCheck) {
+        if (!$check) {
             return back()->withInput()->withErrors("現在のパスワードが一致しません");
         }
 
-        $response = $this->user->isUpdatePassword($this->userId,$password);
+        $response = $this->updatePassword($request->password);
 
-        if($response) {
+        if ($response) {
             return redirect("/account");
         } else {
             return back()->withInput()->withErrors("パスワードの更新に失敗しました");
         }
     }
 
-    public function isShowUserNameChangePage() {
-        return view('userNameChange')
-                ->with("userType", $this->userType)
-                ->with("userName", $this->userName)
-                ->with("userId", $this->userId);
+    private function oldPasswordCheck($oldPassword)
+    {
+        return $this->user->exsistUserCheck($this->userName, $oldPassword, $this->userType);
     }
 
-    public function isUserNameChange(AccountUserNameRequest $request) {
-        $user = $request->input("user");
+    private function updatePassword($password)
+    {
+        return $this->user->isUpdatePassword($this->userId, $password);
+    }
 
-        $response = $this->user->isUpdateUserName($this->userId,$user);
+    public function isShowUserNameChangePage()
+    {
+        return view('userNameChange')
+            ->with("userType", $this->userType)
+            ->with("userName", $this->userName)
+            ->with("userId", $this->userId);
+    }
+
+    public function isUserNameChange(AccountUserNameRequest $request)
+    {
+        $user = $request->user;
+
+        $response = $this->updateUserName($user);
         //ユーザ名変更でtokenとユーザ名紐づかなくなるため,redis更新
-        $updateSession = $this->user->updateUserSession($this->token,$user);
+        $updateSession = $this->updateRedisUserSession($user);
 
-        if($response && $updateSession) {
+        if ($response && $updateSession) {
             return redirect("/account");
         } else {
             return back()->withInput()->withErrors("ユーザ名の更新に失敗しました");
         }
+    }
+
+    private function updateUserName($user)
+    {
+        return $this->user->isUpdateUserName($this->userId, $user);
+    }
+
+    private function updateRedisUserSession($user)
+    {
+        return $this->user->updateUserSession($this->token, $user);
     }
 }
