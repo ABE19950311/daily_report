@@ -15,7 +15,8 @@ class ReportController extends Controller
     private $report;
     private $report_user;
 
-    public function __construct(Request $request) {
+    public function __construct(Request $request)
+    {
         parent::__construct($request);
         $this->user = new User();
         $this->report = new Report();
@@ -43,25 +44,35 @@ class ReportController extends Controller
      */
     public function store(ReportRequest $request)
     {
-        $requestBody = [
-            'title' => $request->input("title"),
-            'sei' => $request->input("sei"),
-            'mei'=> $request->input("mei"),
-            'category'=> $request->input("category"),
-            'content' => $request->input("content"),
-            'url'=> $request->input("url"),
-            'image_path' => $request->input("image_path"),
-            'is_release' => intval($request->input("is_release")),
-            'user_id' => $this->userId
-        ];
+        $requestBody = $this->extractReportRequestData($request);
 
-        $res = $this->report->submissonReport($requestBody);
+        $res = $this->handleReportSubmission($requestBody);
 
-        if($res) {
+        if ($res) {
             return redirect('/home/1');
         } else {
             return back()->withInput();
         }
+    }
+
+    private function extractReportRequestData($request)
+    {
+        return [
+            'title' => $request->title,
+            'sei' => $request->sei,
+            'mei' => $request->mei,
+            'category' => $request->category,
+            'content' => $request->content,
+            'url' => $request->url,
+            'image_path' => $request->image_path,
+            'is_release' => intval($request->is_release),
+            'user_id' => $this->userId
+        ];
+    }
+
+    private function handleReportSubmission($requestBody)
+    {
+        return $this->report->submissonReport($requestBody);
     }
 
     /**
@@ -85,26 +96,35 @@ class ReportController extends Controller
      */
     public function update(Request $request)
     {
-        //TODO バリデーション追加する
-        $requestBody = [
-            'id' => $request->input("reportid"),
-            'title' => $request->input("title"),
-            'sei' => $request->input("sei"),
-            'mei'=> $request->input("mei"),
-            'category'=> $request->input("category"),
-            'content' => $request->input("content"),
-            'url'=> $request->input("url"),
-            'image_path' => $request->input("image_path"),
-            'is_release' => intval($request->input("is_release"))
-        ];
-       
-        $res = $this->report->updateReport($requestBody);
+        $requestBody = $this->extractUpdateReportRequestData($request);
 
-        if($res) {
+        $res = $this->handleUpdateReportSubmission($requestBody);
+
+        if ($res) {
             return redirect('/home/1');
         } else {
             return back()->withInput();
         }
+    }
+
+    private function extractUpdateReportRequestData($request)
+    {
+        return [
+            'id' => $request->reportid,
+            'title' => $request->title,
+            'sei' => $request->sei,
+            'mei' => $request->mei,
+            'category' => $request->category,
+            'content' => $request->content,
+            'url' => $request->url,
+            'image_path' => $request->image_path,
+            'is_release' => intval($request->is_release)
+        ];
+    }
+
+    private function handleUpdateReportSubmission($requestBody)
+    {
+        return $this->report->updateReport($requestBody);
     }
 
     /**
@@ -112,63 +132,83 @@ class ReportController extends Controller
      */
     public function destroy(Request $request)
     {
-        $report_id = $request->input("reportid");
-        $res = $this->report->deleteReport($report_id);
+        $report_id = $request->reportid;
+        $res = $this->isDeleteReport($report_id);
 
-        if($res) {
+        if ($res) {
             return redirect('/home/1');
         } else {
             return back()->withInput();
         }
     }
 
-    public function isShowReport(Request $request) {
-        $report_id = $request->query("reportid");
+    private function isDeleteReport($report_id)
+    {
+        return $this->report->deleteReport($report_id);
+    }
 
-        $res = $this->recordUserReportShow($this->userId,$report_id);
+    public function isShowReport(Request $request)
+    {
+        $report_id = $request->reportid;
 
-        if(!$res) {
+        $res = $this->recordUserReportShow($this->userId, $report_id);
+
+        if (!$res) {
             return back()->withInput();
         }
 
         $report = $this->fetchReport($report_id);
 
         return view('report')
-                ->with("report",$report)
-                ->with("userType",$this->userType);
+            ->with("report", $report)
+            ->with("userType", $this->userType);
     }
 
-    public function isShowUpdateReportPage(Request $request) {
-        $report_id = $request->query("reportid");
+    public function isShowUpdateReportPage(Request $request)
+    {
+        $report_id = $request->reportid;
         $report = $this->fetchReport($report_id);
-        
+
         return view('updateReport')
-                ->with("report",$report)
-                ->with("userType",$this->userType);
+            ->with("report", $report)
+            ->with("userType", $this->userType);
     }
 
-    private function fetchReport($report_id) {
+    private function fetchReport($report_id)
+    {
         return $this->report->getReport($report_id);
     }
 
-    private function recordUserReportShow($user_id,$report_id) {
-        
-        $setRecord = $this->report_user->setRecordUserReportShow($user_id,$report_id);
+    private function recordUserReportShow($user_id, $report_id)
+    {
 
-        if($setRecord) {
+        $setRecord = $this->recordReportView($user_id, $report_id);
+
+        if ($setRecord) {
             return true;
         } else {
             return false;
         }
     }
 
-    public function isGetReportData() {
-        $reportList = $this->report->getAllReportList($this->userId,$this->userType);
+    private function recordReportView($user_id, $report_id)
+    {
+        return $this->report_user->setRecordUserReportShow($user_id, $report_id);
+    }
 
-        if($reportList) {
+    public function isGetReportData()
+    {
+        $reportList = $this->fetchGetAllReportList();
+
+        if ($reportList) {
             return response()->json(["status" => 200, "report" => $reportList]);
         } else {
             return response()->json(["status" => 500]);
         }
+    }
+
+    private function fetchGetAllReportList()
+    {
+        return $this->report->getAllReportList($this->userId, $this->userType);
     }
 }

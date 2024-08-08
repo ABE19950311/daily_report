@@ -12,7 +12,8 @@ class NotificationController extends Controller
 {
     private $notification;
 
-    public function __construct(Request $request) {
+    public function __construct(Request $request)
+    {
         parent::__construct($request);
         $this->notification = new Notification();
     }
@@ -22,15 +23,20 @@ class NotificationController extends Controller
      */
     public function index(Request $request)
     {
-        if(!$this->userId) {
+        if (!$this->userId) {
             return back()->withInput();
         }
 
-        $addressList = $this->notification->getAddress($this->userId);
+        $addressList = $this->isGetAddress();
 
         return view('notification')
-                ->with("addressList",$addressList)
-                ->with("userType",$this->userType);
+            ->with("addressList", $addressList)
+            ->with("userType", $this->userType);
+    }
+
+    private function isGetAddress()
+    {
+        return $this->notification->getAddress($this->userId);
     }
 
     /**
@@ -46,19 +52,24 @@ class NotificationController extends Controller
      */
     public function store(NotificationRequest $request)
     {
-        $address = $request->input('mailAddress');
+        $address = $request->mailAddress;
 
-        if(!$this->userId) {
+        if (!$this->userId) {
             return back()->withInput();
         }
 
-        $res = $this->notification->isRegisterAddress($address,$this->userId);
+        $res = $this->createAddress($address);
 
-        if($res) {
-            return redirect('/mail')->with("userType",$this->userType);;
+        if ($res) {
+            return redirect('/mail')->with("userType", $this->userType);;
         } else {
             return back()->withInput();
         }
+    }
+
+    private function createAddress($address)
+    {
+        return $this->notification->isRegisterAddress($address, $this->userId);
     }
 
     /**
