@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
+use Exception;
 
 class Report extends Model
 {
@@ -66,7 +68,7 @@ class Report extends Model
             DB::insert($query,$params);
             return true;
         } catch (Exception $e) {
-            \Log::info($e);
+            Log::info($e);
             return false;
         }
     }
@@ -102,7 +104,7 @@ class Report extends Model
             DB::update($query,$params);
             return true;
         } catch (Exception $e) {
-            \Log::info($e);
+            Log::info($e);
             return false;
         }
     }
@@ -122,7 +124,7 @@ class Report extends Model
             DB::delete($query,$params);
             return true;
         } catch (Exception $e) {
-            \Log::info($e);
+            Log::info($e);
             return false;
         }
     }
@@ -171,7 +173,7 @@ class Report extends Model
             $reportList = DB::select("$query LIMIT $reportsDisplayLimit OFFSET $offset",$params);
             return $reportList;
         } catch (Exception $e) {
-            \Log::info($e);
+            Log::info($e);
             return false;
         }
     }
@@ -200,7 +202,7 @@ class Report extends Model
             $report = DB::select($query,$params);
             return $report[0];
         } catch (Exception $e) {
-            \Log::info($e);
+            Log::info($e);
             return false;
         }
     }
@@ -240,7 +242,7 @@ class Report extends Model
             $reportCount = DB::select($query,$params);
             return floor($reportCount[0]->record/$reportDisplayLimit)+1;
         } catch (Exception $e) {
-            \Log::info($e);
+            Log::info($e);
             return false;
         }
     }
@@ -275,7 +277,7 @@ class Report extends Model
             $reportList = DB::select($query,$params);
             return $reportList;
         } catch (Exception $e) {
-            \Log::info($e);
+            Log::info($e);
             return false;
         }
     }

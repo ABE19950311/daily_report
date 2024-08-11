@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use App\Models\Report;
+use Illuminate\Support\Facades\Log;
+use Exception;
 
 class ReportUser extends Model
 {
@@ -39,7 +41,7 @@ class ReportUser extends Model
             DB::insert($query,$params);
             return true;
         } catch (Exception $e) {
-            \Log::info($e);
+            Log::info($e);
             return false;
         }
     }
@@ -65,10 +67,10 @@ class ReportUser extends Model
 
         try {
             $rankList = DB::select($query);
-            \Log::info($rankList);
+            Log::info($rankList);
             return $rankList;
         } catch (Exception $e) {
-            \Log::info($e);
+            Log::info($e);
             return false;
         }
     }

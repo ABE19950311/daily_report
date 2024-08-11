@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Log;
+use Exception;
 
 class Contact extends Model
 {
@@ -47,7 +49,7 @@ class Contact extends Model
             DB::insert($query,$params);
             return true;
         } catch (Exception $e) {
-            \Log::info($e);
+            Log::info($e);
             return false;
         }
     }

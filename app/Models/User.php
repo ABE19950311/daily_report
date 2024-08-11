@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
+use Exception;
 
 class User extends Authenticatable
 {
@@ -81,7 +83,7 @@ class User extends Authenticatable
             DB::insert($query,$params);
             return true;
         } catch (Exception $e) {
-            \Log::info($e);
+            Log::info($e);
             return false;
         }
     }
@@ -103,7 +105,7 @@ class User extends Authenticatable
             DB::update($query,$params);
             return true;
         } catch (Exception $e) {
-            \Log::info($e);
+            Log::info($e);
             return false;
         }
     }
@@ -125,7 +127,7 @@ class User extends Authenticatable
             DB::update($query,$params);
             return true;
         } catch (Exception $e) {
-            \Log::info($e);
+            Log::info($e);
             return false;
         }
     }
@@ -148,7 +150,7 @@ class User extends Authenticatable
 
         try {
             $user = DB::select($query,$params);
-            \Log::info($user);
+            Log::info($user);
             // /admin/login(admin権限)でログインできるユーザならgroupにadminが返るはず。report_owner等も同様
             if(count($user) && Hash::check($password,$user[0]->password) && $user[0]->group==$userType) {
                 return true;
@@ -156,7 +158,7 @@ class User extends Authenticatable
                 return false;
             }
         } catch (Exception $e) {
-            \Log::info($e);
+            Log::info($e);
             return false;
         }
     }
@@ -172,7 +174,7 @@ class User extends Authenticatable
             Redis::set($token . "userType", $userType);
             return $token;
         } catch (Exception $e) {
-            \Log::info($e);
+            Log::info($e);
             return false;
         }
     }
@@ -182,7 +184,7 @@ class User extends Authenticatable
             Redis::getset($token, $user);
             return true;
         } catch (Exception $e) {
-            \Log::info($e);
+            Log::info($e);
             return false;
         }
     }
@@ -192,7 +194,7 @@ class User extends Authenticatable
             $res = Redis::get($token);
             return $res;
         } catch (Exception $e) {
-            \Log::info($e);
+            Log::info($e);
             return false;
         }
     }
@@ -202,7 +204,7 @@ class User extends Authenticatable
             $res = Redis::get($token . "userType");
             return $res;
         } catch (Exception $e) {
-            \Log::info($e);
+            Log::info($e);
             return false;
         }
     }
@@ -213,7 +215,7 @@ class User extends Authenticatable
             Redis::del($token . "userType");
             return true;
         } catch (Exception $e) {
-            \Log::info($e);
+            Log::info($e);
             return false;
         }
     }
@@ -241,7 +243,7 @@ class User extends Authenticatable
                 return false;
             }
         } catch (Exception $e) {
-            \Log::info($e);
+            Log::info($e);
             return false;
         }
     }

@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Exception;
 
 class Notification extends Model
 {
@@ -36,7 +38,7 @@ class Notification extends Model
             DB::insert($query,$params);
             return true;
         } catch (Exception $e) {
-            \Log::info($e);
+            Log::info($e);
             return false;
         }
     }
@@ -62,7 +64,7 @@ class Notification extends Model
                 return false;
             }
         } catch (Exception $e) {
-            \Log::info($e);
+            Log::info($e);
             return false;
         }
     }
