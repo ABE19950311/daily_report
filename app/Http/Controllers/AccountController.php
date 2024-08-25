@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\AccountPasswordRequest;
 use App\Http\Requests\AccountUserNameRequest;
-use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 
 class AccountController extends Controller

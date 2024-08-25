@@ -7,7 +7,6 @@ use App\Http\Requests\ReportRequest;
 use App\Models\Report;
 use App\Models\User;
 use App\Models\ReportUser;
-use Illuminate\Support\Facades\Validator;
 
 class ReportController extends Controller
 {
